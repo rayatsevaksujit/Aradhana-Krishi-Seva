@@ -24,6 +24,7 @@
       --text: #263238;
       --border: #d0d7de;
       --danger: #d32f2f;
+      --info: #0288d1;
     }
 
     * { box-sizing: border-box; font-family: 'Mukta', Arial, sans-serif; margin: 0; padding: 0; }
@@ -147,6 +148,7 @@
     .btn-accent { background: var(--accent); color: white; }
     .btn-whatsapp { background: var(--whatsapp); color: white; margin-top: 8px; }
     .btn-danger { background: var(--danger); color: white; padding: 4px 7px; font-size: 11px; border-radius: 4px; border: none; cursor: pointer; }
+    .btn-info { background: var(--info); color: white; padding: 4px 7px; font-size: 11px; border-radius: 4px; border: none; cursor: pointer; }
 
     .bill-item-card {
       background: #fafafa;
@@ -475,9 +477,9 @@
       </div>
 
       <div class="card">
-        <div class="card-title"><span><i class="fa-solid fa-clock-rotate-left"></i> बिलांचा इतिहास (सर्व बिले)</span></div>
+        <div class="card-title"><span><i class="fa-solid fa-clock-rotate-left"></i> बिलांचा इतिहास व व्यवस्थापन</span></div>
         <div style="overflow-x: auto;">
-          <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+          <table style="width: 100%; border-collapse: collapse; min-width: 550px; font-size: 13px;">
             <thead>
               <tr style="background:#e8f5e9; text-align: left;">
                 <th style="padding: 8px;">बिल क्र.</th>
@@ -485,6 +487,7 @@
                 <th style="padding: 8px;">शेतकरी</th>
                 <th style="padding: 8px;">एकूण बिल</th>
                 <th style="padding: 8px;">नफा</th>
+                <th style="padding: 8px; text-align:center;">कृती (Action)</th>
               </tr>
             </thead>
             <tbody id="repInvoicesBody"></tbody>
@@ -497,6 +500,34 @@
       Developed with ❤️ by <strong>Sujit Patil</strong>
     </div>
 
+  </div>
+
+  <!-- Edit Invoice Modal (बिल दुरुस्ती) -->
+  <div id="editInvoiceModal" class="modal">
+    <div class="modal-content">
+      <div class="card-title"><span><i class="fa-solid fa-pen"></i> बिल दुरुस्ती करा</span></div>
+      <input type="hidden" id="editInvId">
+      <div class="form-group">
+        <label>शेतकऱ्याचे नाव *</label>
+        <input type="text" id="editCustName">
+      </div>
+      <div class="form-group">
+        <label>मोबाईल नंबर</label>
+        <input type="number" id="editCustPhone">
+      </div>
+      <div class="form-group">
+        <label>गाव</label>
+        <input type="text" id="editCustVillage">
+      </div>
+      <div class="form-group">
+        <label>जमा रक्कम (Paid ₹)</label>
+        <input type="number" id="editPaidAmount">
+      </div>
+      <div class="grid-2" style="margin-top: 12px;">
+        <button class="btn btn-primary" onclick="saveEditedInvoice()">दुरुस्ती सेव्ह करा</button>
+        <button class="btn" style="background:#90a4ae; color:white;" onclick="closeEditModal()">रद्द करा</button>
+      </div>
+    </div>
   </div>
 
   <!-- Settings Modal -->
@@ -591,6 +622,7 @@
     const db = firebase.firestore();
 
     let productsList = [];
+    let allInvoicesCache = [];
     let selectedProduct = null;
     let cartItems = [];
     let shopInfo = {
@@ -697,7 +729,6 @@
       }
     }
 
-    // ऑटो-सर्च इनपुट बदलल्यावर
     function onProductSearchChange() {
       const val = document.getElementById('billProductSearch').value.trim().toLowerCase();
       selectedProduct = null;
@@ -956,21 +987,21 @@
       let todaySale = 0, todayCash = 0, todayProfit = 0;
       let monthSale = 0, monthCost = 0, monthProfit = 0;
       
-      let allInvoices = [];
+      allInvoicesCache = [];
       snapshot.forEach(doc => {
-        allInvoices.push({ id: doc.id, ...doc.data() });
+        allInvoicesCache.push({ id: doc.id, ...doc.data() });
       });
 
-      allInvoices.sort((a, b) => (b.created_at || 0) - (a.created_at || 0));
+      allInvoicesCache.sort((a, b) => (b.created_at || 0) - (a.created_at || 0));
 
       const historyBody = document.getElementById('repInvoicesBody');
       if (historyBody) historyBody.innerHTML = "";
 
-      if (allInvoices.length === 0 && historyBody) {
-        historyBody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:10px;">अद्याप कोणतीही विक्री झालेली नाही.</td></tr>`;
+      if (allInvoicesCache.length === 0 && historyBody) {
+        historyBody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:10px;">अद्याप कोणतीही विक्री झालेली नाही.</td></tr>`;
       }
 
-      allInvoices.forEach(inv => {
+      allInvoicesCache.forEach(inv => {
         const invDate = inv.date || "";
         const invMonth = inv.month || invDate.slice(0, 7);
 
@@ -994,6 +1025,10 @@
               <td style="padding: 8px;">${inv.customer ? inv.customer.name : '-'}</td>
               <td style="padding: 8px;">₹${(inv.grandTotal || 0).toFixed(2)}</td>
               <td style="padding: 8px; color:green; font-weight:bold;">+₹${(inv.profit || 0).toFixed(2)}</td>
+              <td style="padding: 8px; text-align:center; white-space:nowrap;">
+                <button class="btn-info" onclick="openEditModal('${inv.id}')" title="बदला"><i class="fa-solid fa-pen"></i></button>
+                <button class="btn-danger" onclick="deleteInvoice('${inv.id}')" title="हटवा"><i class="fa-solid fa-trash"></i></button>
+              </td>
             </tr>
           `;
         }
@@ -1006,6 +1041,79 @@
       document.getElementById('repMonthSale').innerText = `₹ ${monthSale.toFixed(2)}`;
       document.getElementById('repMonthCost').innerText = `₹ ${monthCost.toFixed(2)}`;
       document.getElementById('repMonthProfit').innerText = `₹ ${monthProfit.toFixed(2)}`;
+    }
+
+    // बिल डिलीट करणे आणि स्टॉक पुन्हा परत जमा करणे
+    async function deleteInvoice(invId) {
+      const inv = allInvoicesCache.find(i => i.id === invId);
+      if (!inv) return;
+
+      if (confirm(`तुम्हाला खात्री आहे का ${inv.invoiceNo} हे बिल डिलीट करायचे आहे?\n(या बिलातील सर्व औषधांचा स्टॉक आपोआप परत जमा होईल!)`)) {
+        try {
+          // विकलेला साठा पूर्ववत करणे
+          if (inv.items && Array.isArray(inv.items)) {
+            for (const item of inv.items) {
+              if (item.id) {
+                const prodRef = db.collection("products").doc(item.id);
+                await prodRef.update({
+                  stock: firebase.firestore.FieldValue.increment(item.qty)
+                }).catch(() => {});
+              }
+            }
+          }
+
+          // बिल डिलीट करणे
+          await db.collection("invoices").doc(invId).delete();
+          alert("बिल हटवले आणि स्टॉक पूर्ववत जमा झाला!");
+          loadReports();
+        } catch (err) {
+          alert("बिल डिलीट करताना त्रुटी आली: " + err.message);
+        }
+      }
+    }
+
+    // बिल माहिती दुरुस्ती (Edit)
+    function openEditModal(invId) {
+      const inv = allInvoicesCache.find(i => i.id === invId);
+      if (!inv) return;
+
+      document.getElementById('editInvId').value = invId;
+      document.getElementById('editCustName').value = inv.customer ? inv.customer.name : '';
+      document.getElementById('editCustPhone').value = inv.customer ? inv.customer.phone : '';
+      document.getElementById('editCustVillage').value = inv.customer ? inv.customer.village : '';
+      document.getElementById('editPaidAmount').value = inv.paidAmount || 0;
+
+      document.getElementById('editInvoiceModal').style.display = 'flex';
+    }
+
+    function closeEditModal() {
+      document.getElementById('editInvoiceModal').style.display = 'none';
+    }
+
+    async function saveEditedInvoice() {
+      const invId = document.getElementById('editInvId').value;
+      const inv = allInvoicesCache.find(i => i.id === invId);
+      if (!inv) return;
+
+      const newName = document.getElementById('editCustName').value.trim();
+      const newPhone = document.getElementById('editCustPhone').value.trim();
+      const newVillage = document.getElementById('editCustVillage').value.trim();
+      const newPaid = Number(document.getElementById('editPaidAmount').value) || 0;
+      const newBalance = (inv.grandTotal || 0) - newPaid;
+
+      try {
+        await db.collection("invoices").doc(invId).update({
+          customer: { name: newName, phone: newPhone, village: newVillage },
+          paidAmount: newPaid,
+          balanceAmount: newBalance
+        });
+
+        alert("बिलातील माहिती यशस्वीरीत्या बदलली!");
+        closeEditModal();
+        loadReports();
+      } catch (err) {
+        alert("माहिती बदलताना त्रुटी आली: " + err.message);
+      }
     }
 
     db.collection("customers").onSnapshot(snapshot => {
