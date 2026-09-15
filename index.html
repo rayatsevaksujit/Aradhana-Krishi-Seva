@@ -272,13 +272,12 @@
       </div>
 
       <div class="card">
-        <div class="card-title"><span><i class="fa-solid fa-cart-shopping"></i> २. औषध / खत जोडा</span></div>
+        <div class="card-title"><span><i class="fa-solid fa-magnifying-glass"></i> २. औषध शोधा व जोडा</span></div>
         <div class="grid-3">
           <div class="form-group">
-            <label>औषध निवडा *</label>
-            <select id="billProductSelect" onchange="onProductSelect()">
-              <option value="">-- यादीतून निवडा --</option>
-            </select>
+            <label>औषधाचे नाव शोधा (Type to search) *</label>
+            <input type="text" id="billProductSearch" list="productDatalist" placeholder="उदा. Round, Coragen..." oninput="onProductSearchChange()" autocomplete="off">
+            <datalist id="productDatalist"></datalist>
           </div>
           <div class="form-group">
             <label>दर (₹)</label>
@@ -592,6 +591,7 @@
     const db = firebase.firestore();
 
     let productsList = [];
+    let selectedProduct = null;
     let cartItems = [];
     let shopInfo = {
       name: "आराधना कृषी सेवा केंद्र",
@@ -667,10 +667,10 @@
     db.collection("products").orderBy("name").onSnapshot(snapshot => {
       productsList = [];
       const stockBody = document.getElementById('stockTableBody');
-      const billSelect = document.getElementById('billProductSelect');
+      const datalist = document.getElementById('productDatalist');
       
       stockBody.innerHTML = "";
-      billSelect.innerHTML = `<option value="">-- यादीतून निवडा --</option>`;
+      datalist.innerHTML = "";
 
       snapshot.forEach(doc => {
         const item = { id: doc.id, ...doc.data() };
@@ -687,7 +687,7 @@
           </tr>
         `;
 
-        billSelect.innerHTML += `<option value="${item.id}">${item.name} - ₹${item.sell_price} (शिल्लक: ${item.stock})</option>`;
+        datalist.innerHTML += `<option value="${item.name} | बॅच: ${item.batch_no} | दर: ₹${item.sell_price}">`;
       });
     });
 
@@ -697,41 +697,71 @@
       }
     }
 
-    function onProductSelect() {
-      const pId = document.getElementById('billProductSelect').value;
-      const prod = productsList.find(p => p.id === pId);
-      if (prod) {
-        document.getElementById('billItemRate').value = prod.sell_price;
-        document.getElementById('stockAlert').innerText = `बॅच: ${prod.batch_no} | खरेदी: ₹${prod.buy_price} | शिल्लक: ${prod.stock} नग`;
-      } else {
+    // ऑटो-सर्च इनपुट बदलल्यावर
+    function onProductSearchChange() {
+      const val = document.getElementById('billProductSearch').value.trim().toLowerCase();
+      selectedProduct = null;
+
+      if (!val) {
         document.getElementById('billItemRate').value = '';
         document.getElementById('stockAlert').innerText = '';
+        return;
+      }
+
+      const match = productsList.find(p => {
+        const fullLabel = `${p.name} | बॅच: ${p.batch_no} | दर: ₹${p.sell_price}`.toLowerCase();
+        return fullLabel === val || p.name.toLowerCase() === val;
+      });
+
+      if (match) {
+        selectedProduct = match;
+        document.getElementById('billItemRate').value = match.sell_price;
+        document.getElementById('stockAlert').innerText = `बॅच: ${match.batch_no} | उपलब्ध साठा: ${match.stock} नग`;
+      } else {
+        const partial = productsList.find(p => p.name.toLowerCase().includes(val));
+        if (partial) {
+          document.getElementById('stockAlert').innerText = `संभाव्य: ${partial.name} (शिल्लक: ${partial.stock})`;
+        } else {
+          document.getElementById('stockAlert').innerText = '';
+        }
       }
     }
 
     function addItemToBill() {
-      const pId = document.getElementById('billProductSelect').value;
+      if (!selectedProduct) {
+        const val = document.getElementById('billProductSearch').value.trim().toLowerCase();
+        selectedProduct = productsList.find(p => p.name.toLowerCase() === val || `${p.name} | बॅच: ${p.batch_no} | दर: ₹${p.sell_price}`.toLowerCase() === val);
+      }
+
+      if (!selectedProduct) { 
+        alert("कृपया यादीतून अचूक औषध निवडा!"); 
+        return; 
+      }
+
       const qty = Number(document.getElementById('billItemQty').value);
-      const prod = productsList.find(p => p.id === pId);
-
-      if (!prod) { alert("कृपया औषध निवडा!"); return; }
       if (qty <= 0) { alert("किमान १ संख्या आवश्यक आहे!"); return; }
-      if (qty > prod.stock) { alert(`फक्त ${prod.stock} नग शिल्लक आहेत!`); return; }
+      if (qty > selectedProduct.stock) { alert(`फक्त ${selectedProduct.stock} नग शिल्लक आहेत!`); return; }
 
-      const totalItemPrice = prod.sell_price * qty;
-      const totalBuyCost = (prod.buy_price || 0) * qty;
+      const totalItemPrice = selectedProduct.sell_price * qty;
+      const totalBuyCost = (selectedProduct.buy_price || 0) * qty;
 
       cartItems.push({
-        id: prod.id,
-        name: prod.name,
-        batch: prod.batch_no,
-        rate: prod.sell_price,
-        buy_price: prod.buy_price || 0,
+        id: selectedProduct.id,
+        name: selectedProduct.name,
+        batch: selectedProduct.batch_no,
+        rate: selectedProduct.sell_price,
+        buy_price: selectedProduct.buy_price || 0,
         qty: qty,
-        gstRate: prod.gst || 0,
+        gstRate: selectedProduct.gst || 0,
         total: totalItemPrice,
         profit: totalItemPrice - totalBuyCost
       });
+
+      document.getElementById('billProductSearch').value = '';
+      document.getElementById('billItemRate').value = '';
+      document.getElementById('billItemQty').value = '1';
+      document.getElementById('stockAlert').innerText = '';
+      selectedProduct = null;
 
       renderCart();
     }
@@ -931,7 +961,6 @@
         allInvoices.push({ id: doc.id, ...doc.data() });
       });
 
-      // नवीन बिल नेहमी सर्वात वर
       allInvoices.sort((a, b) => (b.created_at || 0) - (a.created_at || 0));
 
       const historyBody = document.getElementById('repInvoicesBody');
