@@ -590,7 +590,7 @@
     </div>
   </div>
 
-  <!-- Settings Modal (Settings + PIN Setup) -->
+  <!-- Settings Modal -->
   <div id="settingsModal" class="modal">
     <div class="modal-content">
       <div class="card-title"><span><i class="fa-solid fa-store"></i> दुकानाची माहिती व सुरक्षा पिन</span></div>
@@ -686,8 +686,10 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    let currentAppPin = "1234"; // डिफॉल्ट पिन
-    const MASTER_RESET_KEY = "SP@2026"; // पिन विसरल्यास मास्टर की
+    let currentAppPin = "1234";
+    const MASTER_RESET_KEY = "SP@2026";
+    let autoLockTimer = null;
+    const INACTIVITY_TIME = 3 * 60 * 1000; // ३ मिनिटे (3 minutes)
 
     let productsList = [];
     let allInvoicesCache = [];
@@ -701,13 +703,29 @@
       appPin: "1234"
     };
 
-    // --- १. पिन सुरक्षा (PIN Security System) ---
+    // --- १. पिन सुरक्षा व ऑटो-लॉक (Auto Lock System) ---
+    function resetAutoLockTimer() {
+      if (autoLockTimer) clearTimeout(autoLockTimer);
+      // जर ॲप अनलॉक असेल तरच टाइमर चालू ठेवा
+      if (sessionStorage.getItem("appUnlocked") === "true") {
+        autoLockTimer = setTimeout(() => {
+          lockApp();
+        }, INACTIVITY_TIME);
+      }
+    }
+
+    // स्क्रीनवर काहीही हालचाल झाली तर टाइमर पूर्ववत करा
+    ['touchstart', 'mousemove', 'keydown', 'scroll', 'click'].forEach(evt => {
+      window.addEventListener(evt, resetAutoLockTimer, true);
+    });
+
     function verifyPin() {
       const entered = document.getElementById('inputPin').value;
       if (entered === currentAppPin) {
         document.getElementById('lockScreen').style.display = 'none';
         sessionStorage.setItem("appUnlocked", "true");
         document.getElementById('inputPin').value = "";
+        resetAutoLockTimer();
       } else {
         alert("चुकीचा पिन! कृपया योग्य पिन टाका.");
         document.getElementById('inputPin').value = "";
@@ -716,11 +734,12 @@
 
     function lockApp() {
       sessionStorage.removeItem("appUnlocked");
+      if (autoLockTimer) clearTimeout(autoLockTimer);
       document.getElementById('lockScreen').style.display = 'flex';
+      document.getElementById('inputPin').value = "";
       document.getElementById('inputPin').focus();
     }
 
-    // पिन रिसेट पर्याय
     async function resetPinPrompt() {
       const masterKey = prompt("पिन रिसेट करण्यासाठी मास्टर की (Master Key) टाका:");
       if (masterKey === MASTER_RESET_KEY) {
@@ -732,9 +751,9 @@
       }
     }
 
-    // ऑटो-चेक session
     if (sessionStorage.getItem("appUnlocked") === "true") {
       document.getElementById('lockScreen').style.display = 'none';
+      resetAutoLockTimer();
     }
 
     function switchTab(tabId) {
@@ -845,7 +864,7 @@
           </tr>
         `;
 
-        datalist.innerHTML += `<option value="${item.name} | बॅच: ${item.batch_no} | दर: ₹${item.sell_price}">`;
+        datalist.innerHTML += `<option value="${item.name} | बॅच: ${item.batch_no} \vert{} दर: ₹${item.sell_price}">`;
       });
     });
 
@@ -866,14 +885,14 @@
       }
 
       const match = productsList.find(p => {
-        const fullLabel = `${p.name} | बॅच: ${p.batch_no} | दर: ₹${p.sell_price}`.toLowerCase();
+        const fullLabel = `${p.name} | बॅच: ${p.batch_no} \vert{} दर: ₹${p.sell_price}`.toLowerCase();
         return fullLabel === val || p.name.toLowerCase() === val;
       });
 
       if (match) {
         selectedProduct = match;
         document.getElementById('billItemRate').value = match.sell_price;
-        document.getElementById('stockAlert').innerText = `बॅच: ${match.batch_no} | उपलब्ध साठा: ${match.stock} नग`;
+        document.getElementById('stockAlert').innerText = `बॅच: ${match.batch_no} \vert{} उपलब्ध साठा: ${match.stock} नग`;
       } else {
         const partial = productsList.find(p => p.name.toLowerCase().includes(val));
         if (partial) {
@@ -887,7 +906,7 @@
     function addItemToBill() {
       if (!selectedProduct) {
         const val = document.getElementById('billProductSearch').value.trim().toLowerCase();
-        selectedProduct = productsList.find(p => p.name.toLowerCase() === val || `${p.name} | बॅच: ${p.batch_no} | दर: ₹${p.sell_price}`.toLowerCase() === val);
+        selectedProduct = productsList.find(p => p.name.toLowerCase() === val || `${p.name} | बॅच: ${p.batch_no} \vert{} दर: ₹${p.sell_price}`.toLowerCase() === val);
       }
 
       if (!selectedProduct) { 
@@ -1104,7 +1123,7 @@
       }
     }
 
-    // --- ४. रिपोर्ट व बिल व्यवस्थापन (Edit / Delete) ---
+    // --- ४. रिपोर्ट व बिल व्यवस्थापन ---
     async function loadReports() {
       const todayStr = new Date().toISOString().split('T')[0];
       const monthStr = todayStr.slice(0, 7);
@@ -1251,7 +1270,7 @@
         khataBody.innerHTML += `
           <tr style="border-bottom: 1px solid #eee;">
             <td style="padding: 8px;"><strong>${c.name}</strong></td>
-            <td style="padding: 8px;">${c.village || '-'} (${c.phone || '-'})</td>
+            <td style="padding: 8px;">${c.village \vert{}\vert{} '-'} (${c.phone || '-'})</td>
             <td style="padding: 8px; color:red; font-weight:bold;">₹ ${Number(c.balance || 0).toFixed(2)}</td>
           </tr>
         `;
