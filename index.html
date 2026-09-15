@@ -687,9 +687,9 @@
     const db = firebase.firestore();
 
     let currentAppPin = "1234";
-    const MASTER_RESET_KEY = "SP@2026";
+    const MASTER_PIN = "7339"; // तुमचा मुख्य मास्टर पिन
     let autoLockTimer = null;
-    const INACTIVITY_TIME = 3 * 60 * 1000; // ३ मिनिटे (3 minutes)
+    const INACTIVITY_TIME = 3 * 60 * 1000; // ३ मिनिटे
 
     let productsList = [];
     let allInvoicesCache = [];
@@ -703,10 +703,9 @@
       appPin: "1234"
     };
 
-    // --- १. पिन सुरक्षा व ऑटो-लॉक (Auto Lock System) ---
+    // --- १. पिन सुरक्षा (Master PIN: 7339) ---
     function resetAutoLockTimer() {
       if (autoLockTimer) clearTimeout(autoLockTimer);
-      // जर ॲप अनलॉक असेल तरच टाइमर चालू ठेवा
       if (sessionStorage.getItem("appUnlocked") === "true") {
         autoLockTimer = setTimeout(() => {
           lockApp();
@@ -714,14 +713,16 @@
       }
     }
 
-    // स्क्रीनवर काहीही हालचाल झाली तर टाइमर पूर्ववत करा
     ['touchstart', 'mousemove', 'keydown', 'scroll', 'click'].forEach(evt => {
       window.addEventListener(evt, resetAutoLockTimer, true);
     });
 
     function verifyPin() {
-      const entered = document.getElementById('inputPin').value;
-      if (entered === currentAppPin) {
+      const entered = String(document.getElementById('inputPin').value || '').trim();
+      const actualPin = String(currentAppPin || '1234').trim();
+
+      // युझरने ठेवलेला पिन, 1234 किंवा मास्टर पिन 7339 यांपैकी काहीही चालेल
+      if (entered === actualPin || entered === "1234" || entered === MASTER_PIN) {
         document.getElementById('lockScreen').style.display = 'none';
         sessionStorage.setItem("appUnlocked", "true");
         document.getElementById('inputPin').value = "";
@@ -732,6 +733,12 @@
       }
     }
 
+    document.getElementById('inputPin').addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') {
+        verifyPin();
+      }
+    });
+
     function lockApp() {
       sessionStorage.removeItem("appUnlocked");
       if (autoLockTimer) clearTimeout(autoLockTimer);
@@ -741,13 +748,13 @@
     }
 
     async function resetPinPrompt() {
-      const masterKey = prompt("पिन रिसेट करण्यासाठी मास्टर की (Master Key) टाका:");
-      if (masterKey === MASTER_RESET_KEY) {
+      const masterKey = prompt("पिन रिसेट करण्यासाठी मास्टर पिन (Master PIN) टाका:");
+      if (masterKey === MASTER_PIN) {
         currentAppPin = "1234";
-        await db.collection("settings").doc("shopDetails").update({ appPin: "1234" });
+        await db.collection("settings").doc("shopDetails").set({ appPin: "1234" }, { merge: true });
         alert("पिन यशस्वीरीत्या रिसेट झाला!\nनवीन डिफॉल्ट पिन आहे: 1234");
       } else if (masterKey !== null) {
-        alert("चुकीची मास्टर की!");
+        alert("चुकीचा मास्टर पिन!");
       }
     }
 
@@ -771,7 +778,7 @@
         document.getElementById('topShopName').innerText = "🌾 " + shopInfo.name;
         document.getElementById('topShopPhone').innerText = "मोबाईल: " + shopInfo.phone;
         if (shopInfo.appPin) {
-          currentAppPin = String(shopInfo.appPin);
+          currentAppPin = String(shopInfo.appPin).trim();
         }
       }
     });
@@ -795,8 +802,8 @@
 
       if (newPinInput) {
         if (newPinInput.length === 4 && !isNaN(newPinInput)) {
-          updatedPin = newPinInput;
-          currentAppPin = newPinInput;
+          updatedPin = String(newPinInput).trim();
+          currentAppPin = updatedPin;
         } else {
           alert("पिन फक्त ४ अंकी नंबर असावा!");
           return;
@@ -864,7 +871,7 @@
           </tr>
         `;
 
-        datalist.innerHTML += `<option value="${item.name} | बॅच: ${item.batch_no} \vert{} दर: ₹${item.sell_price}">`;
+        datalist.innerHTML += `<option value="${item.name} | बॅच: ${item.batch_no} | दर: ₹${item.sell_price}">`;
       });
     });
 
@@ -885,14 +892,14 @@
       }
 
       const match = productsList.find(p => {
-        const fullLabel = `${p.name} | बॅच: ${p.batch_no} \vert{} दर: ₹${p.sell_price}`.toLowerCase();
+        const fullLabel = `${p.name} | बॅच: ${p.batch_no} | दर: ₹${p.sell_price}`.toLowerCase();
         return fullLabel === val || p.name.toLowerCase() === val;
       });
 
       if (match) {
         selectedProduct = match;
         document.getElementById('billItemRate').value = match.sell_price;
-        document.getElementById('stockAlert').innerText = `बॅच: ${match.batch_no} \vert{} उपलब्ध साठा: ${match.stock} नग`;
+        document.getElementById('stockAlert').innerText = `बॅच: ${match.batch_no} | उपलब्ध साठा: ${match.stock} नग`;
       } else {
         const partial = productsList.find(p => p.name.toLowerCase().includes(val));
         if (partial) {
@@ -906,7 +913,7 @@
     function addItemToBill() {
       if (!selectedProduct) {
         const val = document.getElementById('billProductSearch').value.trim().toLowerCase();
-        selectedProduct = productsList.find(p => p.name.toLowerCase() === val || `${p.name} | बॅच: ${p.batch_no} \vert{} दर: ₹${p.sell_price}`.toLowerCase() === val);
+        selectedProduct = productsList.find(p => p.name.toLowerCase() === val || `${p.name} | बॅच: ${p.batch_no} | दर: ₹${p.sell_price}`.toLowerCase() === val);
       }
 
       if (!selectedProduct) { 
@@ -1270,7 +1277,7 @@
         khataBody.innerHTML += `
           <tr style="border-bottom: 1px solid #eee;">
             <td style="padding: 8px;"><strong>${c.name}</strong></td>
-            <td style="padding: 8px;">${c.village \vert{}\vert{} '-'} (${c.phone || '-'})</td>
+            <td style="padding: 8px;">${c.village || '-'} (${c.phone || '-'})</td>
             <td style="padding: 8px; color:red; font-weight:bold;">₹ ${Number(c.balance || 0).toFixed(2)}</td>
           </tr>
         `;
