@@ -4,8 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
   <title>आराधना कृषी सेवा केंद्र</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -30,6 +28,42 @@
     * { box-sizing: border-box; font-family: 'Mukta', Arial, sans-serif; margin: 0; padding: 0; }
     body { background-color: var(--bg); color: var(--text); padding-bottom: 85px; }
 
+    /* Security Lock Screen */
+    #lockScreen {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      padding: 20px;
+    }
+    .lock-box {
+      background: white;
+      color: var(--text);
+      border-radius: 12px;
+      padding: 24px;
+      width: 100%;
+      max-width: 320px;
+      text-align: center;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+    .pin-input {
+      letter-spacing: 14px;
+      font-size: 24px;
+      text-align: center;
+      font-weight: bold;
+      width: 100%;
+      padding: 10px;
+      margin: 15px 0;
+      border: 2px solid var(--primary);
+      border-radius: 8px;
+    }
+
+    /* Header Bar */
     .app-bar {
       background: linear-gradient(135deg, var(--primary), var(--primary-dark));
       color: white;
@@ -217,16 +251,42 @@
 </head>
 <body>
 
+  <!-- Lock Screen Component -->
+  <div id="lockScreen">
+    <div class="lock-box">
+      <i class="fa-solid fa-lock" style="font-size: 32px; color: var(--primary);"></i>
+      <h3 style="margin-top: 8px; font-size: 18px;">सुरक्षित प्रवेश</h3>
+      <p style="font-size: 12px; color: #607d8b;">कृषी सेवा केंद्र ॲप उघडण्यासाठी ४-अंकी पिन टाका</p>
+      
+      <input type="password" id="inputPin" class="pin-input" maxlength="4" placeholder="••••" inputmode="numeric">
+      
+      <button class="btn btn-primary" onclick="verifyPin()">
+        <i class="fa-solid fa-key"></i> अनलॉक करा
+      </button>
+      
+      <p style="margin-top: 14px; font-size: 12px; cursor: pointer; color: var(--accent);" onclick="resetPinPrompt()">
+        पिन विसरलात का? (Reset PIN)
+      </p>
+    </div>
+  </div>
+
+  <!-- Header -->
   <div class="app-bar">
     <div>
       <h1 id="topShopName">🌾 आराधना कृषी सेवा केंद्र</h1>
       <p id="topShopPhone">मोबाईल: 98XXXXXXXX</p>
     </div>
-    <button class="btn-edit-shop" onclick="openSettingsModal()">
-      <i class="fa-solid fa-pen-to-square"></i> नाव बदला
-    </button>
+    <div style="display:flex; gap:6px;">
+      <button class="btn-edit-shop" onclick="openSettingsModal()">
+        <i class="fa-solid fa-gear"></i> सेटिंग्ज
+      </button>
+      <button class="btn-edit-shop" style="background:#ffebee; color:var(--danger);" onclick="lockApp()" title="ॲप लॉक करा">
+        <i class="fa-solid fa-lock"></i>
+      </button>
+    </div>
   </div>
 
+  <!-- Tabs -->
   <div class="nav-tabs">
     <button class="tab-btn active" onclick="switchTab('billingTab')">
       <i class="fa-solid fa-receipt"></i> बिलिंग
@@ -277,7 +337,7 @@
         <div class="card-title"><span><i class="fa-solid fa-magnifying-glass"></i> २. औषध शोधा व जोडा</span></div>
         <div class="grid-3">
           <div class="form-group">
-            <label>औषधाचे नाव शोधा (Type to search) *</label>
+            <label>औषधाचे नाव शोधा *</label>
             <input type="text" id="billProductSearch" list="productDatalist" placeholder="उदा. Round, Coragen..." oninput="onProductSearchChange()" autocomplete="off">
             <datalist id="productDatalist"></datalist>
           </div>
@@ -487,7 +547,7 @@
                 <th style="padding: 8px;">शेतकरी</th>
                 <th style="padding: 8px;">एकूण बिल</th>
                 <th style="padding: 8px;">नफा</th>
-                <th style="padding: 8px; text-align:center;">कृती (Action)</th>
+                <th style="padding: 8px; text-align:center;">कृती</th>
               </tr>
             </thead>
             <tbody id="repInvoicesBody"></tbody>
@@ -502,7 +562,7 @@
 
   </div>
 
-  <!-- Edit Invoice Modal (बिल दुरुस्ती) -->
+  <!-- Edit Invoice Modal -->
   <div id="editInvoiceModal" class="modal">
     <div class="modal-content">
       <div class="card-title"><span><i class="fa-solid fa-pen"></i> बिल दुरुस्ती करा</span></div>
@@ -530,10 +590,10 @@
     </div>
   </div>
 
-  <!-- Settings Modal -->
+  <!-- Settings Modal (Settings + PIN Setup) -->
   <div id="settingsModal" class="modal">
     <div class="modal-content">
-      <div class="card-title"><span><i class="fa-solid fa-store"></i> दुकानाची माहिती बदला</span></div>
+      <div class="card-title"><span><i class="fa-solid fa-store"></i> दुकानाची माहिती व सुरक्षा पिन</span></div>
       <div class="form-group">
         <label>दुकानाचे नाव *</label>
         <input type="text" id="setShopName">
@@ -550,14 +610,19 @@
         <label>GSTIN / परवाना क्र.</label>
         <input type="text" id="setShopGst">
       </div>
+      <hr style="margin: 10px 0; border: 0; border-top: 1px dashed #ccc;">
+      <div class="form-group">
+        <label style="color: var(--primary);">सुरक्षा पिन बदला (४-अंकी नवीन PIN)</label>
+        <input type="password" id="setNewPin" maxlength="4" placeholder="उदा. 4321" inputmode="numeric">
+      </div>
       <div class="grid-2" style="margin-top: 12px;">
-        <button class="btn btn-primary" onclick="saveShopSettings()">माहिती सेव्ह करा</button>
+        <button class="btn btn-primary" onclick="saveShopSettings()">माहिती व PIN सेव्ह करा</button>
         <button class="btn" style="background:#90a4ae; color:white;" onclick="closeSettingsModal()">रद्द करा</button>
       </div>
     </div>
   </div>
 
-  <!-- Subak Lahan Pavati -->
+  <!-- Print Template -->
   <div id="printSection">
     <div style="text-align: center; border-bottom: 1px dashed #000; padding-bottom: 4px;">
       <h3 id="pStoreName" style="font-size: 15px; font-family: 'Rozha One', serif;">आराधना कृषी सेवा केंद्र</h3>
@@ -621,6 +686,9 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
+    let currentAppPin = "1234"; // डिफॉल्ट पिन
+    const MASTER_RESET_KEY = "SP@2026"; // पिन विसरल्यास मास्टर की
+
     let productsList = [];
     let allInvoicesCache = [];
     let selectedProduct = null;
@@ -629,8 +697,45 @@
       name: "आराधना कृषी सेवा केंद्र",
       address: "मुख्य चौक, सांगली",
       phone: "98XXXXXXXX",
-      gstin: "27AAAAA0000A1Z5"
+      gstin: "27AAAAA0000A1Z5",
+      appPin: "1234"
     };
+
+    // --- १. पिन सुरक्षा (PIN Security System) ---
+    function verifyPin() {
+      const entered = document.getElementById('inputPin').value;
+      if (entered === currentAppPin) {
+        document.getElementById('lockScreen').style.display = 'none';
+        sessionStorage.setItem("appUnlocked", "true");
+        document.getElementById('inputPin').value = "";
+      } else {
+        alert("चुकीचा पिन! कृपया योग्य पिन टाका.");
+        document.getElementById('inputPin').value = "";
+      }
+    }
+
+    function lockApp() {
+      sessionStorage.removeItem("appUnlocked");
+      document.getElementById('lockScreen').style.display = 'flex';
+      document.getElementById('inputPin').focus();
+    }
+
+    // पिन रिसेट पर्याय
+    async function resetPinPrompt() {
+      const masterKey = prompt("पिन रिसेट करण्यासाठी मास्टर की (Master Key) टाका:");
+      if (masterKey === MASTER_RESET_KEY) {
+        currentAppPin = "1234";
+        await db.collection("settings").doc("shopDetails").update({ appPin: "1234" });
+        alert("पिन यशस्वीरीत्या रिसेट झाला!\nनवीन डिफॉल्ट पिन आहे: 1234");
+      } else if (masterKey !== null) {
+        alert("चुकीची मास्टर की!");
+      }
+    }
+
+    // ऑटो-चेक session
+    if (sessionStorage.getItem("appUnlocked") === "true") {
+      document.getElementById('lockScreen').style.display = 'none';
+    }
 
     function switchTab(tabId) {
       document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
@@ -640,11 +745,15 @@
       if (tabId === 'reportTab') loadReports();
     }
 
+    // --- २. दुकान माहिती व पिन लोड करणे ---
     db.collection("settings").doc("shopDetails").onSnapshot(doc => {
       if (doc.exists) {
         shopInfo = doc.data();
         document.getElementById('topShopName').innerText = "🌾 " + shopInfo.name;
         document.getElementById('topShopPhone').innerText = "मोबाईल: " + shopInfo.phone;
+        if (shopInfo.appPin) {
+          currentAppPin = String(shopInfo.appPin);
+        }
       }
     });
 
@@ -653,6 +762,7 @@
       document.getElementById('setShopAddress').value = shopInfo.address || "";
       document.getElementById('setShopPhone').value = shopInfo.phone || "";
       document.getElementById('setShopGst').value = shopInfo.gstin || "";
+      document.getElementById('setNewPin').value = "";
       document.getElementById('settingsModal').style.display = 'flex';
     }
 
@@ -661,17 +771,33 @@
     }
 
     async function saveShopSettings() {
+      const newPinInput = document.getElementById('setNewPin').value.trim();
+      let updatedPin = currentAppPin;
+
+      if (newPinInput) {
+        if (newPinInput.length === 4 && !isNaN(newPinInput)) {
+          updatedPin = newPinInput;
+          currentAppPin = newPinInput;
+        } else {
+          alert("पिन फक्त ४ अंकी नंबर असावा!");
+          return;
+        }
+      }
+
       const updated = {
         name: document.getElementById('setShopName').value.trim(),
         address: document.getElementById('setShopAddress').value.trim(),
         phone: document.getElementById('setShopPhone').value.trim(),
-        gstin: document.getElementById('setShopGst').value.trim()
+        gstin: document.getElementById('setShopGst').value.trim(),
+        appPin: updatedPin
       };
-      await db.collection("settings").doc("shopDetails").set(updated);
-      alert("दुकानाचे नाव व माहिती सेव्ह झाली!");
+
+      await db.collection("settings").doc("shopDetails").set(updated, { merge: true });
+      alert("माहिती व नवीन पिन सुरक्षित सेव्ह झाला!");
       closeSettingsModal();
     }
 
+    // --- ३. स्टॉक व्यवस्थापन ---
     document.getElementById('stockForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const product = {
@@ -978,6 +1104,7 @@
       }
     }
 
+    // --- ४. रिपोर्ट व बिल व्यवस्थापन (Edit / Delete) ---
     async function loadReports() {
       const todayStr = new Date().toISOString().split('T')[0];
       const monthStr = todayStr.slice(0, 7);
@@ -1043,14 +1170,12 @@
       document.getElementById('repMonthProfit').innerText = `₹ ${monthProfit.toFixed(2)}`;
     }
 
-    // बिल डिलीट करणे आणि स्टॉक पुन्हा परत जमा करणे
     async function deleteInvoice(invId) {
       const inv = allInvoicesCache.find(i => i.id === invId);
       if (!inv) return;
 
-      if (confirm(`तुम्हाला खात्री आहे का ${inv.invoiceNo} हे बिल डिलीट करायचे आहे?\n(या बिलातील सर्व औषधांचा स्टॉक आपोआप परत जमा होईल!)`)) {
+      if (confirm(`तुम्हाला खात्री आहे का ${inv.invoiceNo} हे बिल डिलीट करायचे आहे?\n(या बिलातील औषधांचा साठा पुन्हा जमा होईल)`)) {
         try {
-          // विकलेला साठा पूर्ववत करणे
           if (inv.items && Array.isArray(inv.items)) {
             for (const item of inv.items) {
               if (item.id) {
@@ -1062,17 +1187,15 @@
             }
           }
 
-          // बिल डिलीट करणे
           await db.collection("invoices").doc(invId).delete();
-          alert("बिल हटवले आणि स्टॉक पूर्ववत जमा झाला!");
+          alert("बिल हटवले!");
           loadReports();
         } catch (err) {
-          alert("बिल डिलीट करताना त्रुटी आली: " + err.message);
+          alert("त्रुटी: " + err.message);
         }
       }
     }
 
-    // बिल माहिती दुरुस्ती (Edit)
     function openEditModal(invId) {
       const inv = allInvoicesCache.find(i => i.id === invId);
       if (!inv) return;
@@ -1108,11 +1231,11 @@
           balanceAmount: newBalance
         });
 
-        alert("बिलातील माहिती यशस्वीरीत्या बदलली!");
+        alert("माहिती अपडेट झाली!");
         closeEditModal();
         loadReports();
       } catch (err) {
-        alert("माहिती बदलताना त्रुटी आली: " + err.message);
+        alert("त्रुटी: " + err.message);
       }
     }
 
