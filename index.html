@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>कृषी सेवा केंद्र - बिलिंग</title>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>आराधना कृषी सेवा केंद्र</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,16 +26,9 @@
       --danger: #d32f2f;
     }
 
-    * {
-      box-sizing: border-box;
-      font-family: 'Mukta', 'Kokila', Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-
+    * { box-sizing: border-box; font-family: 'Mukta', Arial, sans-serif; margin: 0; padding: 0; }
     body { background-color: var(--bg); color: var(--text); padding-bottom: 85px; }
 
-    /* Header Bar */
     .app-bar {
       background: linear-gradient(135deg, var(--primary), var(--primary-dark));
       color: white;
@@ -61,7 +57,6 @@
       gap: 5px;
     }
 
-    /* Tabs */
     .nav-tabs {
       display: flex;
       background: var(--surface);
@@ -153,7 +148,6 @@
     .btn-whatsapp { background: var(--whatsapp); color: white; margin-top: 8px; }
     .btn-danger { background: var(--danger); color: white; padding: 4px 7px; font-size: 11px; border-radius: 4px; border: none; cursor: pointer; }
 
-    /* Compact Bill List */
     .bill-item-card {
       background: #fafafa;
       border-left: 3px solid var(--primary);
@@ -176,7 +170,6 @@
     .summary-row { display: flex; justify-content: space-between; margin-bottom: 3px; font-size: 13px; }
     .summary-row.total { font-size: 16px; font-weight: bold; color: var(--primary); border-top: 1px dashed #81c784; padding-top: 5px; margin-top: 4px; }
 
-    /* Stats */
     .stat-card { background: #e8f5e9; border: 1px solid #c8e6c9; border-radius: 6px; padding: 10px; text-align: center; }
     .stat-title { font-size: 12px; color: #555; }
     .stat-value { font-size: 17px; font-weight: bold; color: var(--primary); margin-top: 2px; }
@@ -199,7 +192,6 @@
       max-width: 420px;
     }
 
-    /* Subak & Lahan Pavati (Thermal / Mini Slip Style) */
     #printSection { display: none; }
     @media print {
       body * { visibility: hidden; }
@@ -208,7 +200,7 @@
         display: block;
         position: absolute;
         left: 0; top: 0;
-        width: 300px; /* लहान सुबक पावती साईज */
+        width: 300px;
         margin: auto;
         padding: 8px;
         font-size: 11px;
@@ -223,7 +215,6 @@
 </head>
 <body>
 
-  <!-- Header -->
   <div class="app-bar">
     <div>
       <h1 id="topShopName">🌾 आराधना कृषी सेवा केंद्र</h1>
@@ -234,7 +225,6 @@
     </button>
   </div>
 
-  <!-- Tabs -->
   <div class="nav-tabs">
     <button class="tab-btn active" onclick="switchTab('billingTab')">
       <i class="fa-solid fa-receipt"></i> बिलिंग
@@ -245,7 +235,7 @@
     <button class="tab-btn" onclick="switchTab('khataTab')">
       <i class="fa-solid fa-book-open"></i> शेतकरी वही
     </button>
-    <button class="tab-btn" onclick="switchTab('reportTab'); loadReports();">
+    <button class="tab-btn" onclick="switchTab('reportTab')">
       <i class="fa-solid fa-chart-line"></i> नफा-तोटा
     </button>
   </div>
@@ -261,7 +251,7 @@
             <label style="margin:0; font-size:12px;">GST बिल:</label>
             <select id="billGstToggle" style="width: auto; padding: 3px 6px; font-size: 12px;" onchange="renderCart()">
               <option value="YES">होय (GST सह)</option>
-              <option value="NO">नाही (साधे बिल)</option>
+              <option value="NO" selected>नाही (साधे बिल)</option>
             </select>
           </div>
         </div>
@@ -271,7 +261,7 @@
             <input type="text" id="custName" placeholder="उदा. अमोल कदम">
           </div>
           <div class="form-group">
-            <label>WhatsApp / फोन नंबर *</label>
+            <label>WhatsApp / फोन नंबर</label>
             <input type="number" id="custPhone" placeholder="९८XXXXXXXX">
           </div>
           <div class="form-group">
@@ -307,11 +297,11 @@
         </div>
 
         <div class="summary-box">
-          <div class="summary-row" id="taxableRow">
+          <div class="summary-row" id="taxableRow" style="display: none;">
             <span>करपात्र मूल्य (Taxable):</span>
             <span id="sumTaxable">₹ 0.00</span>
           </div>
-          <div class="summary-row" id="gstRow">
+          <div class="summary-row" id="gstRow" style="display: none;">
             <span>GST (कर):</span>
             <span id="sumTax">₹ 0.00</span>
           </div>
@@ -447,7 +437,10 @@
     <!-- ==================== TAB 4: REPORTS ==================== -->
     <div id="reportTab" class="tab-content">
       <div class="card">
-        <div class="card-title"><span><i class="fa-solid fa-calendar-day"></i> आजचा गल्ला</span></div>
+        <div class="card-title">
+          <span><i class="fa-solid fa-calendar-day"></i> आजचा गल्ला</span>
+          <button class="btn" style="width:auto; padding:4px 8px; font-size:12px; background:#e0e0e0;" onclick="loadReports()">रिफ्रेश</button>
+        </div>
         <div class="grid-3">
           <div class="stat-card">
             <div class="stat-title">आजची विक्री</div>
@@ -481,16 +474,33 @@
           </div>
         </div>
       </div>
+
+      <div class="card">
+        <div class="card-title"><span><i class="fa-solid fa-clock-rotate-left"></i> बिलांचा इतिहास (सर्व बिले)</span></div>
+        <div style="overflow-x: auto;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+            <thead>
+              <tr style="background:#e8f5e9; text-align: left;">
+                <th style="padding: 8px;">बिल क्र.</th>
+                <th style="padding: 8px;">तारीख</th>
+                <th style="padding: 8px;">शेतकरी</th>
+                <th style="padding: 8px;">एकूण बिल</th>
+                <th style="padding: 8px;">नफा</th>
+              </tr>
+            </thead>
+            <tbody id="repInvoicesBody"></tbody>
+          </table>
+        </div>
+      </div>
     </div>
 
-    <!-- Branding -->
     <div style="text-align: center; font-size: 13px; color: #607d8b; margin-top: 15px;">
       Developed with ❤️ by <strong>Sujit Patil</strong>
     </div>
 
   </div>
 
-  <!-- Settings Modal (नाव बदलणे) -->
+  <!-- Settings Modal -->
   <div id="settingsModal" class="modal">
     <div class="modal-content">
       <div class="card-title"><span><i class="fa-solid fa-store"></i> दुकानाची माहिती बदला</span></div>
@@ -517,7 +527,7 @@
     </div>
   </div>
 
-  <!-- Subak Lahan Pavati (Compact Print) -->
+  <!-- Subak Lahan Pavati -->
   <div id="printSection">
     <div style="text-align: center; border-bottom: 1px dashed #000; padding-bottom: 4px;">
       <h3 id="pStoreName" style="font-size: 15px; font-family: 'Rozha One', serif;">आराधना कृषी सेवा केंद्र</h3>
@@ -530,7 +540,7 @@
     <div style="margin: 4px 0; font-size: 10px; display: flex; justify-content: space-between;">
       <div>
         <p><strong>ग्राहक:</strong> <span id="pCustName"></span></p>
-        <p><strong>फोन:</strong> <span id="pCustDetails"></span></p>
+        <p><strong>गाव:</strong> <span id="pCustDetails"></span></p>
       </div>
       <div style="text-align: right;">
         <p><strong>बिल:</strong> <span id="pInvoiceNo"></span></p>
@@ -552,7 +562,7 @@
     </table>
 
     <div style="margin-top: 6px; text-align: right; font-size: 10px;">
-      <p id="pTaxableRow">करपात्र: <span id="pTaxable"></span> | GST: <span id="pTax"></span></p>
+      <p id="pTaxableRow" style="display:none;">करपात्र: <span id="pTaxable"></span> | GST: <span id="pTax"></span></p>
       <h4 style="font-size: 13px; margin-top: 2px;">एकूण रक्कम: <span id="pGrandTotal"></span></h4>
       <p>पेमेंट: <span id="pPayment"></span> | बाकी: <span id="pBalance"></span></p>
     </div>
@@ -564,7 +574,7 @@
     <p style="text-align: center; margin-top: 12px; font-size: 9px;">।। पुन्हा भेट द्या ।।</p>
   </div>
 
-  <!-- Firebase Scripts -->
+  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
 
@@ -586,7 +596,7 @@
     let shopInfo = {
       name: "आराधना कृषी सेवा केंद्र",
       address: "मुख्य चौक, सांगली",
-      phone: "9822XXXXXX",
+      phone: "98XXXXXXXX",
       gstin: "27AAAAA0000A1Z5"
     };
 
@@ -594,10 +604,10 @@
       document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
       document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
       document.getElementById(tabId).classList.add('active');
-      event.currentTarget.classList.add('active');
+      if (event && event.currentTarget) event.currentTarget.classList.add('active');
+      if (tabId === 'reportTab') loadReports();
     }
 
-    // १. दुकान माहिती व्यवस्थापन
     db.collection("settings").doc("shopDetails").onSnapshot(doc => {
       if (doc.exists) {
         shopInfo = doc.data();
@@ -630,7 +640,6 @@
       closeSettingsModal();
     }
 
-    // २. स्टॉक सेव्ह व लोड
     document.getElementById('stockForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const product = {
@@ -643,7 +652,7 @@
         buy_price: Number(document.getElementById('prodBuyPrice').value),
         sell_price: Number(document.getElementById('prodSellPrice').value),
         stock: Number(document.getElementById('prodQty').value),
-        created_at: firebase.firestore.FieldValue.serverTimestamp()
+        created_at: Date.now()
       };
 
       try {
@@ -773,13 +782,8 @@
         `;
       });
 
-      if (!isGst) {
-        document.getElementById('taxableRow').style.display = 'none';
-        document.getElementById('gstRow').style.display = 'none';
-      } else {
-        document.getElementById('taxableRow').style.display = 'flex';
-        document.getElementById('gstRow').style.display = 'flex';
-      }
+      document.getElementById('taxableRow').style.display = isGst ? 'flex' : 'none';
+      document.getElementById('gstRow').style.display = isGst ? 'flex' : 'none';
 
       document.getElementById('sumTaxable').innerText = `₹ ${grandTaxable.toFixed(2)}`;
       document.getElementById('sumTax').innerText = `₹ ${grandTax.toFixed(2)}`;
@@ -792,7 +796,6 @@
       renderCart();
     }
 
-    // ३. बिल प्रक्रिया व WhatsApp पाठवणे
     async function saveAndProcessInvoice(isWhatsApp) {
       const custName = document.getElementById('custName').value.trim();
       const custPhone = document.getElementById('custPhone').value.trim();
@@ -803,13 +806,14 @@
 
       if (!custName) { alert("कृपया शेतकऱ्याचे नाव टाका!"); return; }
       if (cartItems.length === 0) { alert("बिलामध्ये किमान १ औषध असणे आवश्यक आहे!"); return; }
-      if (isWhatsApp && !custPhone) { alert("WhatsApp पावती पाठवण्यासाठी मोबाईल नंबर आवश्यक आहे!"); return; }
+      if (isWhatsApp && !custPhone) { alert("WhatsApp पावतीसाठी फोन नंबर टाका!"); return; }
 
       const grandTotal = cartItems.reduce((acc, curr) => acc + curr.total, 0);
       const totalProfit = cartItems.reduce((acc, curr) => acc + curr.profit, 0);
       const totalBuyCost = cartItems.reduce((acc, curr) => acc + (curr.buy_price * curr.qty), 0);
       const balanceAmount = grandTotal - paidAmount;
-      const invoiceNo = "INV-" + Date.now().toString().slice(-5);
+      const curTime = Date.now();
+      const invoiceNo = "INV-" + curTime.toString().slice(-5);
       const todayStr = new Date().toISOString().split('T')[0];
 
       try {
@@ -826,10 +830,9 @@
           isGst,
           date: todayStr,
           month: todayStr.slice(0, 7),
-          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+          created_at: curTime
         });
 
-        // साठा कमी करणे
         for (const item of cartItems) {
           const prodRef = db.collection("products").doc(item.id);
           await prodRef.update({
@@ -837,31 +840,28 @@
           });
         }
 
-        // उधारी खात्यात नोंद
         if (balanceAmount > 0 || paymentMode === "CREDIT") {
           await db.collection("customers").add({
             name: custName,
             phone: custPhone,
             village: custVillage,
             balance: balanceAmount,
-            updated_at: todayStr
+            updated_at: todayStr,
+            created_at: curTime
           });
         }
 
-        // जर WhatsApp निवडले असेल तर मेसेज तयार करा
         if (isWhatsApp) {
           let itemsText = "";
           cartItems.forEach((i, idx) => {
             itemsText += `${idx+1}. ${i.name} (${i.batch}) - ${i.qty} नग = ₹${i.total.toFixed(2)}\n`;
           });
 
-          const msg = `*🌾 ${shopInfo.name} 🌾*\nपत्ता: ${shopInfo.address}\nमोबा.: ${shopInfo.phone}\n-----------------------------\n*बिल क्र.:* ${invoiceNo}\n*तारीख:* ${new Date().toLocaleDateString('mr-IN')}\n*ग्राहक:* ${custName} (${custVillage})\n-----------------------------\n${itemsText}-----------------------------\n*एकूण बिल:* ₹${grandTotal.toFixed(2)}\n*जमा रक्कम:* ₹${paidAmount.toFixed(2)}\n*शिल्लक बाकी:* ₹${balanceAmount.toFixed(2)}\n-----------------------------\n।। धन्यवाद, पुन्हा भेट द्या ।।`;
+          const msg = `*🌾 ${shopInfo.name} 🌾*\nपत्ता: ${shopInfo.address}\nमोबा.: ${shopInfo.phone}\n-----------------------------\n*बिल क्र.:* ${invoiceNo}\n*तारीख:* ${new Date().toLocaleDateString('mr-IN')}\n*ग्राहक:* ${custName} (${custVillage || '-'})\n-----------------------------\n${itemsText}-----------------------------\n*एकूण बिल:* ₹${grandTotal.toFixed(2)}\n*जमा रक्कम:* ₹${paidAmount.toFixed(2)}\n*शिल्लक बाकी:* ₹${balanceAmount.toFixed(2)}\n-----------------------------\n।। धन्यवाद, पुन्हा भेट द्या ।।`;
           
           const cleanPhone = custPhone.length === 10 ? "91" + custPhone : custPhone;
-          const waUrl = `https://api.whatsapp.com/send?phone=${cleanPhone}&text=${encodeURIComponent(msg)}`;
-          window.open(waUrl, '_blank');
+          window.open(`https://api.whatsapp.com/send?phone=${cleanPhone}&text=${encodeURIComponent(msg)}`, '_blank');
         } else {
-          // लहान सुबक पावती प्रिंट
           document.getElementById('pStoreName').innerText = shopInfo.name;
           document.getElementById('pStoreAddress').innerText = shopInfo.address;
           document.getElementById('pStorePhone').innerText = shopInfo.phone;
@@ -875,12 +875,12 @@
             document.getElementById('pTax').innerText = document.getElementById('sumTax').innerText;
           } else {
             document.getElementById('pGstHolder').style.display = 'none';
-            document.getElementById('pBillHeading').innerText = "खरेदी पावती";
+            document.getElementById('pBillHeading').innerText = "पावती (कॅश मेमो)";
             document.getElementById('pTaxableRow').style.display = 'none';
           }
 
           document.getElementById('pCustName').innerText = custName;
-          document.getElementById('pCustDetails').innerText = `${custVillage} ${custPhone}`;
+          document.getElementById('pCustDetails').innerText = custVillage || '-';
           document.getElementById('pInvoiceNo').innerText = invoiceNo;
           document.getElementById('pDate').innerText = new Date().toLocaleDateString('mr-IN');
 
@@ -910,33 +910,63 @@
         document.getElementById('custName').value = "";
         document.getElementById('custPhone').value = "";
         document.getElementById('custVillage').value = "";
-        alert("बिल यशस्वीरीत्या पूर्ण झाले!");
+        alert("बिल सेव्ह झाले!");
 
       } catch (err) {
         alert("त्रुटी: " + err.message);
       }
     }
 
-    // ४. रिपोर्ट्स
     async function loadReports() {
       const todayStr = new Date().toISOString().split('T')[0];
       const monthStr = todayStr.slice(0, 7);
-      const snapshot = await db.collection("invoices").orderBy("timestamp", "desc").get();
+
+      const snapshot = await db.collection("invoices").get();
 
       let todaySale = 0, todayCash = 0, todayProfit = 0;
       let monthSale = 0, monthCost = 0, monthProfit = 0;
-
+      
+      let allInvoices = [];
       snapshot.forEach(doc => {
-        const inv = doc.data();
-        if (inv.date === todayStr) {
-          todaySale += inv.grandTotal || 0;
-          todayCash += inv.paidAmount || 0;
-          todayProfit += inv.profit || 0;
+        allInvoices.push({ id: doc.id, ...doc.data() });
+      });
+
+      // नवीन बिल नेहमी सर्वात वर
+      allInvoices.sort((a, b) => (b.created_at || 0) - (a.created_at || 0));
+
+      const historyBody = document.getElementById('repInvoicesBody');
+      if (historyBody) historyBody.innerHTML = "";
+
+      if (allInvoices.length === 0 && historyBody) {
+        historyBody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:10px;">अद्याप कोणतीही विक्री झालेली नाही.</td></tr>`;
+      }
+
+      allInvoices.forEach(inv => {
+        const invDate = inv.date || "";
+        const invMonth = inv.month || invDate.slice(0, 7);
+
+        if (invDate === todayStr) {
+          todaySale += Number(inv.grandTotal) || 0;
+          todayCash += Number(inv.paidAmount) || 0;
+          todayProfit += Number(inv.profit) || 0;
         }
-        if (inv.month === monthStr) {
-          monthSale += inv.grandTotal || 0;
-          monthCost += inv.buyCost || 0;
-          monthProfit += inv.profit || 0;
+
+        if (invMonth === monthStr) {
+          monthSale += Number(inv.grandTotal) || 0;
+          monthCost += Number(inv.buyCost) || 0;
+          monthProfit += Number(inv.profit) || 0;
+        }
+
+        if (historyBody) {
+          historyBody.innerHTML += `
+            <tr style="border-bottom: 1px solid #eee;">
+              <td style="padding: 8px;"><strong>${inv.invoiceNo}</strong></td>
+              <td style="padding: 8px;">${inv.date}</td>
+              <td style="padding: 8px;">${inv.customer ? inv.customer.name : '-'}</td>
+              <td style="padding: 8px;">₹${(inv.grandTotal || 0).toFixed(2)}</td>
+              <td style="padding: 8px; color:green; font-weight:bold;">+₹${(inv.profit || 0).toFixed(2)}</td>
+            </tr>
+          `;
         }
       });
 
@@ -962,7 +992,7 @@
           <tr style="border-bottom: 1px solid #eee;">
             <td style="padding: 8px;"><strong>${c.name}</strong></td>
             <td style="padding: 8px;">${c.village || '-'} (${c.phone || '-'})</td>
-            <td style="padding: 8px; color:red; font-weight:bold;">₹ ${c.balance.toFixed(2)}</td>
+            <td style="padding: 8px; color:red; font-weight:bold;">₹ ${Number(c.balance || 0).toFixed(2)}</td>
           </tr>
         `;
       });
