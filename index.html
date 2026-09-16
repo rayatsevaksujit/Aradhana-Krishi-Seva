@@ -7,9 +7,12 @@
   <title>आराधना कृषी सेवा केंद्र</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600;700&family=Rozha+One&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- HTML to Image / JPEG Generator Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
   <style>
     :root {
@@ -129,17 +132,29 @@
     }
     .modal-content { background: white; border-radius: 6px; padding: 12px; width: 100%; max-width: 380px; }
 
-    #printSection { display: none; }
+    /* Printable Bill & JPEG Bill Template */
+    #printSection {
+      display: none;
+      background: #ffffff;
+      width: 320px;
+      margin: auto;
+      padding: 12px;
+      font-size: 11px;
+      color: #000;
+      line-height: 1.3;
+      border: 1px solid #ddd;
+    }
+    .mini-table { width: 100%; border-collapse: collapse; margin-top: 5px; }
+    .mini-table th, .mini-table td { border-bottom: 1px dashed #555; padding: 4px 2px; font-size: 10px; }
+    .mini-sign { display: flex; justify-content: space-between; margin-top: 25px; text-align: center; font-size: 10px; }
+
     @media print {
       body * { visibility: hidden; }
       #printSection, #printSection * { visibility: visible; }
       #printSection {
-        display: block; position: absolute; left: 0; top: 0; width: 300px;
-        margin: auto; padding: 8px; font-size: 11px; color: #000; line-height: 1.2;
+        display: block !important;
+        position: absolute; left: 0; top: 0; width: 300px; border: none;
       }
-      .mini-table { width: 100%; border-collapse: collapse; margin-top: 4px; }
-      .mini-table th, .mini-table td { border-bottom: 1px dashed #555; padding: 3px 2px; font-size: 10px; }
-      .mini-sign { display: flex; justify-content: space-between; margin-top: 25px; text-align: center; font-size: 10px; }
     }
   </style>
 </head>
@@ -169,7 +184,7 @@
     </div>
   </div>
 
-  <!-- Tabs Bar -->
+  <!-- Navigation Tabs -->
   <div class="nav-tabs">
     <button class="tab-btn active" onclick="switchTab('billingTab')"><i class="fa-solid fa-receipt"></i> बिलिंग</button>
     <button class="tab-btn" onclick="switchTab('stockTab')"><i class="fa-solid fa-boxes-stacked"></i> स्टॉक</button>
@@ -261,11 +276,16 @@
           </div>
         </div>
 
-        <button class="btn btn-primary" style="margin-top: 6px;" onclick="saveAndProcessInvoice(false)">
+        <button class="btn btn-primary" style="margin-top: 6px;" onclick="saveAndProcessInvoice('PRINT')">
           <i class="fa-solid fa-print"></i> बिल सेव्ह व प्रिंट करा
         </button>
-        <button class="btn btn-whatsapp" onclick="saveAndProcessInvoice(true)">
-          <i class="fa-brands fa-whatsapp"></i> बिल सेव्ह व WhatsApp पावती
+
+        <button class="btn" style="background:#0288d1; color:white; margin-top: 6px;" onclick="saveAndProcessInvoice('IMAGE')">
+          <i class="fa-solid fa-image"></i> बिल सेव्ह व फोटो डाऊनलोड करा (JPEG/JPG)
+        </button>
+
+        <button class="btn btn-whatsapp" onclick="saveAndProcessInvoice('WHATSAPP')">
+          <i class="fa-brands fa-whatsapp"></i> बिल सेव्ह करा व WhatsApp वर पाठवा (कोणत्याही नंबरवर)
         </button>
       </div>
     </div>
@@ -372,10 +392,10 @@
 
       <div class="card">
         <div class="card-title">
-          <span><i class="fa-solid fa-clock-rotate-left"></i> बिलांचा इतिहास (Re-print & WhatsApp)</span>
+          <span><i class="fa-solid fa-clock-rotate-left"></i> बिलांचा इतिहास (Re-print, JPEG & WhatsApp)</span>
         </div>
         <div style="overflow-x: auto;">
-          <table style="width: 100%; border-collapse: collapse; min-width: 580px; font-size: 11px;">
+          <table style="width: 100%; border-collapse: collapse; min-width: 600px; font-size: 11px;">
             <thead>
               <tr style="background:#e8f5e9; text-align: left;">
                 <th style="padding: 5px;">बिल क्र.</th>
@@ -383,7 +403,7 @@
                 <th style="padding: 5px;">शेतकरी</th>
                 <th style="padding: 5px;">रक्कम</th>
                 <th style="padding: 5px;">नफा</th>
-                <th style="padding: 5px; text-align:center;">कृती (Action)</th>
+                <th style="padding: 5px; text-align:center;">कृती (Actions)</th>
               </tr>
             </thead>
             <tbody id="repInvoicesBody"></tbody>
@@ -433,32 +453,51 @@
     </div>
   </div>
 
-  <!-- Print Thermal View -->
+  <!-- Bill Container (Used for Direct Print AND JPEG Image Generation) -->
   <div id="printSection">
-    <div style="text-align: center; border-bottom: 1px dashed #000; padding-bottom: 4px;">
-      <h3 id="pStoreName" style="font-size: 14px; font-family: 'Rozha One', serif;">आराधना कृषी सेवा केंद्र</h3>
-      <p id="pStoreAddress">पत्ता</p>
-      <p>मोबा.: <span id="pStorePhone"></span></p>
+    <div style="text-align: center; border-bottom: 2px dashed #000; padding-bottom: 6px;">
+      <h3 id="pStoreName" style="font-size: 16px; font-family: 'Rozha One', serif; color:#1b5e20;">आराधना कृषी सेवा केंद्र</h3>
+      <p id="pStoreAddress" style="font-weight: 500;">पत्ता</p>
+      <p>मोबाईल: <span id="pStorePhone"></span></p>
       <p id="pGstHolder" style="display:none;">GSTIN: <span id="pStoreGst"></span></p>
-      <p style="font-weight: bold; margin-top: 2px;" id="pBillHeading">पावती</p>
+      <div style="margin-top: 4px; padding: 2px 8px; display:inline-block; border: 1px solid #333; border-radius: 4px; font-weight: bold;" id="pBillHeading">कॅश मेमो / पावती</div>
     </div>
-    <div style="margin: 4px 0; font-size: 10px; display: flex; justify-content: space-between;">
-      <div><p><strong>ग्राहक:</strong> <span id="pCustName"></span></p><p><strong>गाव:</strong> <span id="pCustDetails"></span></p></div>
-      <div style="text-align: right;"><p><strong>बिल:</strong> <span id="pInvoiceNo"></span></p><p><strong>दि.:</strong> <span id="pDate"></span></p></div>
+    
+    <div style="margin: 6px 0; font-size: 10.5px; display: flex; justify-content: space-between; border-bottom: 1px solid #ddd; padding-bottom: 4px;">
+      <div>
+        <p><strong>ग्राहक:</strong> <span id="pCustName"></span></p>
+        <p><strong>गाव/फोन:</strong> <span id="pCustDetails"></span></p>
+      </div>
+      <div style="text-align: right;">
+        <p><strong>बिल क्र.:</strong> <span id="pInvoiceNo"></span></p>
+        <p><strong>तारीख:</strong> <span id="pDate"></span></p>
+      </div>
     </div>
+
     <table class="mini-table">
       <thead>
-        <tr><th style="text-align: left;">तपशील</th><th>बॅच</th><th>दर</th><th>नग</th><th style="text-align: right;">रक्कम</th></tr>
+        <tr style="background:#eee;">
+          <th style="text-align: left; padding: 4px 2px;">तपशील</th>
+          <th>बॅच</th>
+          <th>दर</th>
+          <th>नग</th>
+          <th style="text-align: right; padding: 4px 2px;">रक्कम</th>
+        </tr>
       </thead>
       <tbody id="pItemsBody"></tbody>
     </table>
-    <div style="margin-top: 6px; text-align: right; font-size: 10px;">
+
+    <div style="margin-top: 8px; text-align: right; font-size: 11px;">
       <p id="pTaxableRow" style="display:none;">करपात्र: <span id="pTaxable"></span> | GST: <span id="pTax"></span></p>
-      <h4 style="font-size: 12px; margin-top: 2px;">एकूण रक्कम: <span id="pGrandTotal"></span></h4>
-      <p>पेमेंट: <span id="pPayment"></span> | बाकी: <span id="pBalance"></span></p>
+      <h4 style="font-size: 13px; margin-top: 3px; color:#1b5e20;">एकूण रक्कम: <span id="pGrandTotal"></span></h4>
+      <p>पेमेंट: <span id="pPayment"></span> | बाकी: <span id="pBalance" style="color:red; font-weight:bold;"></span></p>
     </div>
-    <div class="mini-sign"><div>ग्राहकाची सही</div><div>अधिकृत स्वाक्षरी</div></div>
-    <p style="text-align: center; margin-top: 10px; font-size: 8px;">।। पुन्हा भेट द्या ।।</p>
+
+    <div class="mini-sign">
+      <div>ग्राहकाची स्वाक्षरी</div>
+      <div>अधिकृत सही व शिक्का</div>
+    </div>
+    <p style="text-align: center; margin-top: 12px; font-size: 9px; color:#555;">।। खते व औषधे खरेदीसाठी धन्यवाद, पुन्हा भेट द्या ।।</p>
   </div>
 
   <!-- Firebase SDK -->
@@ -496,7 +535,7 @@
       appPin: "1234"
     };
 
-    // Auto Lock & Auth
+    // Auto-Lock & Auth
     function resetAutoLockTimer() {
       if (autoLockTimer) clearTimeout(autoLockTimer);
       if (sessionStorage.getItem("appUnlocked") === "true") {
@@ -602,7 +641,7 @@
       closeSettingsModal();
     }
 
-    // Stock Management
+    // Stock
     document.getElementById('stockForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const product = {
@@ -651,7 +690,7 @@
       if(confirm("औषध हटवायचे आहे का?")) await db.collection("products").doc(id).delete();
     }
 
-    // Next Invoice Number Generator
+    // Auto Invoice No
     async function updateNextInvoiceNo() {
       const snap = await db.collection("invoices").orderBy("created_at", "desc").limit(1).get();
       if (!snap.empty) {
@@ -773,7 +812,101 @@
       renderCart();
     }
 
-    async function saveAndProcessInvoice(isWhatsApp) {
+    // Populate Print/Image Template
+    function fillBillTemplate(inv) {
+      document.getElementById('pStoreName').innerText = shopInfo.name;
+      document.getElementById('pStoreAddress').innerText = shopInfo.address;
+      document.getElementById('pStorePhone').innerText = shopInfo.phone;
+      
+      if (inv.isGst && shopInfo.gstin) {
+        document.getElementById('pGstHolder').style.display = 'block';
+        document.getElementById('pStoreGst').innerText = shopInfo.gstin;
+        document.getElementById('pBillHeading').innerText = "टॅक्स इनव्हॉइस (TAX INVOICE)";
+      } else {
+        document.getElementById('pGstHolder').style.display = 'none';
+        document.getElementById('pBillHeading').innerText = "पावती (कॅश मेमो)";
+      }
+
+      document.getElementById('pCustName').innerText = inv.customer.name;
+      document.getElementById('pCustDetails').innerText = (inv.customer.village || '-') + (inv.customer.phone ? ' | ' + inv.customer.phone : '');
+      document.getElementById('pInvoiceNo').innerText = inv.invoiceNo;
+      document.getElementById('pDate').innerText = inv.date;
+
+      const pBody = document.getElementById('pItemsBody');
+      pBody.innerHTML = "";
+      inv.items.forEach(i => {
+        pBody.innerHTML += `
+          <tr>
+            <td style="padding: 4px 2px;">${i.name}</td>
+            <td style="text-align: center;">${i.batch}</td>
+            <td style="text-align: center;">₹${i.rate}</td>
+            <td style="text-align: center;">${i.qty}</td>
+            <td style="text-align: right; padding: 4px 2px;">₹${i.total.toFixed(2)}</td>
+          </tr>
+        `;
+      });
+
+      document.getElementById('pGrandTotal').innerText = `₹ ${inv.grandTotal.toFixed(2)}`;
+      document.getElementById('pPayment').innerText = inv.paymentMode;
+      document.getElementById('pBalance').innerText = `₹ ${inv.balanceAmount.toFixed(2)}`;
+    }
+
+    // Download Bill as JPEG / Image
+    function downloadInvoiceAsJpeg(inv) {
+      fillBillTemplate(inv);
+      const printSec = document.getElementById('printSection');
+      printSec.style.display = 'block'; // तात्पुरते दृश्यमान करा
+
+      setTimeout(() => {
+        html2canvas(printSec, {
+          scale: 2, // हाय रिझोल्युशन (HD Quality)
+          backgroundColor: "#ffffff"
+        }).then(canvas => {
+          printSec.style.display = 'none'; // पुन्हा लपवा
+          const imgData = canvas.toDataURL("image/jpeg", 0.95);
+          
+          const dlLink = document.createElement('a');
+          dlLink.download = `${inv.invoiceNo}_${inv.customer.name || 'Bill'}.jpg`;
+          dlLink.href = imgData;
+          document.body.appendChild(dlLink);
+          dlLink.click();
+          document.body.removeChild(dlLink);
+          alert("बिलाचा फोटो (JPEG) डाऊनलोड झाला आहे! तुम्ही तो WhatsApp वरून पाठवू शकता.");
+        }).catch(err => {
+          printSec.style.display = 'none';
+          alert("फोटो तयार करताना अडचण आली: " + err.message);
+        });
+      }, 200);
+    }
+
+    // Open WhatsApp Search / Any Contact
+    function shareBillOnWhatsApp(inv) {
+      let itemsText = "";
+      inv.items.forEach((i, idx) => {
+        itemsText += `${idx+1}. ${i.name} (${i.batch}) - ${i.qty} नग = ₹${i.total.toFixed(2)}\n`;
+      });
+      const msg = `*🌾 ${shopInfo.name} 🌾*\nपत्ता: ${shopInfo.address}\nमोबा.: ${shopInfo.phone}\n-----------------------------\n*बिल क्र.:* ${inv.invoiceNo}\n*तारीख:* ${inv.date}\n*ग्राहक:* ${inv.customer.name} (${inv.customer.village || '-'})\n-----------------------------\n${itemsText}-----------------------------\n*एकूण बिल:* ₹${inv.grandTotal.toFixed(2)}\n*जमा रक्कम:* ₹${inv.paidAmount.toFixed(2)}\n*शिल्लक बाकी:* ₹${inv.balanceAmount.toFixed(2)}\n-----------------------------\n।। धन्यवाद, पुन्हा भेट द्या ।।`;
+
+      // थेट नंबरवर न अडकता WhatsApp वर मेसेज तयार ठेवणे (Search Any Contact / Group)
+      const encodedMsg = encodeURIComponent(msg);
+      
+      // जर फोन नंबर टाकला असेल, तर वापरकर्त्याला निवडू द्या किंवा थेट ओपन करू द्या:
+      if (inv.customer && inv.customer.phone && inv.customer.phone.length >= 10) {
+        const cleanPhone = inv.customer.phone.length === 10 ? "91" + inv.customer.phone : inv.customer.phone;
+        // दोन्ही पर्याय: थेट त्या नंबरवर किंवा इतरांना शोधून पाठवण्यासाठी
+        const choice = confirm(`ग्राहकाचा नंबर (${inv.customer.phone}) आढळला आहे.\n\nत्यांच्या थेट नंबरवर पाठवायचे की WhatsApp मध्ये शोधून (Search) पाठवायचे?\n[OK = थेट नंबरवर | Cancel = शोधून कोणालाही]`);
+        if (choice) {
+          window.open(`https://api.whatsapp.com/send?phone=${cleanPhone}&text=${encodedMsg}`, '_blank');
+          return;
+        }
+      }
+      
+      // WhatsApp ओपन होईल व तुम्ही कोणालाही शोधून (Search करून) पाठवू शकाल
+      window.open(`https://api.whatsapp.com/send?text=${encodedMsg}`, '_blank');
+    }
+
+    // Save & Process Invoice
+    async function saveAndProcessInvoice(actionType) {
       const custName = document.getElementById('custName').value.trim();
       const custPhone = document.getElementById('custPhone').value.trim();
       const custVillage = document.getElementById('custVillage').value.trim();
@@ -784,7 +917,6 @@
 
       if (!custName) { alert("कृपया शेतकऱ्याचे नाव टाका!"); return; }
       if (cartItems.length === 0) { alert("बिलामध्ये किमान १ औषध जोडा!"); return; }
-      if (isWhatsApp && !custPhone) { alert("WhatsApp पावतीसाठी फोन नंबर टाका!"); return; }
 
       const grandTotal = cartItems.reduce((acc, curr) => acc + curr.total, 0);
       const totalProfit = cartItems.reduce((acc, curr) => acc + curr.profit, 0);
@@ -826,10 +958,14 @@
           });
         }
 
-        if (isWhatsApp) {
-          sendWhatsAppReceipt(invObject);
+        // Action routing
+        if (actionType === 'WHATSAPP') {
+          shareBillOnWhatsApp(invObject);
+        } else if (actionType === 'IMAGE') {
+          downloadInvoiceAsJpeg(invObject);
         } else {
-          printInvoiceDirect(invObject);
+          fillBillTemplate(invObject);
+          window.print();
         }
 
         cartItems = [];
@@ -838,53 +974,11 @@
         document.getElementById('custPhone').value = "";
         document.getElementById('custVillage').value = "";
         updateNextInvoiceNo();
-        alert("बिल सेव्ह झाले!");
+        alert("बिल यशस्वीरीत्या सेव्ह झाले!");
       } catch (err) { alert("त्रुटी: " + err.message); }
     }
 
-    // Direct WhatsApp and Print Functions
-    function sendWhatsAppReceipt(inv) {
-      let itemsText = "";
-      inv.items.forEach((i, idx) => {
-        itemsText += `${idx+1}. ${i.name} (${i.batch}) - ${i.qty} नग = ₹${i.total.toFixed(2)}\n`;
-      });
-      const msg = `*🌾 ${shopInfo.name} 🌾*\nपत्ता: ${shopInfo.address}\nमोबा.: ${shopInfo.phone}\n-----------------------------\n*बिल क्र.:* ${inv.invoiceNo}\n*तारीख:* ${inv.date}\n*ग्राहक:* ${inv.customer.name} (${inv.customer.village || '-'})\n-----------------------------\n${itemsText}-----------------------------\n*एकूण बिल:* ₹${inv.grandTotal.toFixed(2)}\n*जमा रक्कम:* ₹${inv.paidAmount.toFixed(2)}\n*शिल्लक बाकी:* ₹${inv.balanceAmount.toFixed(2)}\n-----------------------------\n।। धन्यवाद, पुन्हा भेट द्या ।।`;
-      const cleanPhone = inv.customer.phone.length === 10 ? "91" + inv.customer.phone : inv.customer.phone;
-      window.open(`https://api.whatsapp.com/send?phone=${cleanPhone}&text=${encodeURIComponent(msg)}`, '_blank');
-    }
-
-    function printInvoiceDirect(inv) {
-      document.getElementById('pStoreName').innerText = shopInfo.name;
-      document.getElementById('pStoreAddress').innerText = shopInfo.address;
-      document.getElementById('pStorePhone').innerText = shopInfo.phone;
-      
-      if (inv.isGst && shopInfo.gstin) {
-        document.getElementById('pGstHolder').style.display = 'block';
-        document.getElementById('pStoreGst').innerText = shopInfo.gstin;
-        document.getElementById('pBillHeading').innerText = "टॅक्स इनव्हॉइस (TAX INVOICE)";
-      } else {
-        document.getElementById('pGstHolder').style.display = 'none';
-        document.getElementById('pBillHeading').innerText = "पावती (कॅश मेमो)";
-      }
-
-      document.getElementById('pCustName').innerText = inv.customer.name;
-      document.getElementById('pCustDetails').innerText = inv.customer.village || '-';
-      document.getElementById('pInvoiceNo').innerText = inv.invoiceNo;
-      document.getElementById('pDate').innerText = inv.date;
-
-      const pBody = document.getElementById('pItemsBody');
-      pBody.innerHTML = "";
-      inv.items.forEach(i => {
-        pBody.innerHTML += `<tr><td>${i.name}</td><td>${i.batch}</td><td>₹${i.rate}</td><td>${i.qty}</td><td style="text-align: right;">₹${i.total.toFixed(2)}</td></tr>`;
-      });
-
-      document.getElementById('pGrandTotal').innerText = `₹ ${inv.grandTotal.toFixed(2)}`;
-      document.getElementById('pPayment').innerText = inv.paymentMode;
-      document.getElementById('pBalance').innerText = `₹ ${inv.balanceAmount.toFixed(2)}`;
-      window.print();
-    }
-
-    // Reports and Date Filters
+    // Reports Tab & Invoices History
     function initReportsTab() {
       const today = new Date().toISOString().split('T')[0];
       if (!document.getElementById('filterFromDate').value) {
@@ -938,8 +1032,8 @@
             <td style="padding: 5px; color:green; font-weight:bold;">+₹${(inv.profit || 0).toFixed(2)}</td>
             <td style="padding: 5px; text-align:center; white-space:nowrap;">
               <button class="btn-action" style="background:var(--primary);" onclick="reprintInvoice('${inv.id}')" title="प्रिंट"><i class="fa-solid fa-print"></i></button>
-              <button class="btn-action" style="background:var(--whatsapp);" onclick="reshareWhatsApp('${inv.id}')" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></button>
-              <button class="btn-action" style="background:var(--info);" onclick="openEditModal('${inv.id}')" title="दुरुस्ती"><i class="fa-solid fa-pen"></i></button>
+              <button class="btn-action" style="background:#0288d1;" onclick="saveOldInvoiceAsJpeg('${inv.id}')" title="फोटो डाऊनलोड"><i class="fa-solid fa-image"></i></button>
+              <button class="btn-action" style="background:var(--whatsapp);" onclick="reshareWhatsApp('${inv.id}')" title="WhatsApp शेअर"><i class="fa-brands fa-whatsapp"></i></button>
               <button class="btn-action" style="background:var(--danger);" onclick="deleteInvoice('${inv.id}')" title="हटवा"><i class="fa-solid fa-trash"></i></button>
             </td>
           </tr>
@@ -954,22 +1048,20 @@
 
     function reprintInvoice(invId) {
       const inv = allInvoicesCache.find(i => i.id === invId);
-      if (inv) printInvoiceDirect(inv);
+      if (inv) {
+        fillBillTemplate(inv);
+        window.print();
+      }
+    }
+
+    function saveOldInvoiceAsJpeg(invId) {
+      const inv = allInvoicesCache.find(i => i.id === invId);
+      if (inv) downloadInvoiceAsJpeg(inv);
     }
 
     function reshareWhatsApp(invId) {
       const inv = allInvoicesCache.find(i => i.id === invId);
-      if (inv) {
-        if (!inv.customer || !inv.customer.phone) {
-          const ph = prompt("WhatsApp नंबर टाका (१० अंकी):");
-          if (ph) {
-            inv.customer.phone = ph;
-            sendWhatsAppReceipt(inv);
-          }
-        } else {
-          sendWhatsAppReceipt(inv);
-        }
-      }
+      if (inv) shareBillOnWhatsApp(inv);
     }
 
     async function deleteInvoice(invId) {
@@ -991,40 +1083,6 @@
           loadInvoicesData();
         } catch (err) { alert("त्रुटी: " + err.message); }
       }
-    }
-
-    function openEditModal(invId) {
-      const inv = allInvoicesCache.find(i => i.id === invId);
-      if (!inv) return;
-      document.getElementById('editInvId').value = invId;
-      document.getElementById('editCustName').value = inv.customer ? inv.customer.name : '';
-      document.getElementById('editCustPhone').value = inv.customer ? inv.customer.phone : '';
-      document.getElementById('editCustVillage').value = inv.customer ? inv.customer.village : '';
-      document.getElementById('editPaidAmount').value = inv.paidAmount || 0;
-      document.getElementById('editInvoiceModal').style.display = 'flex';
-    }
-    function closeEditModal() { document.getElementById('editInvoiceModal').style.display = 'none'; }
-
-    async function saveEditedInvoice() {
-      const invId = document.getElementById('editInvId').value;
-      const inv = allInvoicesCache.find(i => i.id === invId);
-      if (!inv) return;
-      const newName = document.getElementById('editCustName').value.trim();
-      const newPhone = document.getElementById('editCustPhone').value.trim();
-      const newVillage = document.getElementById('editCustVillage').value.trim();
-      const newPaid = Number(document.getElementById('editPaidAmount').value) || 0;
-      const newBalance = (inv.grandTotal || 0) - newPaid;
-
-      try {
-        await db.collection("invoices").doc(invId).update({
-          customer: { name: newName, phone: newPhone, village: newVillage },
-          paidAmount: newPaid,
-          balanceAmount: newBalance
-        });
-        alert("माहिती बदलली!");
-        closeEditModal();
-        loadInvoicesData();
-      } catch (err) { alert("त्रुटी: " + err.message); }
     }
 
     // CSV Backup
@@ -1057,7 +1115,7 @@
       } catch (err) { alert("बॅकअप त्रुटी: " + err.message); }
     }
 
-    // Customer Khata
+    // Khata
     db.collection("customers").onSnapshot(snapshot => {
       const khataBody = document.getElementById('khataTableBody');
       khataBody.innerHTML = "";
