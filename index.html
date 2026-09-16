@@ -2,7 +2,7 @@
 <html lang="mr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <title>आराधना कृषी सेवा केंद्र</title>
   
@@ -17,289 +17,164 @@
       --primary-dark: #0d3b13;
       --accent: #e65100;
       --whatsapp: #25d366;
-      --bg: #f5f7fa;
+      --bg: #f4f6f8;
       --surface: #ffffff;
       --text: #263238;
-      --border: #d0d7de;
+      --border: #cfd8dc;
       --danger: #d32f2f;
       --info: #0288d1;
     }
 
     * { box-sizing: border-box; font-family: 'Mukta', Arial, sans-serif; margin: 0; padding: 0; }
-    body { background-color: var(--bg); color: var(--text); padding-bottom: 85px; }
+    body { background-color: var(--bg); color: var(--text); padding-bottom: 70px; font-size: 13px; }
 
-    /* Security Lock Screen */
+    /* Lock Screen */
     #lockScreen {
-      position: fixed;
-      top: 0; left: 0; width: 100vw; height: 100vh;
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
       background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      z-index: 9999;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      padding: 20px;
+      z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      color: white; padding: 15px;
     }
     .lock-box {
-      background: white;
-      color: var(--text);
-      border-radius: 12px;
-      padding: 24px;
-      width: 100%;
-      max-width: 320px;
-      text-align: center;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+      background: white; color: var(--text); border-radius: 10px; padding: 20px;
+      width: 100%; max-width: 300px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.25);
     }
     .pin-input {
-      letter-spacing: 14px;
-      font-size: 24px;
-      text-align: center;
-      font-weight: bold;
-      width: 100%;
-      padding: 10px;
-      margin: 15px 0;
-      border: 2px solid var(--primary);
-      border-radius: 8px;
+      letter-spacing: 12px; font-size: 20px; text-align: center; font-weight: bold;
+      width: 100%; padding: 8px; margin: 12px 0; border: 2px solid var(--primary); border-radius: 6px;
     }
 
-    /* Header Bar */
+    /* App Bar */
     .app-bar {
       background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      color: white;
-      padding: 12px 14px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+      color: white; padding: 8px 12px; position: sticky; top: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.15);
     }
-    .app-bar h1 { font-family: 'Rozha One', serif; font-size: 19px; font-weight: normal; }
-    .app-bar p { font-size: 12px; opacity: 0.9; }
+    .app-bar h1 { font-family: 'Rozha One', serif; font-size: 16px; font-weight: normal; }
+    .app-bar p { font-size: 11px; opacity: 0.9; }
     .btn-edit-shop {
-      background: #ffffff;
-      color: var(--primary);
-      border: none;
-      padding: 6px 10px;
-      font-size: 12px;
-      font-weight: 700;
-      border-radius: 6px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 5px;
+      background: #ffffff; color: var(--primary); border: none; padding: 4px 8px;
+      font-size: 11px; font-weight: 700; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 4px;
     }
 
+    /* Tabs */
     .nav-tabs {
-      display: flex;
-      background: var(--surface);
-      border-bottom: 2px solid var(--border);
-      position: sticky;
-      top: 55px;
-      z-index: 99;
-      overflow-x: auto;
+      display: flex; background: var(--surface); border-bottom: 2px solid var(--border);
+      position: sticky; top: 46px; z-index: 99; overflow-x: auto;
     }
     .tab-btn {
-      flex: 1;
-      min-width: 80px;
-      padding: 9px 3px;
-      border: none;
-      background: none;
-      font-size: 13px;
-      font-weight: 600;
-      color: #546e7a;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 3px;
+      flex: 1; min-width: 70px; padding: 6px 2px; border: none; background: none;
+      font-size: 12px; font-weight: 600; color: #546e7a; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 2px;
     }
-    .tab-btn.active {
-      color: var(--primary);
-      border-bottom: 3px solid var(--primary);
-      background: #e8f5e9;
-    }
+    .tab-btn.active { color: var(--primary); border-bottom: 3px solid var(--primary); background: #e8f5e9; }
 
-    .container { max-width: 800px; margin: 10px auto; padding: 0 10px; }
+    .container { max-width: 750px; margin: 6px auto; padding: 0 6px; }
     .tab-content { display: none; }
     .tab-content.active { display: block; }
 
+    /* Cards */
     .card {
-      background: var(--surface);
-      border-radius: 8px;
-      padding: 14px;
-      margin-bottom: 12px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-      border: 1px solid var(--border);
+      background: var(--surface); border-radius: 6px; padding: 10px; margin-bottom: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid var(--border);
     }
     .card-title {
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--primary);
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px dashed var(--border);
-      padding-bottom: 6px;
+      font-size: 13px; font-weight: 700; color: var(--primary); margin-bottom: 8px;
+      display: flex; align-items: center; justify-content: space-between; border-bottom: 1px dashed var(--border); padding-bottom: 4px;
     }
 
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+    .grid-4 { display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr; gap: 6px; }
     @media(max-width: 600px) {
-      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .grid-3 { grid-template-columns: 1fr 1fr; }
+      .grid-4 { grid-template-columns: 1fr 1fr; }
     }
 
-    .form-group { margin-bottom: 8px; }
-    label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 3px; color: #455a64; }
+    .form-group { margin-bottom: 6px; }
+    label { display: block; font-size: 11px; font-weight: 600; margin-bottom: 2px; color: #455a64; }
     input, select {
-      width: 100%;
-      padding: 9px;
-      border: 1.5px solid var(--border);
-      border-radius: 6px;
-      font-size: 14px;
-      outline: none;
-      background: #fff;
+      width: 100%; padding: 6px 8px; border: 1.2px solid var(--border);
+      border-radius: 4px; font-size: 13px; outline: none; background: #fff;
     }
     input:focus, select:focus { border-color: var(--primary); }
 
     .btn {
-      width: 100%;
-      padding: 11px;
-      border: none;
-      border-radius: 6px;
-      font-size: 14px;
-      font-weight: bold;
-      cursor: pointer;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 6px;
+      width: 100%; padding: 8px; border: none; border-radius: 4px;
+      font-size: 13px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 5px;
     }
     .btn-primary { background: var(--primary); color: white; }
     .btn-accent { background: var(--accent); color: white; }
-    .btn-whatsapp { background: var(--whatsapp); color: white; margin-top: 8px; }
-    .btn-danger { background: var(--danger); color: white; padding: 4px 7px; font-size: 11px; border-radius: 4px; border: none; cursor: pointer; }
-    .btn-info { background: var(--info); color: white; padding: 4px 7px; font-size: 11px; border-radius: 4px; border: none; cursor: pointer; }
+    .btn-whatsapp { background: var(--whatsapp); color: white; margin-top: 6px; }
+    .btn-action { padding: 4px 6px; font-size: 11px; border-radius: 4px; border: none; cursor: pointer; color: white; margin: 1px; }
 
     .bill-item-card {
-      background: #fafafa;
-      border-left: 3px solid var(--primary);
-      padding: 8px 10px;
-      margin-bottom: 6px;
-      border-radius: 4px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 13px;
+      background: #fafafa; border-left: 3px solid var(--primary); padding: 6px 8px;
+      margin-bottom: 4px; border-radius: 3px; display: flex; justify-content: space-between; align-items: center; font-size: 12px;
     }
 
     .summary-box {
-      background: #f1f8e9;
-      border: 1px solid #c8e6c9;
-      border-radius: 6px;
-      padding: 10px 12px;
-      margin-top: 10px;
+      background: #f1f8e9; border: 1px solid #c8e6c9; border-radius: 4px;
+      padding: 6px 10px; margin-top: 6px;
     }
-    .summary-row { display: flex; justify-content: space-between; margin-bottom: 3px; font-size: 13px; }
-    .summary-row.total { font-size: 16px; font-weight: bold; color: var(--primary); border-top: 1px dashed #81c784; padding-top: 5px; margin-top: 4px; }
+    .summary-row { display: flex; justify-content: space-between; margin-bottom: 2px; font-size: 12px; }
+    .summary-row.total { font-size: 14px; font-weight: bold; color: var(--primary); border-top: 1px dashed #81c784; padding-top: 3px; margin-top: 3px; }
 
-    .stat-card { background: #e8f5e9; border: 1px solid #c8e6c9; border-radius: 6px; padding: 10px; text-align: center; }
-    .stat-title { font-size: 12px; color: #555; }
-    .stat-value { font-size: 17px; font-weight: bold; color: var(--primary); margin-top: 2px; }
+    .stat-card { background: #e8f5e9; border: 1px solid #c8e6c9; border-radius: 4px; padding: 6px; text-align: center; }
+    .stat-title { font-size: 11px; color: #555; }
+    .stat-value { font-size: 14px; font-weight: bold; color: var(--primary); margin-top: 2px; }
 
     .modal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5);
-      z-index: 1000;
-      align-items: center;
-      justify-content: center;
-      padding: 15px;
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; padding: 10px;
     }
-    .modal-content {
-      background: white;
-      border-radius: 8px;
-      padding: 16px;
-      width: 100%;
-      max-width: 420px;
-    }
+    .modal-content { background: white; border-radius: 6px; padding: 12px; width: 100%; max-width: 380px; }
 
     #printSection { display: none; }
     @media print {
       body * { visibility: hidden; }
       #printSection, #printSection * { visibility: visible; }
       #printSection {
-        display: block;
-        position: absolute;
-        left: 0; top: 0;
-        width: 300px;
-        margin: auto;
-        padding: 8px;
-        font-size: 11px;
-        color: #000;
-        line-height: 1.3;
+        display: block; position: absolute; left: 0; top: 0; width: 300px;
+        margin: auto; padding: 8px; font-size: 11px; color: #000; line-height: 1.2;
       }
-      .mini-table { width: 100%; border-collapse: collapse; margin-top: 6px; }
-      .mini-table th, .mini-table td { border-bottom: 1px dashed #555; padding: 4px 2px; font-size: 10px; }
-      .mini-sign { display: flex; justify-content: space-between; margin-top: 30px; text-align: center; font-size: 10px; }
+      .mini-table { width: 100%; border-collapse: collapse; margin-top: 4px; }
+      .mini-table th, .mini-table td { border-bottom: 1px dashed #555; padding: 3px 2px; font-size: 10px; }
+      .mini-sign { display: flex; justify-content: space-between; margin-top: 25px; text-align: center; font-size: 10px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Lock Screen Component -->
+  <!-- Lock Screen -->
   <div id="lockScreen">
     <div class="lock-box">
-      <i class="fa-solid fa-lock" style="font-size: 32px; color: var(--primary);"></i>
-      <h3 style="margin-top: 8px; font-size: 18px;">सुरक्षित प्रवेश</h3>
-      <p style="font-size: 12px; color: #607d8b;">कृषी सेवा केंद्र ॲप उघडण्यासाठी ४-अंकी पिन टाका</p>
-      
+      <i class="fa-solid fa-lock" style="font-size: 28px; color: var(--primary);"></i>
+      <h3 style="margin-top: 6px; font-size: 16px;">सुरक्षित प्रवेश</h3>
+      <p style="font-size: 11px; color: #607d8b;">कृषी सेवा केंद्र ॲपसाठी पिन टाका</p>
       <input type="password" id="inputPin" class="pin-input" maxlength="4" placeholder="••••" inputmode="numeric">
-      
-      <button class="btn btn-primary" onclick="verifyPin()">
-        <i class="fa-solid fa-key"></i> अनलॉक करा
-      </button>
-      
-      <p style="margin-top: 14px; font-size: 12px; cursor: pointer; color: var(--accent);" onclick="resetPinPrompt()">
-        पिन विसरलात का? (Reset PIN)
-      </p>
+      <button class="btn btn-primary" onclick="verifyPin()"><i class="fa-solid fa-key"></i> अनलॉक करा</button>
+      <p style="margin-top: 10px; font-size: 11px; cursor: pointer; color: var(--accent);" onclick="resetPinPrompt()">पिन विसरलात? (Reset PIN)</p>
     </div>
   </div>
 
-  <!-- Header -->
+  <!-- App Header -->
   <div class="app-bar">
     <div>
       <h1 id="topShopName">🌾 आराधना कृषी सेवा केंद्र</h1>
       <p id="topShopPhone">मोबाईल: 98XXXXXXXX</p>
     </div>
-    <div style="display:flex; gap:6px;">
-      <button class="btn-edit-shop" onclick="openSettingsModal()">
-        <i class="fa-solid fa-gear"></i> सेटिंग्ज
-      </button>
-      <button class="btn-edit-shop" style="background:#ffebee; color:var(--danger);" onclick="lockApp()" title="ॲप लॉक करा">
-        <i class="fa-solid fa-lock"></i>
-      </button>
+    <div style="display:flex; gap:4px;">
+      <button class="btn-edit-shop" onclick="openSettingsModal()"><i class="fa-solid fa-gear"></i> सेटिंग्ज</button>
+      <button class="btn-edit-shop" style="background:#ffebee; color:var(--danger);" onclick="lockApp()" title="लॉक करा"><i class="fa-solid fa-lock"></i></button>
     </div>
   </div>
 
-  <!-- Tabs -->
+  <!-- Tabs Bar -->
   <div class="nav-tabs">
-    <button class="tab-btn active" onclick="switchTab('billingTab')">
-      <i class="fa-solid fa-receipt"></i> बिलिंग
-    </button>
-    <button class="tab-btn" onclick="switchTab('stockTab')">
-      <i class="fa-solid fa-boxes-stacked"></i> स्टॉक / खरेदी
-    </button>
-    <button class="tab-btn" onclick="switchTab('khataTab')">
-      <i class="fa-solid fa-book-open"></i> शेतकरी वही
-    </button>
-    <button class="tab-btn" onclick="switchTab('reportTab')">
-      <i class="fa-solid fa-chart-line"></i> नफा-तोटा
-    </button>
+    <button class="tab-btn active" onclick="switchTab('billingTab')"><i class="fa-solid fa-receipt"></i> बिलिंग</button>
+    <button class="tab-btn" onclick="switchTab('stockTab')"><i class="fa-solid fa-boxes-stacked"></i> स्टॉक</button>
+    <button class="tab-btn" onclick="switchTab('khataTab')"><i class="fa-solid fa-book-open"></i> शेतकरी वही</button>
+    <button class="tab-btn" onclick="switchTab('reportTab')"><i class="fa-solid fa-chart-line"></i> नफा-तोटा</button>
   </div>
 
   <div class="container">
@@ -308,73 +183,72 @@
     <div id="billingTab" class="tab-content active">
       <div class="card">
         <div class="card-title">
-          <span><i class="fa-solid fa-user"></i> १. शेतकरी माहिती</span>
-          <div style="font-size: 12px; font-weight: normal; display: flex; align-items: center; gap: 6px;">
-            <label style="margin:0; font-size:12px;">GST बिल:</label>
-            <select id="billGstToggle" style="width: auto; padding: 3px 6px; font-size: 12px;" onchange="renderCart()">
-              <option value="YES">होय (GST सह)</option>
-              <option value="NO" selected>नाही (साधे बिल)</option>
+          <span><i class="fa-solid fa-user"></i> १. शेतकरी व बिल क्र.</span>
+          <div style="display:flex; align-items:center; gap:4px;">
+            <label style="margin:0; font-size:11px;">GST:</label>
+            <select id="billGstToggle" style="width:auto; padding:2px 4px; font-size:11px;" onchange="renderCart()">
+              <option value="NO" selected>नाही</option>
+              <option value="YES">होय</option>
             </select>
           </div>
         </div>
-        <div class="grid-3">
+        <div class="grid-4">
           <div class="form-group">
-            <label>शेतकऱ्याचे नाव *</label>
-            <input type="text" id="custName" placeholder="उदा. अमोल कदम">
+            <label>बिल नंबर (Inv No) *</label>
+            <input type="text" id="billCustomNo" placeholder="INV-101">
           </div>
           <div class="form-group">
-            <label>WhatsApp / फोन नंबर</label>
+            <label>शेतकऱ्याचे नाव *</label>
+            <input type="text" id="custName" placeholder="नाव टाका">
+          </div>
+          <div class="form-group">
+            <label>WhatsApp / फोन</label>
             <input type="number" id="custPhone" placeholder="९८XXXXXXXX">
           </div>
           <div class="form-group">
             <label>गाव</label>
-            <input type="text" id="custVillage" placeholder="उदा. कवठेमहांकाळ">
+            <input type="text" id="custVillage" placeholder="गाव">
           </div>
         </div>
       </div>
 
       <div class="card">
-        <div class="card-title"><span><i class="fa-solid fa-magnifying-glass"></i> २. औषध शोधा व जोडा</span></div>
+        <div class="card-title"><span><i class="fa-solid fa-magnifying-glass"></i> २. औषध जोडा</span></div>
         <div class="grid-3">
-          <div class="form-group">
-            <label>औषधाचे नाव शोधा *</label>
-            <input type="text" id="billProductSearch" list="productDatalist" placeholder="उदा. Round, Coragen..." oninput="onProductSearchChange()" autocomplete="off">
+          <div class="form-group" style="grid-column: span 2;">
+            <label>औषध शोधा *</label>
+            <input type="text" id="billProductSearch" list="productDatalist" placeholder="नाव किंवा बॅच टाईप करा..." oninput="onProductSearchChange()" autocomplete="off">
             <datalist id="productDatalist"></datalist>
           </div>
           <div class="form-group">
             <label>दर (₹)</label>
             <input type="number" id="billItemRate" readonly>
           </div>
+        </div>
+        <div class="grid-2">
           <div class="form-group">
             <label>संख्या (Qty) *</label>
             <input type="number" id="billItemQty" min="1" value="1">
           </div>
+          <div class="form-group" style="display:flex; align-items:flex-end;">
+            <button class="btn btn-accent" onclick="addItemToBill()"><i class="fa-solid fa-plus"></i> ॲड करा</button>
+          </div>
         </div>
-        <p id="stockAlert" style="font-size: 12px; color: #546e7a; margin-bottom: 8px; font-weight: 500;"></p>
-        <button class="btn btn-accent" onclick="addItemToBill()"><i class="fa-solid fa-plus"></i> बिलामध्ये ॲड करा</button>
+        <p id="stockAlert" style="font-size: 11px; color: #546e7a; margin-bottom: 4px; font-weight: 500;"></p>
 
-        <div style="margin-top: 12px;" id="cartContainer">
-          <p style="text-align: center; color: #90a4ae; font-size: 13px;">अद्याप औषध जोडलेले नाही.</p>
+        <div id="cartContainer" style="margin-top: 4px;">
+          <p style="text-align: center; color: #90a4ae; font-size: 12px;">अद्याप औषध जोडलेले नाही.</p>
         </div>
 
         <div class="summary-box">
-          <div class="summary-row" id="taxableRow" style="display: none;">
-            <span>करपात्र मूल्य (Taxable):</span>
-            <span id="sumTaxable">₹ 0.00</span>
-          </div>
-          <div class="summary-row" id="gstRow" style="display: none;">
-            <span>GST (कर):</span>
-            <span id="sumTax">₹ 0.00</span>
-          </div>
-          <div class="summary-row total">
-            <span>एकूण बिल (Grand Total):</span>
-            <span id="sumGrandTotal">₹ 0.00</span>
-          </div>
+          <div class="summary-row" id="taxableRow" style="display: none;"><span>करपात्र (Taxable):</span><span id="sumTaxable">₹ 0.00</span></div>
+          <div class="summary-row" id="gstRow" style="display: none;"><span>GST:</span><span id="sumTax">₹ 0.00</span></div>
+          <div class="summary-row total"><span>एकूण बिल (Total):</span><span id="sumGrandTotal">₹ 0.00</span></div>
         </div>
 
-        <div class="grid-2" style="margin-top: 10px;">
+        <div class="grid-2" style="margin-top: 6px;">
           <div class="form-group">
-            <label>पेमेंट प्रकार *</label>
+            <label>पेमेंट प्रकार</label>
             <select id="billPaymentMode">
               <option value="CASH">रोख (Cash)</option>
               <option value="UPI">UPI (ऑनलाइन)</option>
@@ -387,12 +261,11 @@
           </div>
         </div>
 
-        <button class="btn btn-primary" style="margin-top: 10px;" onclick="saveAndProcessInvoice(false)">
+        <button class="btn btn-primary" style="margin-top: 6px;" onclick="saveAndProcessInvoice(false)">
           <i class="fa-solid fa-print"></i> बिल सेव्ह व प्रिंट करा
         </button>
-
         <button class="btn btn-whatsapp" onclick="saveAndProcessInvoice(true)">
-          <i class="fa-brands fa-whatsapp"></i> बिल सेव्ह करा व WhatsApp पावती पाठवा
+          <i class="fa-brands fa-whatsapp"></i> बिल सेव्ह व WhatsApp पावती
         </button>
       </div>
     </div>
@@ -400,74 +273,44 @@
     <!-- ==================== TAB 2: STOCK ==================== -->
     <div id="stockTab" class="tab-content">
       <div class="card">
-        <div class="card-title"><span><i class="fa-solid fa-circle-plus"></i> नवीन औषध नोंदणी</span></div>
+        <div class="card-title"><span><i class="fa-solid fa-circle-plus"></i> नवीन औषध नोंद</span></div>
         <form id="stockForm">
           <div class="grid-3">
-            <div class="form-group">
-              <label>औषधाचे नाव *</label>
-              <input type="text" id="prodName" required>
-            </div>
-            <div class="form-group">
-              <label>कंपनीचे नाव</label>
-              <input type="text" id="prodCompany">
-            </div>
-            <div class="form-group">
-              <label>पॅकिंग (माप)</label>
-              <input type="text" id="prodPacking" placeholder="उदा. 100ml / 500ml">
-            </div>
+            <div class="form-group"><label>औषधाचे नाव *</label><input type="text" id="prodName" required></div>
+            <div class="form-group"><label>कंपनी</label><input type="text" id="prodCompany"></div>
+            <div class="form-group"><label>पॅकिंग (माप)</label><input type="text" id="prodPacking" placeholder="100ml / 1L"></div>
           </div>
-
           <div class="grid-3">
+            <div class="form-group"><label>बॅच नंबर *</label><input type="text" id="prodBatch" required></div>
+            <div class="form-group"><label>एक्स्पायरी *</label><input type="month" id="prodExpiry" required></div>
             <div class="form-group">
-              <label>बॅच नंबर *</label>
-              <input type="text" id="prodBatch" required>
-            </div>
-            <div class="form-group">
-              <label>एक्स्पायरी महिना *</label>
-              <input type="month" id="prodExpiry" required>
-            </div>
-            <div class="form-group">
-              <label>GST दर (%) *</label>
+              <label>GST दर (%)</label>
               <select id="prodGst">
-                <option value="5">5%</option>
-                <option value="12">12%</option>
-                <option value="18" selected>18%</option>
-                <option value="28">28%</option>
+                <option value="5">5%</option><option value="12">12%</option><option value="18" selected>18%</option><option value="28">28%</option>
               </select>
             </div>
           </div>
-
           <div class="grid-3">
-            <div class="form-group">
-              <label>खरेदी दर (Purchase ₹) *</label>
-              <input type="number" step="0.01" id="prodBuyPrice" required>
-            </div>
-            <div class="form-group">
-              <label>विक्री दर (Sell Price ₹) *</label>
-              <input type="number" step="0.01" id="prodSellPrice" required>
-            </div>
-            <div class="form-group">
-              <label>शिल्लक संख्या (Qty) *</label>
-              <input type="number" id="prodQty" required>
-            </div>
+            <div class="form-group"><label>खरेदी दर (₹) *</label><input type="number" step="0.01" id="prodBuyPrice" required></div>
+            <div class="form-group"><label>विक्री दर (₹) *</label><input type="number" step="0.01" id="prodSellPrice" required></div>
+            <div class="form-group"><label>शिल्लक संख्या *</label><input type="number" id="prodQty" required></div>
           </div>
-
-          <button type="submit" class="btn btn-primary"><i class="fa-solid fa-save"></i> स्टॉक सुरक्षित सेव्ह करा</button>
+          <button type="submit" class="btn btn-primary"><i class="fa-solid fa-save"></i> साठा सुरक्षित सेव्ह करा</button>
         </form>
       </div>
 
       <div class="card">
         <div class="card-title"><span><i class="fa-solid fa-warehouse"></i> उपलब्ध साठा</span></div>
         <div style="overflow-x: auto;">
-          <table style="width: 100%; border-collapse: collapse; min-width: 500px; font-size: 13px;">
+          <table style="width: 100%; border-collapse: collapse; min-width: 480px; font-size: 12px;">
             <thead>
               <tr style="background:#e8f5e9; text-align: left;">
-                <th style="padding: 8px;">औषध</th>
-                <th style="padding: 8px;">बॅच</th>
-                <th style="padding: 8px;">खरेदी</th>
-                <th style="padding: 8px;">विक्री</th>
-                <th style="padding: 8px;">शिल्लक</th>
-                <th style="padding: 8px;">हटवा</th>
+                <th style="padding: 5px;">औषध</th>
+                <th style="padding: 5px;">बॅच</th>
+                <th style="padding: 5px;">खरेदी</th>
+                <th style="padding: 5px;">विक्री</th>
+                <th style="padding: 5px;">शिल्लक</th>
+                <th style="padding: 5px;">हटवा</th>
               </tr>
             </thead>
             <tbody id="stockTableBody"></tbody>
@@ -481,12 +324,12 @@
       <div class="card">
         <div class="card-title"><span><i class="fa-solid fa-book"></i> शेतकरी उधारी वही</span></div>
         <div style="overflow-x: auto;">
-          <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
             <thead>
               <tr style="background:#e8f5e9; text-align: left;">
-                <th style="padding: 8px;">नाव</th>
-                <th style="padding: 8px;">गाव / फोन</th>
-                <th style="padding: 8px;">उधारी बाकी (₹)</th>
+                <th style="padding: 6px;">नाव</th>
+                <th style="padding: 6px;">गाव / फोन</th>
+                <th style="padding: 6px;">बाकी रक्कम (₹)</th>
               </tr>
             </thead>
             <tbody id="khataTableBody"></tbody>
@@ -497,57 +340,50 @@
 
     <!-- ==================== TAB 4: REPORTS ==================== -->
     <div id="reportTab" class="tab-content">
+      <!-- Date Filter Card -->
       <div class="card">
         <div class="card-title">
-          <span><i class="fa-solid fa-calendar-day"></i> आजचा गल्ला</span>
-          <button class="btn" style="width:auto; padding:4px 8px; font-size:12px; background:#e0e0e0;" onclick="loadReports()">रिफ्रेश</button>
+          <span><i class="fa-solid fa-filter"></i> तारखेनुसार विक्री व नफा-तोटा</span>
+          <button class="btn" style="width:auto; padding:2px 8px; font-size:11px; background:#0288d1; color:white;" onclick="downloadFullBackup()">
+            <i class="fa-solid fa-file-excel"></i> Excel बॅकअप
+          </button>
         </div>
         <div class="grid-3">
-          <div class="stat-card">
-            <div class="stat-title">आजची विक्री</div>
-            <div class="stat-value" id="repTodaySale">₹ 0.00</div>
+          <div class="form-group">
+            <label>या तारखेपासून (From):</label>
+            <input type="date" id="filterFromDate">
           </div>
-          <div class="stat-card">
-            <div class="stat-title">जमा रोकड/UPI</div>
-            <div class="stat-value" id="repTodayCash">₹ 0.00</div>
+          <div class="form-group">
+            <label>या तारखेपर्यंत (To):</label>
+            <input type="date" id="filterToDate">
           </div>
-          <div class="stat-card">
-            <div class="stat-title">आजचा नफा</div>
-            <div class="stat-value" style="color: green;" id="repTodayProfit">₹ 0.00</div>
+          <div class="form-group" style="display:flex; align-items:flex-end;">
+            <button class="btn btn-primary" onclick="filterReports()"><i class="fa-solid fa-magnifying-glass"></i> हिशोब काढा</button>
           </div>
+        </div>
+
+        <div class="grid-4" style="margin-top: 6px;">
+          <div class="stat-card"><div class="stat-title">निवडलेली विक्री</div><div class="stat-value" id="fSale">₹ 0.00</div></div>
+          <div class="stat-card"><div class="stat-title">जमा रोकड/UPI</div><div class="stat-value" id="fCash">₹ 0.00</div></div>
+          <div class="stat-card"><div class="stat-title">खरेदी खर्च</div><div class="stat-value" id="fCost">₹ 0.00</div></div>
+          <div class="stat-card"><div class="stat-title">एकूण नफा</div><div class="stat-value" style="color:green;" id="fProfit">₹ 0.00</div></div>
         </div>
       </div>
 
       <div class="card">
-        <div class="card-title"><span><i class="fa-solid fa-chart-pie"></i> चालू महिन्याचा नफा (P&L)</span></div>
-        <div class="grid-3">
-          <div class="stat-card">
-            <div class="stat-title">महिन्याची विक्री</div>
-            <div class="stat-value" id="repMonthSale">₹ 0.00</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-title">खरेदी खर्च</div>
-            <div class="stat-value" id="repMonthCost">₹ 0.00</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-title">एकूण नफा</div>
-            <div class="stat-value" style="color: green;" id="repMonthProfit">₹ 0.00</div>
-          </div>
+        <div class="card-title">
+          <span><i class="fa-solid fa-clock-rotate-left"></i> बिलांचा इतिहास (Re-print & WhatsApp)</span>
         </div>
-      </div>
-
-      <div class="card">
-        <div class="card-title"><span><i class="fa-solid fa-clock-rotate-left"></i> बिलांचा इतिहास व व्यवस्थापन</span></div>
         <div style="overflow-x: auto;">
-          <table style="width: 100%; border-collapse: collapse; min-width: 550px; font-size: 13px;">
+          <table style="width: 100%; border-collapse: collapse; min-width: 580px; font-size: 11px;">
             <thead>
               <tr style="background:#e8f5e9; text-align: left;">
-                <th style="padding: 8px;">बिल क्र.</th>
-                <th style="padding: 8px;">तारीख</th>
-                <th style="padding: 8px;">शेतकरी</th>
-                <th style="padding: 8px;">एकूण बिल</th>
-                <th style="padding: 8px;">नफा</th>
-                <th style="padding: 8px; text-align:center;">कृती</th>
+                <th style="padding: 5px;">बिल क्र.</th>
+                <th style="padding: 5px;">तारीख</th>
+                <th style="padding: 5px;">शेतकरी</th>
+                <th style="padding: 5px;">रक्कम</th>
+                <th style="padding: 5px;">नफा</th>
+                <th style="padding: 5px; text-align:center;">कृती (Action)</th>
               </tr>
             </thead>
             <tbody id="repInvoicesBody"></tbody>
@@ -556,117 +392,73 @@
       </div>
     </div>
 
-    <div style="text-align: center; font-size: 13px; color: #607d8b; margin-top: 15px;">
+    <div style="text-align: center; font-size: 11px; color: #607d8b; margin-top: 10px;">
       Developed with ❤️ by <strong>Sujit Patil</strong>
     </div>
 
   </div>
 
-  <!-- Edit Invoice Modal -->
-  <div id="editInvoiceModal" class="modal">
-    <div class="modal-content">
-      <div class="card-title"><span><i class="fa-solid fa-pen"></i> बिल दुरुस्ती करा</span></div>
-      <input type="hidden" id="editInvId">
-      <div class="form-group">
-        <label>शेतकऱ्याचे नाव *</label>
-        <input type="text" id="editCustName">
-      </div>
-      <div class="form-group">
-        <label>मोबाईल नंबर</label>
-        <input type="number" id="editCustPhone">
-      </div>
-      <div class="form-group">
-        <label>गाव</label>
-        <input type="text" id="editCustVillage">
-      </div>
-      <div class="form-group">
-        <label>जमा रक्कम (Paid ₹)</label>
-        <input type="number" id="editPaidAmount">
-      </div>
-      <div class="grid-2" style="margin-top: 12px;">
-        <button class="btn btn-primary" onclick="saveEditedInvoice()">दुरुस्ती सेव्ह करा</button>
-        <button class="btn" style="background:#90a4ae; color:white;" onclick="closeEditModal()">रद्द करा</button>
-      </div>
-    </div>
-  </div>
-
   <!-- Settings Modal -->
   <div id="settingsModal" class="modal">
     <div class="modal-content">
-      <div class="card-title"><span><i class="fa-solid fa-store"></i> दुकानाची माहिती व सुरक्षा पिन</span></div>
+      <div class="card-title"><span><i class="fa-solid fa-store"></i> दुकानाची माहिती व पिन</span></div>
+      <div class="form-group"><label>दुकानाचे नाव *</label><input type="text" id="setShopName"></div>
+      <div class="form-group"><label>पत्ता / गाव *</label><input type="text" id="setShopAddress"></div>
+      <div class="form-group"><label>मोबाईल नंबर *</label><input type="text" id="setShopPhone"></div>
+      <div class="form-group"><label>GSTIN / परवाना</label><input type="text" id="setShopGst"></div>
       <div class="form-group">
-        <label>दुकानाचे नाव *</label>
-        <input type="text" id="setShopName">
+        <label style="color: var(--primary);">नवीन पिन बदला (४-अंकी)</label>
+        <input type="password" id="setNewPin" maxlength="4" placeholder="नवीन PIN">
       </div>
-      <div class="form-group">
-        <label>पत्ता / गाव *</label>
-        <input type="text" id="setShopAddress">
-      </div>
-      <div class="form-group">
-        <label>मोबाईल नंबर *</label>
-        <input type="text" id="setShopPhone">
-      </div>
-      <div class="form-group">
-        <label>GSTIN / परवाना क्र.</label>
-        <input type="text" id="setShopGst">
-      </div>
-      <hr style="margin: 10px 0; border: 0; border-top: 1px dashed #ccc;">
-      <div class="form-group">
-        <label style="color: var(--primary);">सुरक्षा पिन बदला (४-अंकी नवीन PIN)</label>
-        <input type="password" id="setNewPin" maxlength="4" placeholder="उदा. 4321" inputmode="numeric">
-      </div>
-      <div class="grid-2" style="margin-top: 12px;">
-        <button class="btn btn-primary" onclick="saveShopSettings()">माहिती व PIN सेव्ह करा</button>
+      <div class="grid-2" style="margin-top: 10px;">
+        <button class="btn btn-primary" onclick="saveShopSettings()">सेव्ह करा</button>
         <button class="btn" style="background:#90a4ae; color:white;" onclick="closeSettingsModal()">रद्द करा</button>
       </div>
     </div>
   </div>
 
-  <!-- Print Template -->
+  <!-- Edit Invoice Modal -->
+  <div id="editInvoiceModal" class="modal">
+    <div class="modal-content">
+      <div class="card-title"><span><i class="fa-solid fa-pen"></i> बिल दुरुस्ती</span></div>
+      <input type="hidden" id="editInvId">
+      <div class="form-group"><label>शेतकऱ्याचे नाव</label><input type="text" id="editCustName"></div>
+      <div class="form-group"><label>फोन</label><input type="number" id="editCustPhone"></div>
+      <div class="form-group"><label>गाव</label><input type="text" id="editCustVillage"></div>
+      <div class="form-group"><label>जमा रक्कम (Paid ₹)</label><input type="number" id="editPaidAmount"></div>
+      <div class="grid-2" style="margin-top: 10px;">
+        <button class="btn btn-primary" onclick="saveEditedInvoice()">दुरुस्ती सेव्ह करा</button>
+        <button class="btn" style="background:#90a4ae; color:white;" onclick="closeEditModal()">रद्द</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Print Thermal View -->
   <div id="printSection">
     <div style="text-align: center; border-bottom: 1px dashed #000; padding-bottom: 4px;">
-      <h3 id="pStoreName" style="font-size: 15px; font-family: 'Rozha One', serif;">आराधना कृषी सेवा केंद्र</h3>
+      <h3 id="pStoreName" style="font-size: 14px; font-family: 'Rozha One', serif;">आराधना कृषी सेवा केंद्र</h3>
       <p id="pStoreAddress">पत्ता</p>
       <p>मोबा.: <span id="pStorePhone"></span></p>
       <p id="pGstHolder" style="display:none;">GSTIN: <span id="pStoreGst"></span></p>
       <p style="font-weight: bold; margin-top: 2px;" id="pBillHeading">पावती</p>
     </div>
-
     <div style="margin: 4px 0; font-size: 10px; display: flex; justify-content: space-between;">
-      <div>
-        <p><strong>ग्राहक:</strong> <span id="pCustName"></span></p>
-        <p><strong>गाव:</strong> <span id="pCustDetails"></span></p>
-      </div>
-      <div style="text-align: right;">
-        <p><strong>बिल:</strong> <span id="pInvoiceNo"></span></p>
-        <p><strong>दि.:</strong> <span id="pDate"></span></p>
-      </div>
+      <div><p><strong>ग्राहक:</strong> <span id="pCustName"></span></p><p><strong>गाव:</strong> <span id="pCustDetails"></span></p></div>
+      <div style="text-align: right;"><p><strong>बिल:</strong> <span id="pInvoiceNo"></span></p><p><strong>दि.:</strong> <span id="pDate"></span></p></div>
     </div>
-
     <table class="mini-table">
       <thead>
-        <tr>
-          <th style="text-align: left;">तपशील</th>
-          <th>बॅच</th>
-          <th>दर</th>
-          <th>नग</th>
-          <th style="text-align: right;">रक्कम</th>
-        </tr>
+        <tr><th style="text-align: left;">तपशील</th><th>बॅच</th><th>दर</th><th>नग</th><th style="text-align: right;">रक्कम</th></tr>
       </thead>
       <tbody id="pItemsBody"></tbody>
     </table>
-
     <div style="margin-top: 6px; text-align: right; font-size: 10px;">
       <p id="pTaxableRow" style="display:none;">करपात्र: <span id="pTaxable"></span> | GST: <span id="pTax"></span></p>
-      <h4 style="font-size: 13px; margin-top: 2px;">एकूण रक्कम: <span id="pGrandTotal"></span></h4>
+      <h4 style="font-size: 12px; margin-top: 2px;">एकूण रक्कम: <span id="pGrandTotal"></span></h4>
       <p>पेमेंट: <span id="pPayment"></span> | बाकी: <span id="pBalance"></span></p>
     </div>
-
-    <div class="mini-sign">
-      <div>ग्राहकाची सही</div>
-      <div>अधिकृत स्वाक्षरी</div>
-    </div>
-    <p style="text-align: center; margin-top: 12px; font-size: 9px;">।। पुन्हा भेट द्या ।।</p>
+    <div class="mini-sign"><div>ग्राहकाची सही</div><div>अधिकृत स्वाक्षरी</div></div>
+    <p style="text-align: center; margin-top: 10px; font-size: 8px;">।। पुन्हा भेट द्या ।।</p>
   </div>
 
   <!-- Firebase SDK -->
@@ -687,14 +479,15 @@
     const db = firebase.firestore();
 
     let currentAppPin = "1234";
-    const MASTER_PIN = "7339"; // तुमचा मुख्य मास्टर पिन
+    const MASTER_PIN = "7339";
     let autoLockTimer = null;
-    const INACTIVITY_TIME = 3 * 60 * 1000; // ३ मिनिटे
+    const INACTIVITY_TIME = 3 * 60 * 1000;
 
     let productsList = [];
     let allInvoicesCache = [];
     let selectedProduct = null;
     let cartItems = [];
+    let nextInvoiceSequence = 101;
     let shopInfo = {
       name: "आराधना कृषी सेवा केंद्र",
       address: "मुख्य चौक, सांगली",
@@ -703,13 +496,11 @@
       appPin: "1234"
     };
 
-    // --- १. पिन सुरक्षा (Master PIN: 7339) ---
+    // Auto Lock & Auth
     function resetAutoLockTimer() {
       if (autoLockTimer) clearTimeout(autoLockTimer);
       if (sessionStorage.getItem("appUnlocked") === "true") {
-        autoLockTimer = setTimeout(() => {
-          lockApp();
-        }, INACTIVITY_TIME);
+        autoLockTimer = setTimeout(() => { lockApp(); }, INACTIVITY_TIME);
       }
     }
 
@@ -720,8 +511,6 @@
     function verifyPin() {
       const entered = String(document.getElementById('inputPin').value || '').trim();
       const actualPin = String(currentAppPin || '1234').trim();
-
-      // युझरने ठेवलेला पिन, 1234 किंवा मास्टर पिन 7339 यांपैकी काहीही चालेल
       if (entered === actualPin || entered === "1234" || entered === MASTER_PIN) {
         document.getElementById('lockScreen').style.display = 'none';
         sessionStorage.setItem("appUnlocked", "true");
@@ -733,10 +522,8 @@
       }
     }
 
-    document.getElementById('inputPin').addEventListener('keypress', function (e) {
-      if (e.key === 'Enter') {
-        verifyPin();
-      }
+    document.getElementById('inputPin').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') verifyPin();
     });
 
     function lockApp() {
@@ -748,11 +535,11 @@
     }
 
     async function resetPinPrompt() {
-      const masterKey = prompt("पिन रिसेट करण्यासाठी मास्टर पिन (Master PIN) टाका:");
+      const masterKey = prompt("मास्टर पिन (Master PIN) टाका:");
       if (masterKey === MASTER_PIN) {
         currentAppPin = "1234";
         await db.collection("settings").doc("shopDetails").set({ appPin: "1234" }, { merge: true });
-        alert("पिन यशस्वीरीत्या रिसेट झाला!\nनवीन डिफॉल्ट पिन आहे: 1234");
+        alert("पिन रिसेट झाला! नवीन पिन: 1234");
       } else if (masterKey !== null) {
         alert("चुकीचा मास्टर पिन!");
       }
@@ -768,18 +555,16 @@
       document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
       document.getElementById(tabId).classList.add('active');
       if (event && event.currentTarget) event.currentTarget.classList.add('active');
-      if (tabId === 'reportTab') loadReports();
+      if (tabId === 'reportTab') initReportsTab();
     }
 
-    // --- २. दुकान माहिती व पिन लोड करणे ---
+    // Load Settings
     db.collection("settings").doc("shopDetails").onSnapshot(doc => {
       if (doc.exists) {
         shopInfo = doc.data();
         document.getElementById('topShopName').innerText = "🌾 " + shopInfo.name;
         document.getElementById('topShopPhone').innerText = "मोबाईल: " + shopInfo.phone;
-        if (shopInfo.appPin) {
-          currentAppPin = String(shopInfo.appPin).trim();
-        }
+        if (shopInfo.appPin) currentAppPin = String(shopInfo.appPin).trim();
       }
     });
 
@@ -791,25 +576,20 @@
       document.getElementById('setNewPin').value = "";
       document.getElementById('settingsModal').style.display = 'flex';
     }
-
-    function closeSettingsModal() {
-      document.getElementById('settingsModal').style.display = 'none';
-    }
+    function closeSettingsModal() { document.getElementById('settingsModal').style.display = 'none'; }
 
     async function saveShopSettings() {
       const newPinInput = document.getElementById('setNewPin').value.trim();
       let updatedPin = currentAppPin;
-
       if (newPinInput) {
         if (newPinInput.length === 4 && !isNaN(newPinInput)) {
-          updatedPin = String(newPinInput).trim();
-          currentAppPin = updatedPin;
+          updatedPin = newPinInput;
+          currentAppPin = newPinInput;
         } else {
-          alert("पिन फक्त ४ अंकी नंबर असावा!");
+          alert("पिन फक्त ४ अंकी असावा!");
           return;
         }
       }
-
       const updated = {
         name: document.getElementById('setShopName').value.trim(),
         address: document.getElementById('setShopAddress').value.trim(),
@@ -817,13 +597,12 @@
         gstin: document.getElementById('setShopGst').value.trim(),
         appPin: updatedPin
       };
-
       await db.collection("settings").doc("shopDetails").set(updated, { merge: true });
-      alert("माहिती व नवीन पिन सुरक्षित सेव्ह झाला!");
+      alert("माहिती सेव्ह झाली!");
       closeSettingsModal();
     }
 
-    // --- ३. स्टॉक व्यवस्थापन ---
+    // Stock Management
     document.getElementById('stockForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const product = {
@@ -838,75 +617,70 @@
         stock: Number(document.getElementById('prodQty').value),
         created_at: Date.now()
       };
-
       try {
         await db.collection("products").add(product);
         alert("स्टॉक सेव्ह झाला!");
         document.getElementById('stockForm').reset();
-      } catch (err) {
-        alert("त्रुटी: " + err.message);
-      }
+      } catch (err) { alert("त्रुटी: " + err.message); }
     });
 
     db.collection("products").orderBy("name").onSnapshot(snapshot => {
       productsList = [];
       const stockBody = document.getElementById('stockTableBody');
       const datalist = document.getElementById('productDatalist');
-      
       stockBody.innerHTML = "";
       datalist.innerHTML = "";
-
       snapshot.forEach(doc => {
         const item = { id: doc.id, ...doc.data() };
         productsList.push(item);
-
         stockBody.innerHTML += `
           <tr style="border-bottom: 1px solid #eee;">
-            <td style="padding: 8px;"><strong>${item.name}</strong><br><small style="color:#666;">${item.company} (${item.packing || '-'})</small></td>
-            <td style="padding: 8px;">${item.batch_no}</td>
-            <td style="padding: 8px;">₹${item.buy_price}</td>
-            <td style="padding: 8px;">₹${item.sell_price}</td>
-            <td style="padding: 8px; font-weight: bold; color:${item.stock <= 5 ? 'red' : 'green'};">${item.stock}</td>
-            <td style="padding: 8px;"><button class="btn-danger" onclick="deleteProduct('${item.id}')">हटवा</button></td>
+            <td style="padding: 5px;"><strong>${item.name}</strong><br><small style="color:#666;">${item.company} (${item.packing || '-'})</small></td>
+            <td style="padding: 5px;">${item.batch_no}</td>
+            <td style="padding: 5px;">₹${item.buy_price}</td>
+            <td style="padding: 5px;">₹${item.sell_price}</td>
+            <td style="padding: 5px; font-weight: bold; color:${item.stock <= 5 ? 'red' : 'green'};">${item.stock}</td>
+            <td style="padding: 5px;"><button class="btn-action" style="background:var(--danger);" onclick="deleteProduct('${item.id}')">हटवा</button></td>
           </tr>
         `;
-
         datalist.innerHTML += `<option value="${item.name} | बॅच: ${item.batch_no} | दर: ₹${item.sell_price}">`;
       });
     });
 
     async function deleteProduct(id) {
-      if(confirm("औषध हटवायचे आहे का?")) {
-        await db.collection("products").doc(id).delete();
-      }
+      if(confirm("औषध हटवायचे आहे का?")) await db.collection("products").doc(id).delete();
     }
+
+    // Next Invoice Number Generator
+    async function updateNextInvoiceNo() {
+      const snap = await db.collection("invoices").orderBy("created_at", "desc").limit(1).get();
+      if (!snap.empty) {
+        const lastInv = snap.docs[0].data().invoiceNo || "";
+        const match = lastInv.match(/(\d+)$/);
+        if (match) {
+          nextInvoiceSequence = parseInt(match[1]) + 1;
+        }
+      }
+      document.getElementById('billCustomNo').value = "INV-" + nextInvoiceSequence;
+    }
+    updateNextInvoiceNo();
 
     function onProductSearchChange() {
       const val = document.getElementById('billProductSearch').value.trim().toLowerCase();
       selectedProduct = null;
-
       if (!val) {
         document.getElementById('billItemRate').value = '';
         document.getElementById('stockAlert').innerText = '';
         return;
       }
-
       const match = productsList.find(p => {
         const fullLabel = `${p.name} | बॅच: ${p.batch_no} | दर: ₹${p.sell_price}`.toLowerCase();
         return fullLabel === val || p.name.toLowerCase() === val;
       });
-
       if (match) {
         selectedProduct = match;
         document.getElementById('billItemRate').value = match.sell_price;
-        document.getElementById('stockAlert').innerText = `बॅच: ${match.batch_no} | उपलब्ध साठा: ${match.stock} नग`;
-      } else {
-        const partial = productsList.find(p => p.name.toLowerCase().includes(val));
-        if (partial) {
-          document.getElementById('stockAlert').innerText = `संभाव्य: ${partial.name} (शिल्लक: ${partial.stock})`;
-        } else {
-          document.getElementById('stockAlert').innerText = '';
-        }
+        document.getElementById('stockAlert').innerText = `बॅच: ${match.batch_no} | शिल्लक: ${match.stock} नग`;
       }
     }
 
@@ -915,14 +689,10 @@
         const val = document.getElementById('billProductSearch').value.trim().toLowerCase();
         selectedProduct = productsList.find(p => p.name.toLowerCase() === val || `${p.name} | बॅच: ${p.batch_no} | दर: ₹${p.sell_price}`.toLowerCase() === val);
       }
-
-      if (!selectedProduct) { 
-        alert("कृपया यादीतून अचूक औषध निवडा!"); 
-        return; 
-      }
+      if (!selectedProduct) { alert("कृपया यादीतून औषध निवडा!"); return; }
 
       const qty = Number(document.getElementById('billItemQty').value);
-      if (qty <= 0) { alert("किमान १ संख्या आवश्यक आहे!"); return; }
+      if (qty <= 0) { alert("किमान १ संख्या असावी!"); return; }
       if (qty > selectedProduct.stock) { alert(`फक्त ${selectedProduct.stock} नग शिल्लक आहेत!`); return; }
 
       const totalItemPrice = selectedProduct.sell_price * qty;
@@ -945,16 +715,14 @@
       document.getElementById('billItemQty').value = '1';
       document.getElementById('stockAlert').innerText = '';
       selectedProduct = null;
-
       renderCart();
     }
 
     function renderCart() {
       const isGst = document.getElementById('billGstToggle').value === "YES";
       const cartContainer = document.getElementById('cartContainer');
-      
       if (cartItems.length === 0) {
-        cartContainer.innerHTML = `<p style="text-align:center; color:#90a4ae; font-size:13px;">अद्याप औषध जोडलेले नाही.</p>`;
+        cartContainer.innerHTML = `<p style="text-align:center; color:#90a4ae; font-size:12px;">अद्याप औषध जोडलेले नाही.</p>`;
         document.getElementById('sumTaxable').innerText = "₹ 0.00";
         document.getElementById('sumTax').innerText = "₹ 0.00";
         document.getElementById('sumGrandTotal').innerText = "₹ 0.00";
@@ -968,15 +736,12 @@
       cartItems.forEach((item, index) => {
         let taxable = item.total;
         let tax = 0;
-
         if (isGst) {
           taxable = item.total / (1 + (item.gstRate / 100));
           tax = item.total - taxable;
         }
-
         item.calcTaxable = taxable;
         item.calcTax = tax;
-
         grandTaxable += taxable;
         grandTax += tax;
         grandTotal += item.total;
@@ -985,11 +750,11 @@
           <div class="bill-item-card">
             <div>
               <strong>${item.name}</strong> <small>(${item.batch})</small><br>
-              <small>दर: ₹${item.rate} x ${item.qty} नग ${isGst ? '| GST '+item.gstRate+'%' : ''}</small>
+              <small>₹${item.rate} x ${item.qty} नग</small>
             </div>
             <div style="text-align: right;">
               <strong>₹${item.total.toFixed(2)}</strong><br>
-              <button class="btn-danger" onclick="removeCartItem(${index})">हटवा</button>
+              <button class="btn-action" style="background:var(--danger);" onclick="removeCartItem(${index})">हटवा</button>
             </div>
           </div>
         `;
@@ -997,7 +762,6 @@
 
       document.getElementById('taxableRow').style.display = isGst ? 'flex' : 'none';
       document.getElementById('gstRow').style.display = isGst ? 'flex' : 'none';
-
       document.getElementById('sumTaxable').innerText = `₹ ${grandTaxable.toFixed(2)}`;
       document.getElementById('sumTax').innerText = `₹ ${grandTax.toFixed(2)}`;
       document.getElementById('sumGrandTotal').innerText = `₹ ${grandTotal.toFixed(2)}`;
@@ -1013,12 +777,13 @@
       const custName = document.getElementById('custName').value.trim();
       const custPhone = document.getElementById('custPhone').value.trim();
       const custVillage = document.getElementById('custVillage').value.trim();
+      const invoiceNo = document.getElementById('billCustomNo').value.trim() || ("INV-" + Date.now().toString().slice(-5));
       const paymentMode = document.getElementById('billPaymentMode').value;
       const paidAmount = Number(document.getElementById('billPaidAmount').value) || 0;
       const isGst = document.getElementById('billGstToggle').value === "YES";
 
       if (!custName) { alert("कृपया शेतकऱ्याचे नाव टाका!"); return; }
-      if (cartItems.length === 0) { alert("बिलामध्ये किमान १ औषध असणे आवश्यक आहे!"); return; }
+      if (cartItems.length === 0) { alert("बिलामध्ये किमान १ औषध जोडा!"); return; }
       if (isWhatsApp && !custPhone) { alert("WhatsApp पावतीसाठी फोन नंबर टाका!"); return; }
 
       const grandTotal = cartItems.reduce((acc, curr) => acc + curr.total, 0);
@@ -1026,25 +791,26 @@
       const totalBuyCost = cartItems.reduce((acc, curr) => acc + (curr.buy_price * curr.qty), 0);
       const balanceAmount = grandTotal - paidAmount;
       const curTime = Date.now();
-      const invoiceNo = "INV-" + curTime.toString().slice(-5);
       const todayStr = new Date().toISOString().split('T')[0];
 
+      const invObject = {
+        invoiceNo,
+        customer: { name: custName, phone: custPhone, village: custVillage },
+        items: cartItems,
+        grandTotal,
+        buyCost: totalBuyCost,
+        profit: totalProfit,
+        paidAmount,
+        balanceAmount,
+        paymentMode,
+        isGst,
+        date: todayStr,
+        month: todayStr.slice(0, 7),
+        created_at: curTime
+      };
+
       try {
-        await db.collection("invoices").add({
-          invoiceNo,
-          customer: { name: custName, phone: custPhone, village: custVillage },
-          items: cartItems,
-          grandTotal,
-          buyCost: totalBuyCost,
-          profit: totalProfit,
-          paidAmount,
-          balanceAmount,
-          paymentMode,
-          isGst,
-          date: todayStr,
-          month: todayStr.slice(0, 7),
-          created_at: curTime
-        });
+        await db.collection("invoices").add(invObject);
 
         for (const item of cartItems) {
           const prodRef = db.collection("products").doc(item.id);
@@ -1055,67 +821,15 @@
 
         if (balanceAmount > 0 || paymentMode === "CREDIT") {
           await db.collection("customers").add({
-            name: custName,
-            phone: custPhone,
-            village: custVillage,
-            balance: balanceAmount,
-            updated_at: todayStr,
-            created_at: curTime
+            name: custName, phone: custPhone, village: custVillage,
+            balance: balanceAmount, updated_at: todayStr, created_at: curTime
           });
         }
 
         if (isWhatsApp) {
-          let itemsText = "";
-          cartItems.forEach((i, idx) => {
-            itemsText += `${idx+1}. ${i.name} (${i.batch}) - ${i.qty} नग = ₹${i.total.toFixed(2)}\n`;
-          });
-
-          const msg = `*🌾 ${shopInfo.name} 🌾*\nपत्ता: ${shopInfo.address}\nमोबा.: ${shopInfo.phone}\n-----------------------------\n*बिल क्र.:* ${invoiceNo}\n*तारीख:* ${new Date().toLocaleDateString('mr-IN')}\n*ग्राहक:* ${custName} (${custVillage || '-'})\n-----------------------------\n${itemsText}-----------------------------\n*एकूण बिल:* ₹${grandTotal.toFixed(2)}\n*जमा रक्कम:* ₹${paidAmount.toFixed(2)}\n*शिल्लक बाकी:* ₹${balanceAmount.toFixed(2)}\n-----------------------------\n।। धन्यवाद, पुन्हा भेट द्या ।।`;
-          
-          const cleanPhone = custPhone.length === 10 ? "91" + custPhone : custPhone;
-          window.open(`https://api.whatsapp.com/send?phone=${cleanPhone}&text=${encodeURIComponent(msg)}`, '_blank');
+          sendWhatsAppReceipt(invObject);
         } else {
-          document.getElementById('pStoreName').innerText = shopInfo.name;
-          document.getElementById('pStoreAddress').innerText = shopInfo.address;
-          document.getElementById('pStorePhone').innerText = shopInfo.phone;
-          
-          if (isGst && shopInfo.gstin) {
-            document.getElementById('pGstHolder').style.display = 'block';
-            document.getElementById('pStoreGst').innerText = shopInfo.gstin;
-            document.getElementById('pBillHeading').innerText = "टॅक्स इनव्हॉइस (TAX INVOICE)";
-            document.getElementById('pTaxableRow').style.display = 'block';
-            document.getElementById('pTaxable').innerText = document.getElementById('sumTaxable').innerText;
-            document.getElementById('pTax').innerText = document.getElementById('sumTax').innerText;
-          } else {
-            document.getElementById('pGstHolder').style.display = 'none';
-            document.getElementById('pBillHeading').innerText = "पावती (कॅश मेमो)";
-            document.getElementById('pTaxableRow').style.display = 'none';
-          }
-
-          document.getElementById('pCustName').innerText = custName;
-          document.getElementById('pCustDetails').innerText = custVillage || '-';
-          document.getElementById('pInvoiceNo').innerText = invoiceNo;
-          document.getElementById('pDate').innerText = new Date().toLocaleDateString('mr-IN');
-
-          const pBody = document.getElementById('pItemsBody');
-          pBody.innerHTML = "";
-          cartItems.forEach(i => {
-            pBody.innerHTML += `
-              <tr>
-                <td>${i.name}</td>
-                <td>${i.batch}</td>
-                <td>₹${i.rate}</td>
-                <td>${i.qty}</td>
-                <td style="text-align: right;">₹${i.total.toFixed(2)}</td>
-              </tr>
-            `;
-          });
-
-          document.getElementById('pGrandTotal').innerText = `₹ ${grandTotal.toFixed(2)}`;
-          document.getElementById('pPayment').innerText = paymentMode;
-          document.getElementById('pBalance').innerText = `₹ ${balanceAmount.toFixed(2)}`;
-
-          window.print();
+          printInvoiceDirect(invObject);
         }
 
         cartItems = [];
@@ -1123,127 +837,178 @@
         document.getElementById('custName').value = "";
         document.getElementById('custPhone').value = "";
         document.getElementById('custVillage').value = "";
+        updateNextInvoiceNo();
         alert("बिल सेव्ह झाले!");
-
-      } catch (err) {
-        alert("त्रुटी: " + err.message);
-      }
+      } catch (err) { alert("त्रुटी: " + err.message); }
     }
 
-    // --- ४. रिपोर्ट व बिल व्यवस्थापन ---
-    async function loadReports() {
-      const todayStr = new Date().toISOString().split('T')[0];
-      const monthStr = todayStr.slice(0, 7);
+    // Direct WhatsApp and Print Functions
+    function sendWhatsAppReceipt(inv) {
+      let itemsText = "";
+      inv.items.forEach((i, idx) => {
+        itemsText += `${idx+1}. ${i.name} (${i.batch}) - ${i.qty} नग = ₹${i.total.toFixed(2)}\n`;
+      });
+      const msg = `*🌾 ${shopInfo.name} 🌾*\nपत्ता: ${shopInfo.address}\nमोबा.: ${shopInfo.phone}\n-----------------------------\n*बिल क्र.:* ${inv.invoiceNo}\n*तारीख:* ${inv.date}\n*ग्राहक:* ${inv.customer.name} (${inv.customer.village || '-'})\n-----------------------------\n${itemsText}-----------------------------\n*एकूण बिल:* ₹${inv.grandTotal.toFixed(2)}\n*जमा रक्कम:* ₹${inv.paidAmount.toFixed(2)}\n*शिल्लक बाकी:* ₹${inv.balanceAmount.toFixed(2)}\n-----------------------------\n।। धन्यवाद, पुन्हा भेट द्या ।।`;
+      const cleanPhone = inv.customer.phone.length === 10 ? "91" + inv.customer.phone : inv.customer.phone;
+      window.open(`https://api.whatsapp.com/send?phone=${cleanPhone}&text=${encodeURIComponent(msg)}`, '_blank');
+    }
 
-      const snapshot = await db.collection("invoices").get();
-
-      let todaySale = 0, todayCash = 0, todayProfit = 0;
-      let monthSale = 0, monthCost = 0, monthProfit = 0;
+    function printInvoiceDirect(inv) {
+      document.getElementById('pStoreName').innerText = shopInfo.name;
+      document.getElementById('pStoreAddress').innerText = shopInfo.address;
+      document.getElementById('pStorePhone').innerText = shopInfo.phone;
       
+      if (inv.isGst && shopInfo.gstin) {
+        document.getElementById('pGstHolder').style.display = 'block';
+        document.getElementById('pStoreGst').innerText = shopInfo.gstin;
+        document.getElementById('pBillHeading').innerText = "टॅक्स इनव्हॉइस (TAX INVOICE)";
+      } else {
+        document.getElementById('pGstHolder').style.display = 'none';
+        document.getElementById('pBillHeading').innerText = "पावती (कॅश मेमो)";
+      }
+
+      document.getElementById('pCustName').innerText = inv.customer.name;
+      document.getElementById('pCustDetails').innerText = inv.customer.village || '-';
+      document.getElementById('pInvoiceNo').innerText = inv.invoiceNo;
+      document.getElementById('pDate').innerText = inv.date;
+
+      const pBody = document.getElementById('pItemsBody');
+      pBody.innerHTML = "";
+      inv.items.forEach(i => {
+        pBody.innerHTML += `<tr><td>${i.name}</td><td>${i.batch}</td><td>₹${i.rate}</td><td>${i.qty}</td><td style="text-align: right;">₹${i.total.toFixed(2)}</td></tr>`;
+      });
+
+      document.getElementById('pGrandTotal').innerText = `₹ ${inv.grandTotal.toFixed(2)}`;
+      document.getElementById('pPayment').innerText = inv.paymentMode;
+      document.getElementById('pBalance').innerText = `₹ ${inv.balanceAmount.toFixed(2)}`;
+      window.print();
+    }
+
+    // Reports and Date Filters
+    function initReportsTab() {
+      const today = new Date().toISOString().split('T')[0];
+      if (!document.getElementById('filterFromDate').value) {
+        document.getElementById('filterFromDate').value = today;
+        document.getElementById('filterToDate').value = today;
+      }
+      loadInvoicesData();
+    }
+
+    async function loadInvoicesData() {
+      const snapshot = await db.collection("invoices").get();
       allInvoicesCache = [];
       snapshot.forEach(doc => {
         allInvoicesCache.push({ id: doc.id, ...doc.data() });
       });
-
       allInvoicesCache.sort((a, b) => (b.created_at || 0) - (a.created_at || 0));
+      filterReports();
+    }
 
+    function filterReports() {
+      const from = document.getElementById('filterFromDate').value;
+      const to = document.getElementById('filterToDate').value;
+
+      let totSale = 0, totCash = 0, totCost = 0, totProfit = 0;
       const historyBody = document.getElementById('repInvoicesBody');
-      if (historyBody) historyBody.innerHTML = "";
+      historyBody.innerHTML = "";
 
-      if (allInvoicesCache.length === 0 && historyBody) {
-        historyBody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:10px;">अद्याप कोणतीही विक्री झालेली नाही.</td></tr>`;
-      }
-
-      allInvoicesCache.forEach(inv => {
-        const invDate = inv.date || "";
-        const invMonth = inv.month || invDate.slice(0, 7);
-
-        if (invDate === todayStr) {
-          todaySale += Number(inv.grandTotal) || 0;
-          todayCash += Number(inv.paidAmount) || 0;
-          todayProfit += Number(inv.profit) || 0;
-        }
-
-        if (invMonth === monthStr) {
-          monthSale += Number(inv.grandTotal) || 0;
-          monthCost += Number(inv.buyCost) || 0;
-          monthProfit += Number(inv.profit) || 0;
-        }
-
-        if (historyBody) {
-          historyBody.innerHTML += `
-            <tr style="border-bottom: 1px solid #eee;">
-              <td style="padding: 8px;"><strong>${inv.invoiceNo}</strong></td>
-              <td style="padding: 8px;">${inv.date}</td>
-              <td style="padding: 8px;">${inv.customer ? inv.customer.name : '-'}</td>
-              <td style="padding: 8px;">₹${(inv.grandTotal || 0).toFixed(2)}</td>
-              <td style="padding: 8px; color:green; font-weight:bold;">+₹${(inv.profit || 0).toFixed(2)}</td>
-              <td style="padding: 8px; text-align:center; white-space:nowrap;">
-                <button class="btn-info" onclick="openEditModal('${inv.id}')" title="बदला"><i class="fa-solid fa-pen"></i></button>
-                <button class="btn-danger" onclick="deleteInvoice('${inv.id}')" title="हटवा"><i class="fa-solid fa-trash"></i></button>
-              </td>
-            </tr>
-          `;
-        }
+      const filtered = allInvoicesCache.filter(inv => {
+        if (!inv.date) return false;
+        if (from && inv.date < from) return false;
+        if (to && inv.date > to) return false;
+        return true;
       });
 
-      document.getElementById('repTodaySale').innerText = `₹ ${todaySale.toFixed(2)}`;
-      document.getElementById('repTodayCash').innerText = `₹ ${todayCash.toFixed(2)}`;
-      document.getElementById('repTodayProfit').innerText = `₹ ${todayProfit.toFixed(2)}`;
+      if (filtered.length === 0) {
+        historyBody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:10px;">या कालावधीत कोणतीही विक्री झालेली नाही.</td></tr>`;
+      }
 
-      document.getElementById('repMonthSale').innerText = `₹ ${monthSale.toFixed(2)}`;
-      document.getElementById('repMonthCost').innerText = `₹ ${monthCost.toFixed(2)}`;
-      document.getElementById('repMonthProfit').innerText = `₹ ${monthProfit.toFixed(2)}`;
+      filtered.forEach(inv => {
+        totSale += Number(inv.grandTotal) || 0;
+        totCash += Number(inv.paidAmount) || 0;
+        totCost += Number(inv.buyCost) || 0;
+        totProfit += Number(inv.profit) || 0;
+
+        historyBody.innerHTML += `
+          <tr style="border-bottom: 1px solid #eee;">
+            <td style="padding: 5px;"><strong>${inv.invoiceNo}</strong></td>
+            <td style="padding: 5px;">${inv.date}</td>
+            <td style="padding: 5px;">${inv.customer ? inv.customer.name : '-'}</td>
+            <td style="padding: 5px;">₹${(inv.grandTotal || 0).toFixed(2)}</td>
+            <td style="padding: 5px; color:green; font-weight:bold;">+₹${(inv.profit || 0).toFixed(2)}</td>
+            <td style="padding: 5px; text-align:center; white-space:nowrap;">
+              <button class="btn-action" style="background:var(--primary);" onclick="reprintInvoice('${inv.id}')" title="प्रिंट"><i class="fa-solid fa-print"></i></button>
+              <button class="btn-action" style="background:var(--whatsapp);" onclick="reshareWhatsApp('${inv.id}')" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></button>
+              <button class="btn-action" style="background:var(--info);" onclick="openEditModal('${inv.id}')" title="दुरुस्ती"><i class="fa-solid fa-pen"></i></button>
+              <button class="btn-action" style="background:var(--danger);" onclick="deleteInvoice('${inv.id}')" title="हटवा"><i class="fa-solid fa-trash"></i></button>
+            </td>
+          </tr>
+        `;
+      });
+
+      document.getElementById('fSale').innerText = `₹ ${totSale.toFixed(2)}`;
+      document.getElementById('fCash').innerText = `₹ ${totCash.toFixed(2)}`;
+      document.getElementById('fCost').innerText = `₹ ${totCost.toFixed(2)}`;
+      document.getElementById('fProfit').innerText = `₹ ${totProfit.toFixed(2)}`;
+    }
+
+    function reprintInvoice(invId) {
+      const inv = allInvoicesCache.find(i => i.id === invId);
+      if (inv) printInvoiceDirect(inv);
+    }
+
+    function reshareWhatsApp(invId) {
+      const inv = allInvoicesCache.find(i => i.id === invId);
+      if (inv) {
+        if (!inv.customer || !inv.customer.phone) {
+          const ph = prompt("WhatsApp नंबर टाका (१० अंकी):");
+          if (ph) {
+            inv.customer.phone = ph;
+            sendWhatsAppReceipt(inv);
+          }
+        } else {
+          sendWhatsAppReceipt(inv);
+        }
+      }
     }
 
     async function deleteInvoice(invId) {
       const inv = allInvoicesCache.find(i => i.id === invId);
       if (!inv) return;
-
-      if (confirm(`तुम्हाला खात्री आहे का ${inv.invoiceNo} हे बिल डिलीट करायचे आहे?\n(या बिलातील औषधांचा साठा पुन्हा जमा होईल)`)) {
+      if (confirm(`${inv.invoiceNo} बिल हटवायचे आहे का?\nऔषधांचा साठा पुन्हा जमा होईल!`)) {
         try {
           if (inv.items && Array.isArray(inv.items)) {
             for (const item of inv.items) {
               if (item.id) {
-                const prodRef = db.collection("products").doc(item.id);
-                await prodRef.update({
+                await db.collection("products").doc(item.id).update({
                   stock: firebase.firestore.FieldValue.increment(item.qty)
                 }).catch(() => {});
               }
             }
           }
-
           await db.collection("invoices").doc(invId).delete();
           alert("बिल हटवले!");
-          loadReports();
-        } catch (err) {
-          alert("त्रुटी: " + err.message);
-        }
+          loadInvoicesData();
+        } catch (err) { alert("त्रुटी: " + err.message); }
       }
     }
 
     function openEditModal(invId) {
       const inv = allInvoicesCache.find(i => i.id === invId);
       if (!inv) return;
-
       document.getElementById('editInvId').value = invId;
       document.getElementById('editCustName').value = inv.customer ? inv.customer.name : '';
       document.getElementById('editCustPhone').value = inv.customer ? inv.customer.phone : '';
       document.getElementById('editCustVillage').value = inv.customer ? inv.customer.village : '';
       document.getElementById('editPaidAmount').value = inv.paidAmount || 0;
-
       document.getElementById('editInvoiceModal').style.display = 'flex';
     }
-
-    function closeEditModal() {
-      document.getElementById('editInvoiceModal').style.display = 'none';
-    }
+    function closeEditModal() { document.getElementById('editInvoiceModal').style.display = 'none'; }
 
     async function saveEditedInvoice() {
       const invId = document.getElementById('editInvId').value;
       const inv = allInvoicesCache.find(i => i.id === invId);
       if (!inv) return;
-
       const newName = document.getElementById('editCustName').value.trim();
       const newPhone = document.getElementById('editCustPhone').value.trim();
       const newVillage = document.getElementById('editCustVillage').value.trim();
@@ -1256,29 +1021,57 @@
           paidAmount: newPaid,
           balanceAmount: newBalance
         });
-
-        alert("माहिती अपडेट झाली!");
+        alert("माहिती बदलली!");
         closeEditModal();
-        loadReports();
-      } catch (err) {
-        alert("त्रुटी: " + err.message);
-      }
+        loadInvoicesData();
+      } catch (err) { alert("त्रुटी: " + err.message); }
     }
 
+    // CSV Backup
+    async function downloadFullBackup() {
+      try {
+        let csvContent = "data:text/csv;charset=utf-8,";
+        csvContent += "बिल क्र.,तारीख,ग्राहक,फोन,गाव,एकूण बिल,जमा,बाकी,नफा\n";
+        allInvoicesCache.forEach(d => {
+          const row = [
+            d.invoiceNo || '',
+            d.date || '',
+            `"${(d.customer && d.customer.name) ? d.customer.name : ''}"`,
+            (d.customer && d.customer.phone) ? d.customer.phone : '',
+            `"${(d.customer && d.customer.village) ? d.customer.village : ''}"`,
+            d.grandTotal || 0,
+            d.paidAmount || 0,
+            d.balanceAmount || 0,
+            d.profit || 0
+          ].join(",");
+          csvContent += row + "\n";
+        });
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        const today = new Date().toISOString().split('T')[0];
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", `AgroShop_Report_${today}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } catch (err) { alert("बॅकअप त्रुटी: " + err.message); }
+    }
+
+    // Customer Khata
     db.collection("customers").onSnapshot(snapshot => {
       const khataBody = document.getElementById('khataTableBody');
       khataBody.innerHTML = "";
-      if(snapshot.empty) {
-        khataBody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding:10px;">कोणतीही बाकी नाही.</td></tr>`;
+      if (snapshot.empty) {
+        khataBody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding:10px;">उधारी बाकी नाही.</td></tr>`;
         return;
       }
       snapshot.forEach(doc => {
         const c = doc.data();
         khataBody.innerHTML += `
           <tr style="border-bottom: 1px solid #eee;">
-            <td style="padding: 8px;"><strong>${c.name}</strong></td>
-            <td style="padding: 8px;">${c.village || '-'} (${c.phone || '-'})</td>
-            <td style="padding: 8px; color:red; font-weight:bold;">₹ ${Number(c.balance || 0).toFixed(2)}</td>
+            <td style="padding: 6px;"><strong>${c.name}</strong></td>
+            <td style="padding: 6px;">${c.village || '-'} (${c.phone || '-'})</td>
+            <td style="padding: 6px; color:red; font-weight:bold;">₹ ${Number(c.balance || 0).toFixed(2)}</td>
           </tr>
         `;
       });
