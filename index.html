@@ -27,7 +27,7 @@
     }
 
     * { box-sizing: border-box; font-family: 'Mukta', Arial, sans-serif; margin: 0; padding: 0; }
-    body { background-color: var(--bg); color: var(--text); padding-bottom: 70px; font-size: 13px; }
+    body { background-color: var(--bg); color: var(--text); padding-bottom: 75px; font-size: 13px; }
 
     /* Custom eDost Modal */
     #edostAlertModal {
@@ -86,7 +86,7 @@
       position: sticky; top: 46px; z-index: 99; overflow-x: auto;
     }
     .tab-btn {
-      flex: 1; min-width: 70px; padding: 6px 2px; border: none; background: none;
+      flex: 1; min-width: 65px; padding: 6px 2px; border: none; background: none;
       font-size: 12px; font-weight: 600; color: #546e7a; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 2px;
     }
     .tab-btn.active { color: var(--primary); border-bottom: 3px solid var(--primary); background: #e8f5e9; }
@@ -150,12 +150,14 @@
       display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; padding: 10px;
     }
-    .modal-content { background: white; border-radius: 6px; padding: 12px; width: 100%; max-width: 380px; }
+    .modal-content { background: white; border-radius: 6px; padding: 12px; width: 100%; max-width: 440px; }
 
-    #printSection { display: none; }
+    /* Print Formatting */
+    #printSection, #a4PrintSection { display: none; }
     @media print {
       body * { visibility: hidden; }
-      #printSection, #printSection * { visibility: visible; }
+      #printSection, #printSection *, #a4PrintSection, #a4PrintSection * { visibility: visible; }
+      
       #printSection {
         display: block; position: absolute; left: 0; top: 0; width: 300px;
         margin: auto; padding: 8px; font-size: 11px; color: #000; line-height: 1.2;
@@ -163,12 +165,20 @@
       .mini-table { width: 100%; border-collapse: collapse; margin-top: 4px; }
       .mini-table th, .mini-table td { border-bottom: 1px dashed #555; padding: 3px 2px; font-size: 10px; }
       .mini-sign { display: flex; justify-content: space-between; margin-top: 25px; text-align: center; font-size: 10px; }
+
+      #a4PrintSection {
+        display: block; position: absolute; left: 0; top: 0; width: 100%;
+        padding: 20px; font-size: 12px; color: #000; background: #fff;
+      }
+      .a4-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+      .a4-table th, .a4-table td { border: 1px solid #333; padding: 6px; font-size: 11px; text-align: left; }
+      .a4-table th { background: #f0f0f0; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Custom eDost Alert & Confirm Modal -->
+  <!-- Custom eDost Alert/Confirm Modal -->
   <div id="edostAlertModal">
     <div class="edost-alert-box">
       <div class="edost-alert-header">
@@ -194,7 +204,7 @@
     </div>
   </div>
 
-  <!-- Header -->
+  <!-- App Header -->
   <div class="app-bar">
     <div>
       <h1 id="topShopName">🌾 आराधना कृषी सेवा केंद्र</h1>
@@ -206,11 +216,12 @@
     </div>
   </div>
 
-  <!-- Tabs -->
+  <!-- Navigation Tabs -->
   <div class="nav-tabs">
     <button class="tab-btn active" onclick="switchTab('billingTab')"><i class="fa-solid fa-receipt"></i> बिलिंग</button>
-    <button class="tab-btn" onclick="switchTab('stockTab')"><i class="fa-solid fa-boxes-stacked"></i> स्टॉक</button>
+    <button class="tab-btn" onclick="switchTab('stockTab')"><i class="fa-solid fa-boxes-stacked"></i> साठा / इनवर्ड</button>
     <button class="tab-btn" onclick="switchTab('khataTab')"><i class="fa-solid fa-book-open"></i> शेतकरी वही</button>
+    <button class="tab-btn" onclick="switchTab('kirdTab')"><i class="fa-solid fa-book"></i> दैनिक कीर्द</button>
     <button class="tab-btn" onclick="switchTab('reportTab')"><i class="fa-solid fa-chart-line"></i> नफा-तोटा</button>
   </div>
 
@@ -220,7 +231,7 @@
     <div id="billingTab" class="tab-content active">
       <div class="card">
         <div class="card-title">
-          <span><i class="fa-solid fa-user"></i> १. शेतकरी व बिल क्र.</span>
+          <span><i class="fa-solid fa-user"></i> १. शेतकरी व बिल माहिती</span>
           <div style="display:flex; align-items:center; gap:4px;">
             <label style="margin:0; font-size:11px;">GST:</label>
             <select id="billGstToggle" style="width:auto; padding:2px 4px; font-size:11px;" onchange="renderCart()">
@@ -254,7 +265,7 @@
         <div class="grid-3">
           <div class="form-group" style="grid-column: span 2;">
             <label>औषध शोधा *</label>
-            <input type="text" id="billProductSearch" list="productDatalist" placeholder="नाव किंवा बॅच टाईप करा..." oninput="onProductSearchChange()" autocomplete="off">
+            <input type="text" id="billProductSearch" list="productDatalist" placeholder="नाव, पार्टी किंवा बॅच..." oninput="onProductSearchChange()" autocomplete="off">
             <datalist id="productDatalist"></datalist>
           </div>
           <div class="form-group">
@@ -307,11 +318,15 @@
       </div>
     </div>
 
-    <!-- ==================== TAB 2: STOCK ==================== -->
+    <!-- ==================== TAB 2: STOCK & INWARD ==================== -->
     <div id="stockTab" class="tab-content">
       <div class="card">
-        <div class="card-title"><span><i class="fa-solid fa-circle-plus"></i> नवीन औषध नोंद</span></div>
+        <div class="card-title"><span><i class="fa-solid fa-truck-ramp-box"></i> पार्टी खरेदी इनवर्ड (नवीन माल नोंद)</span></div>
         <form id="stockForm">
+          <div class="grid-2">
+            <div class="form-group"><label>पार्टी / सप्लायरचे नाव *</label><input type="text" id="prodSupplier" placeholder="उदा. महालक्ष्मी ट्रेडर्स" required></div>
+            <div class="form-group"><label>पार्टीचा खरेदी बिल क्र. *</label><input type="text" id="prodPurBill" placeholder="उदा. GST/8492" required></div>
+          </div>
           <div class="grid-3">
             <div class="form-group"><label>औषधाचे नाव *</label><input type="text" id="prodName" required></div>
             <div class="form-group"><label>कंपनी</label><input type="text" id="prodCompany"></div>
@@ -330,24 +345,29 @@
           <div class="grid-3">
             <div class="form-group"><label>खरेदी दर (₹) *</label><input type="number" step="0.01" id="prodBuyPrice" required></div>
             <div class="form-group"><label>विक्री दर (₹) *</label><input type="number" step="0.01" id="prodSellPrice" required></div>
-            <div class="form-group"><label>शिल्लक संख्या *</label><input type="number" id="prodQty" required></div>
+            <div class="form-group"><label>आवक संख्या (Qty) *</label><input type="number" id="prodQty" required></div>
           </div>
-          <button type="submit" class="btn btn-primary"><i class="fa-solid fa-save"></i> स्टॉक सेव्ह करा</button>
+          <button type="submit" class="btn btn-primary"><i class="fa-solid fa-save"></i> इनवर्ड साठा सेव्ह करा</button>
         </form>
       </div>
 
       <div class="card">
-        <div class="card-title"><span><i class="fa-solid fa-warehouse"></i> उपलब्ध साठा</span></div>
+        <div class="card-title">
+          <span><i class="fa-solid fa-warehouse"></i> उपलब्ध साठा व खरेदी तपशील</span>
+          <button class="btn" style="width:auto; padding:2px 8px; font-size:11px; background:#0288d1; color:white;" onclick="printStockStatementPDF()">
+            <i class="fa-solid fa-file-pdf"></i> स्टॉक स्टेटमेंट PDF
+          </button>
+        </div>
         <div style="overflow-x: auto;">
-          <table style="width: 100%; border-collapse: collapse; min-width: 480px; font-size: 12px;">
+          <table style="width: 100%; border-collapse: collapse; min-width: 550px; font-size: 12px;">
             <thead>
               <tr style="background:#e8f5e9; text-align: left;">
-                <th style="padding: 5px;">औषध</th>
+                <th style="padding: 5px;">औषध व पार्टी</th>
                 <th style="padding: 5px;">बॅच</th>
                 <th style="padding: 5px;">खरेदी</th>
                 <th style="padding: 5px;">विक्री</th>
                 <th style="padding: 5px;">शिल्लक</th>
-                <th style="padding: 5px;">हटवा</th>
+                <th style="padding: 5px; text-align:center;">कृती</th>
               </tr>
             </thead>
             <tbody id="stockTableBody"></tbody>
@@ -375,24 +395,59 @@
       </div>
     </div>
 
-    <!-- ==================== TAB 4: REPORTS ==================== -->
+    <!-- ==================== TAB 4: DAILY KIRD ==================== -->
+    <div id="kirdTab" class="tab-content">
+      <div class="card">
+        <div class="card-title">
+          <span><i class="fa-solid fa-book-journal-whills"></i> दैनिक कीर्द (Day-Book)</span>
+          <button class="btn" style="width:auto; padding:2px 8px; font-size:11px; background:#0288d1; color:white;" onclick="printKirdPDF()">
+            <i class="fa-solid fa-file-pdf"></i> कीर्द PDF
+          </button>
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label>कीर्द तारीख निवडा:</label>
+            <input type="date" id="kirdDate" onchange="renderDailyKird()">
+          </div>
+          <div class="form-group" style="display:flex; align-items:flex-end;">
+            <button class="btn btn-primary" onclick="renderDailyKird()"><i class="fa-solid fa-arrows-rotate"></i> कीर्द रिफ्रेश</button>
+          </div>
+        </div>
+
+        <div class="grid-3" style="margin-top: 6px;">
+          <div class="stat-card"><div class="stat-title">आजची विक्री (Aavak)</div><div class="stat-value" id="kirdTotalSale">₹ 0.00</div></div>
+          <div class="stat-card"><div class="stat-title">रोख/UPI जमा</div><div class="stat-value" id="kirdCashIn">₹ 0.00</div></div>
+          <div class="stat-card"><div class="stat-title">उधारी बाकी (Credit)</div><div class="stat-value" style="color:red;" id="kirdCredit">₹ 0.00</div></div>
+        </div>
+
+        <div style="overflow-x: auto; margin-top: 10px;">
+          <table style="width: 100%; border-collapse: collapse; min-width: 500px; font-size: 11px;">
+            <thead>
+              <tr style="background:#e8f5e9; text-align: left;">
+                <th style="padding: 5px;">तपशील (पावती / व्यवहार)</th>
+                <th style="padding: 5px;">ग्राहक / पार्टी</th>
+                <th style="padding: 5px;">प्रकार</th>
+                <th style="padding: 5px; text-align: right;">रक्कम (₹)</th>
+              </tr>
+            </thead>
+            <tbody id="kirdTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== TAB 5: REPORTS ==================== -->
     <div id="reportTab" class="tab-content">
       <div class="card">
         <div class="card-title">
-          <span><i class="fa-solid fa-filter"></i> तारखेनुसार विक्री व नफा-तोटा</span>
+          <span><i class="fa-solid fa-filter"></i> तारखेनुसार नफा-तोटा स्टेटमेंट</span>
           <button class="btn" style="width:auto; padding:2px 8px; font-size:11px; background:#0288d1; color:white;" onclick="downloadFullBackup()">
             <i class="fa-solid fa-file-excel"></i> Excel बॅकअप
           </button>
         </div>
         <div class="grid-3">
-          <div class="form-group">
-            <label>या तारखेपासून (From):</label>
-            <input type="date" id="filterFromDate">
-          </div>
-          <div class="form-group">
-            <label>या तारखेपर्यंत (To):</label>
-            <input type="date" id="filterToDate">
-          </div>
+          <div class="form-group"><label>या तारखेपासून:</label><input type="date" id="filterFromDate"></div>
+          <div class="form-group"><label>या तारखेपर्यंत:</label><input type="date" id="filterToDate"></div>
           <div class="form-group" style="display:flex; align-items:flex-end;">
             <button class="btn btn-primary" onclick="filterReports()"><i class="fa-solid fa-magnifying-glass"></i> हिशोब काढा</button>
           </div>
@@ -419,7 +474,7 @@
                 <th style="padding: 5px;">शेतकरी</th>
                 <th style="padding: 5px;">रक्कम</th>
                 <th style="padding: 5px;">नफा</th>
-                <th style="padding: 5px; text-align:center;">कृती (Action)</th>
+                <th style="padding: 5px; text-align:center;">कृती</th>
               </tr>
             </thead>
             <tbody id="repInvoicesBody"></tbody>
@@ -432,6 +487,36 @@
       Powered by <strong>eDost Billing</strong> | Developed with ❤️ by <strong>Sujit Patil</strong>
     </div>
 
+  </div>
+
+  <!-- Stock Edit Modal -->
+  <div id="editStockModal" class="modal">
+    <div class="modal-content">
+      <div class="card-title"><span><i class="fa-solid fa-boxes-packing"></i> जुना साठा व पार्टी दुरुस्ती</span></div>
+      <input type="hidden" id="editStockId">
+      <div class="grid-2">
+        <div class="form-group"><label>पार्टीचे नाव *</label><input type="text" id="editStockSupplier" placeholder="पार्टी नाव"></div>
+        <div class="form-group"><label>पार्टीचा खरेदी बिल क्र. *</label><input type="text" id="editStockPurBill" placeholder="खरेदी बिल क्र."></div>
+      </div>
+      <div class="grid-2">
+        <div class="form-group"><label>औषधाचे नाव *</label><input type="text" id="editStockName"></div>
+        <div class="form-group"><label>कंपनी</label><input type="text" id="editStockCompany"></div>
+      </div>
+      <div class="grid-3">
+        <div class="form-group"><label>बॅच *</label><input type="text" id="editStockBatch"></div>
+        <div class="form-group"><label>पॅकिंग</label><input type="text" id="editStockPacking"></div>
+        <div class="form-group"><label>एक्स्पायरी</label><input type="month" id="editStockExpiry"></div>
+      </div>
+      <div class="grid-3">
+        <div class="form-group"><label>खरेदी दर (₹)</label><input type="number" step="0.01" id="editStockBuyPrice"></div>
+        <div class="form-group"><label>विक्री दर (₹)</label><input type="number" step="0.01" id="editStockSellPrice"></div>
+        <div class="form-group"><label>शिल्लक साठा (Qty)</label><input type="number" id="editStockQty"></div>
+      </div>
+      <div class="grid-2" style="margin-top: 10px;">
+        <button class="btn btn-primary" onclick="saveEditedStock()">दुरुस्ती सेव्ह करा</button>
+        <button class="btn" style="background:#90a4ae; color:white;" onclick="closeStockEditModal()">रद्द करा</button>
+      </div>
+    </div>
   </div>
 
   <!-- Settings Modal -->
@@ -469,7 +554,7 @@
     </div>
   </div>
 
-  <!-- Print Thermal View -->
+  <!-- Thermal Print -->
   <div id="printSection">
     <div style="text-align: center; border-bottom: 1px dashed #000; padding-bottom: 4px;">
       <h3 id="pStoreName" style="font-size: 14px; font-family: 'Rozha One', serif;">आराधना कृषी सेवा केंद्र</h3>
@@ -483,9 +568,7 @@
       <div style="text-align: right;"><p><strong>बिल:</strong> <span id="pInvoiceNo"></span></p><p><strong>दि.:</strong> <span id="pDate"></span></p></div>
     </div>
     <table class="mini-table">
-      <thead>
-        <tr><th style="text-align: left;">तपशील</th><th>बॅच</th><th>दर</th><th>नग</th><th style="text-align: right;">रक्कम</th></tr>
-      </thead>
+      <thead><tr><th style="text-align: left;">तपशील</th><th>बॅच</th><th>दर</th><th>नग</th><th style="text-align: right;">रक्कम</th></tr></thead>
       <tbody id="pItemsBody"></tbody>
     </table>
     <div style="margin-top: 6px; text-align: right; font-size: 10px;">
@@ -497,12 +580,23 @@
     <p style="text-align: center; margin-top: 10px; font-size: 8px;">।। पुन्हा भेट द्या ।।</p>
   </div>
 
+  <!-- A4 Print (Stock Statement / Kird) -->
+  <div id="a4PrintSection">
+    <div style="text-align: center; border-bottom: 2px solid #000; padding-bottom: 8px; margin-bottom: 12px;">
+      <h2 id="a4ShopName" style="font-size: 20px; font-family: 'Rozha One', serif;">आराधना कृषी सेवा केंद्र</h2>
+      <p id="a4ShopDetails">पत्ता व फोन</p>
+      <h3 id="a4ReportHeading" style="margin-top: 6px; font-size: 15px; text-decoration: underline;">रिपोर्ट</h3>
+      <p id="a4ReportDate" style="font-size: 11px; margin-top: 2px;"></p>
+    </div>
+    <div id="a4ContentArea"></div>
+  </div>
+
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
 
   <script>
-    // --- कस्टम eDost Alert/Confirm Wrapper ---
+    // Custom Alert Box
     window.alert = function(msg) {
       document.getElementById('edostAlertMsg').innerText = msg;
       document.getElementById('edostAlertFooter').innerHTML = `
@@ -528,6 +622,11 @@
 
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
+
+    // Offline Persistence चालू करणे (इंटरनेट नसतानाही ॲप चालेल)
+    db.enablePersistence({ synchronizeTabs: true }).catch((err) => {
+      console.log("Offline persistence error: ", err.code);
+    });
 
     let currentAppPin = "1234";
     const MASTER_PIN = "7339";
@@ -607,6 +706,7 @@
       document.getElementById(tabId).classList.add('active');
       if (event && event.currentTarget) event.currentTarget.classList.add('active');
       if (tabId === 'reportTab') initReportsTab();
+      if (tabId === 'kirdTab') initKirdTab();
     }
 
     // Settings
@@ -653,10 +753,12 @@
       closeSettingsModal();
     }
 
-    // Stock Management
+    // Stock & Inward Form
     document.getElementById('stockForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const product = {
+        supplier: document.getElementById('prodSupplier').value.trim(),
+        purchase_bill_no: document.getElementById('prodPurBill').value.trim(),
         name: document.getElementById('prodName').value.trim(),
         company: document.getElementById('prodCompany').value.trim(),
         packing: document.getElementById('prodPacking').value.trim(),
@@ -670,7 +772,7 @@
       };
       try {
         await db.collection("products").add(product);
-        alert("स्टॉक सुरक्षित सेव्ह झाला!");
+        alert("पार्टी खरेदी बिल आणि साठा सेव्ह झाला!");
         document.getElementById('stockForm').reset();
       } catch (err) { alert("त्रुटी: " + err.message); }
     });
@@ -686,23 +788,88 @@
         productsList.push(item);
         stockBody.innerHTML += `
           <tr style="border-bottom: 1px solid #eee;">
-            <td style="padding: 5px;"><strong>${item.name}</strong><br><small style="color:#666;">${item.company} (${item.packing || '-'})</small></td>
+            <td style="padding: 5px;">
+              <strong>${item.name}</strong><br>
+              <small style="color:#666;">${item.company || '-'} (${item.packing || '-'})</small><br>
+              <span style="font-size:10px; color:#0288d1; font-weight:600;">पार्टी: ${item.supplier || '-'} | बिल: ${item.purchase_bill_no || '-'}</span>
+            </td>
             <td style="padding: 5px;">${item.batch_no}</td>
             <td style="padding: 5px;">₹${item.buy_price}</td>
             <td style="padding: 5px;">₹${item.sell_price}</td>
             <td style="padding: 5px; font-weight: bold; color:${item.stock <= 5 ? 'red' : 'green'};">${item.stock}</td>
-            <td style="padding: 5px;"><button class="btn-action" style="background:var(--danger);" onclick="deleteProduct('${item.id}')">हटवा</button></td>
+            <td style="padding: 5px; text-align:center; white-space:nowrap;">
+              <button class="btn-action" style="background:var(--info);" onclick="openStockEditModal('${item.id}')" title="दुरुस्ती"><i class="fa-solid fa-pen"></i></button>
+              <button class="btn-action" style="background:var(--danger);" onclick="deleteProduct('${item.id}')" title="हटवा"><i class="fa-solid fa-trash"></i></button>
+            </td>
           </tr>
         `;
         datalist.innerHTML += `<option value="${item.name} | बॅच: ${item.batch_no} | दर: ₹${item.sell_price}">`;
       });
     });
 
-    async function deleteProduct(id) {
-      if(confirm("औषध हटवायचे आहे का?")) await db.collection("products").doc(id).delete();
+    function openStockEditModal(prodId) {
+      const item = productsList.find(p => p.id === prodId);
+      if (!item) return;
+
+      document.getElementById('editStockId').value = prodId;
+      document.getElementById('editStockSupplier').value = item.supplier || '';
+      document.getElementById('editStockPurBill').value = item.purchase_bill_no || '';
+      document.getElementById('editStockName').value = item.name || '';
+      document.getElementById('editStockCompany').value = item.company || '';
+      document.getElementById('editStockBatch').value = item.batch_no || '';
+      document.getElementById('editStockPacking').value = item.packing || '';
+      document.getElementById('editStockExpiry').value = item.expiry || '';
+      document.getElementById('editStockBuyPrice').value = item.buy_price || 0;
+      document.getElementById('editStockSellPrice').value = item.sell_price || 0;
+      document.getElementById('editStockQty').value = item.stock || 0;
+
+      document.getElementById('editStockModal').style.display = 'flex';
     }
 
-    // Next Invoice Number
+    function closeStockEditModal() {
+      document.getElementById('editStockModal').style.display = 'none';
+    }
+
+    async function saveEditedStock() {
+      const prodId = document.getElementById('editStockId').value;
+      if (!prodId) return;
+
+      const supplier = document.getElementById('editStockSupplier').value.trim();
+      const purBill = document.getElementById('editStockPurBill').value.trim();
+      const name = document.getElementById('editStockName').value.trim();
+      const company = document.getElementById('editStockCompany').value.trim();
+      const batch = document.getElementById('editStockBatch').value.trim();
+      const packing = document.getElementById('editStockPacking').value.trim();
+      const expiry = document.getElementById('editStockExpiry').value;
+      const buyPrice = Number(document.getElementById('editStockBuyPrice').value) || 0;
+      const sellPrice = Number(document.getElementById('editStockSellPrice').value) || 0;
+      const stock = Number(document.getElementById('editStockQty').value) || 0;
+
+      try {
+        await db.collection("products").doc(prodId).update({
+          supplier: supplier,
+          purchase_bill_no: purBill,
+          name: name,
+          company: company,
+          batch_no: batch,
+          packing: packing,
+          expiry: expiry,
+          buy_price: buyPrice,
+          sell_price: sellPrice,
+          stock: stock,
+          updated_at: Date.now()
+        });
+
+        alert("पार्टी बिल माहिती व साठा अपडेट झाला!");
+        closeStockEditModal();
+      } catch (err) { alert("त्रुटी: " + err.message); }
+    }
+
+    async function deleteProduct(id) {
+      if(confirm("औषध कायमचे हटवायचे आहे का?")) await db.collection("products").doc(id).delete();
+    }
+
+    // Auto Invoice Sequence
     async function updateNextInvoiceNo() {
       const snap = await db.collection("invoices").orderBy("created_at", "desc").limit(1).get();
       if (!snap.empty) {
@@ -731,7 +898,7 @@
       if (match) {
         selectedProduct = match;
         document.getElementById('billItemRate').value = match.sell_price;
-        document.getElementById('stockAlert').innerText = `बॅच: ${match.batch_no} | शिल्लक: ${match.stock} नग`;
+        document.getElementById('stockAlert').innerText = `बॅच: ${match.batch_no} | शिल्लक: ${match.stock} नग | पार्टी: ${match.supplier || '-'}`;
       }
     }
 
@@ -897,7 +1064,6 @@
       } catch (err) { alert("त्रुटी: " + err.message); }
     }
 
-    // Bill Text Generation
     function buildInvoiceText(inv) {
       let itemsText = "";
       if (inv.items && Array.isArray(inv.items)) {
@@ -921,6 +1087,9 @@
     }
 
     function printInvoiceDirect(inv) {
+      document.getElementById('a4PrintSection').style.display = 'none';
+      document.getElementById('printSection').style.display = 'block';
+
       document.getElementById('pStoreName').innerText = shopInfo.name;
       document.getElementById('pStoreAddress').innerText = shopInfo.address;
       document.getElementById('pStorePhone').innerText = shopInfo.phone;
@@ -951,7 +1120,172 @@
       window.print();
     }
 
-    // Reports and Actions
+    // Daily Kird
+    function initKirdTab() {
+      const today = new Date().toISOString().split('T')[0];
+      if (!document.getElementById('kirdDate').value) {
+        document.getElementById('kirdDate').value = today;
+      }
+      renderDailyKird();
+    }
+
+    async function renderDailyKird() {
+      const selectedDate = document.getElementById('kirdDate').value;
+      const kirdBody = document.getElementById('kirdTableBody');
+      kirdBody.innerHTML = "";
+
+      const snapshot = await db.collection("invoices").where("date", "==", selectedDate).get();
+
+      let totSale = 0, cashIn = 0, creditTot = 0;
+
+      if (snapshot.empty) {
+        kirdBody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding:10px;">या तारखेला कोणतीही नोंद नाही.</td></tr>`;
+      }
+
+      snapshot.forEach(doc => {
+        const inv = doc.data();
+        totSale += Number(inv.grandTotal) || 0;
+        cashIn += Number(inv.paidAmount) || 0;
+        creditTot += Number(inv.balanceAmount) || 0;
+
+        kirdBody.innerHTML += `
+          <tr style="border-bottom: 1px solid #eee;">
+            <td style="padding: 5px;"><strong>${inv.invoiceNo}</strong></td>
+            <td style="padding: 5px;">${inv.customer ? inv.customer.name : '-'}</td>
+            <td style="padding: 5px;"><span style="color:${inv.paymentMode === 'CREDIT' ? 'red' : 'green'}; font-weight:bold;">${inv.paymentMode}</span></td>
+            <td style="padding: 5px; text-align: right;">₹${(inv.grandTotal || 0).toFixed(2)}</td>
+          </tr>
+        `;
+      });
+
+      document.getElementById('kirdTotalSale').innerText = `₹ ${totSale.toFixed(2)}`;
+      document.getElementById('kirdCashIn').innerText = `₹ ${cashIn.toFixed(2)}`;
+      document.getElementById('kirdCredit').innerText = `₹ ${creditTot.toFixed(2)}`;
+    }
+
+    // PDF Statements (Stock & Kird)
+    function printStockStatementPDF() {
+      document.getElementById('printSection').style.display = 'none';
+      document.getElementById('a4PrintSection').style.display = 'block';
+
+      document.getElementById('a4ShopName').innerText = shopInfo.name;
+      document.getElementById('a4ShopDetails').innerText = `${shopInfo.address} | मो.: ${shopInfo.phone}`;
+      document.getElementById('a4ReportHeading').innerText = "उपलब्ध साठा स्टेटमेंट (Stock Statement Report)";
+      document.getElementById('a4ReportDate').innerText = `दिनांक: ${new Date().toLocaleDateString('mr-IN')}`;
+
+      let rowsHtml = "";
+      let totalStockValue = 0;
+
+      productsList.forEach((p, idx) => {
+        const stockVal = (p.buy_price || 0) * (p.stock || 0);
+        totalStockValue += stockVal;
+        rowsHtml += `
+          <tr>
+            <td>${idx + 1}</td>
+            <td><strong>${p.name}</strong> (${p.company || '-'})</td>
+            <td>${p.supplier || '-'}</td>
+            <td>${p.purchase_bill_no || '-'}</td>
+            <td>${p.batch_no}</td>
+            <td>₹${p.buy_price}</td>
+            <td>₹${p.sell_price}</td>
+            <td style="font-weight:bold;">${p.stock}</td>
+            <td style="text-align:right;">₹${stockVal.toFixed(2)}</td>
+          </tr>
+        `;
+      });
+
+      document.getElementById('a4ContentArea').innerHTML = `
+        <table class="a4-table">
+          <thead>
+            <tr>
+              <th>अ.क्र.</th>
+              <th>औषधाचे नाव</th>
+              <th>पार्टी नाव</th>
+              <th>खरेदी बिल क्र.</th>
+              <th>बॅच</th>
+              <th>खरेदी दर</th>
+              <th>विक्री दर</th>
+              <th>शिल्लक</th>
+              <th style="text-align:right;">एकूण मूल्य (₹)</th>
+            </tr>
+          </thead>
+          <tbody>${rowsHtml}</tbody>
+          <tfoot>
+            <tr style="font-weight:bold; background:#e8f5e9;">
+              <td colspan="8" style="text-align:right;">एकूण स्टॉक खरेदी मूल्य:</td>
+              <td style="text-align:right;">₹ ${totalStockValue.toFixed(2)}</td>
+            </tr>
+          </tfoot>
+        </table>
+      `;
+
+      window.print();
+    }
+
+    async function printKirdPDF() {
+      document.getElementById('printSection').style.display = 'none';
+      document.getElementById('a4PrintSection').style.display = 'block';
+
+      const selectedDate = document.getElementById('kirdDate').value || new Date().toISOString().split('T')[0];
+
+      document.getElementById('a4ShopName').innerText = shopInfo.name;
+      document.getElementById('a4ShopDetails').innerText = `${shopInfo.address} | मो.: ${shopInfo.phone}`;
+      document.getElementById('a4ReportHeading').innerText = "दैनिक कीर्द पुस्तक (Daily Day-Book Report)";
+      document.getElementById('a4ReportDate').innerText = `दिनांक: ${selectedDate}`;
+
+      const snapshot = await db.collection("invoices").where("date", "==", selectedDate).get();
+
+      let rowsHtml = "";
+      let totSale = 0, cashIn = 0, creditTot = 0;
+
+      snapshot.forEach((doc, idx) => {
+        const inv = doc.data();
+        totSale += Number(inv.grandTotal) || 0;
+        cashIn += Number(inv.paidAmount) || 0;
+        creditTot += Number(inv.balanceAmount) || 0;
+
+        rowsHtml += `
+          <tr>
+            <td>${idx + 1}</td>
+            <td>${inv.invoiceNo}</td>
+            <td>${inv.customer ? inv.customer.name : '-'} (${inv.customer ? inv.customer.village : '-'})</td>
+            <td>${inv.paymentMode}</td>
+            <td style="text-align:right;">₹${(inv.paidAmount || 0).toFixed(2)}</td>
+            <td style="text-align:right;">₹${(inv.balanceAmount || 0).toFixed(2)}</td>
+            <td style="text-align:right; font-weight:bold;">₹${(inv.grandTotal || 0).toFixed(2)}</td>
+          </tr>
+        `;
+      });
+
+      document.getElementById('a4ContentArea').innerHTML = `
+        <table class="a4-table">
+          <thead>
+            <tr>
+              <th>अ.क्र.</th>
+              <th>बिल क्र.</th>
+              <th>शेतकरी नाव</th>
+              <th>पेमेंट मोड</th>
+              <th style="text-align:right;">जमा रोकड (₹)</th>
+              <th style="text-align:right;">उधारी बाकी (₹)</th>
+              <th style="text-align:right;">एकूण रक्कम (₹)</th>
+            </tr>
+          </thead>
+          <tbody>${rowsHtml || '<tr><td colspan="7" style="text-align:center;">कोणतीही नोंद नाही</td></tr>'}</tbody>
+          <tfoot>
+            <tr style="font-weight:bold; background:#e8f5e9;">
+              <td colspan="4" style="text-align:right;">एकूण:</td>
+              <td style="text-align:right;">₹ ${cashIn.toFixed(2)}</td>
+              <td style="text-align:right;">₹ ${creditTot.toFixed(2)}</td>
+              <td style="text-align:right;">₹ ${totSale.toFixed(2)}</td>
+            </tr>
+          </tfoot>
+        </table>
+      `;
+
+      window.print();
+    }
+
+    // Reports & Date Filter
     function initReportsTab() {
       const today = new Date().toISOString().split('T')[0];
       if (!document.getElementById('filterFromDate').value) {
@@ -987,7 +1321,7 @@
       });
 
       if (filtered.length === 0) {
-        historyBody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:10px;">या कालावधीत कोणतीही विक्री झालेली नाही.</td></tr>`;
+        historyBody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:10px;">या कालावधीत विक्री झालेली नाही.</td></tr>`;
       }
 
       filtered.forEach(inv => {
@@ -1048,7 +1382,7 @@
         } catch (e) {}
       } else {
         navigator.clipboard.writeText(msg);
-        alert("बिलाचा मजकूर कॉपी झाला आहे! तुम्ही साध्या SMS किंवा इतर ॲपवर पेस्ट करू शकता.");
+        alert("बिलाचा मजकूर कॉपी झाला आहे! तुम्ही साध्या SMS वर पाठवू शकता.");
       }
     }
 
@@ -1107,7 +1441,7 @@
       } catch (err) { alert("त्रुटी: " + err.message); }
     }
 
-    // CSV/Excel Backup
+    // CSV Backup
     async function downloadFullBackup() {
       try {
         let csvContent = "data:text/csv;charset=utf-8,";
@@ -1137,7 +1471,7 @@
       } catch (err) { alert("बॅकअप त्रुटी: " + err.message); }
     }
 
-    // Khata
+    // Khata Ledger
     db.collection("customers").onSnapshot(snapshot => {
       const khataBody = document.getElementById('khataTableBody');
       khataBody.innerHTML = "";
