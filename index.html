@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>आराधना कृषी सेवा केंद्र v2.3</title>
+    <title>आराधना कृषी सेवा केंद्र v2.6</title>
     <style>
         :root {
-            --primary-color: #1b4d3e;
-            --accent-color: #2e7d32;
+            --primary-green: #1b4d3e;
+            --accent-green: #2e7d32;
             --bg-color: #f4f6f5;
+            --orange-btn: #f4511e;
         }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -17,133 +18,172 @@
             padding: 0;
             color: #333;
         }
+        /* मोबाईल वरच्या बारसारखा हिरवा Header */
         header {
-            background-color: var(--primary-color);
+            background-color: var(--primary-green);
             color: white;
-            padding: 10px 15px;
+            padding: 8px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .version-badge {
+            background: gold; 
+            color: #000; 
+            padding: 1px 5px; 
+            border-radius: 3px; 
+            font-size: 10px;
+        }
+        /* मुख्य कंटेनर */
+        .container {
+            max-width: 600px;
+            margin: 8px auto;
+            background: white;
+            padding: 12px;
+            border-radius: 6px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        /* टॅब बार */
+        .nav-tabs {
+            display: flex;
+            background: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 10px;
+            font-size: 12px;
+        }
+        .nav-tab {
+            flex: 1;
+            padding: 8px 4px;
+            text-align: center;
+            background: none;
+            border: none;
+            font-weight: 600;
+            color: #333;
+            cursor: pointer;
+        }
+        .nav-tab.active {
+            background: var(--primary-green);
+            color: white;
+        }
+        /* फॉर्म डिझाईन */
+        .section-title {
+            font-size: 13px;
+            font-weight: bold;
+            color: var(--primary-green);
+            margin-bottom: 8px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 3px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-        .container {
-            max-width: 650px;
-            margin: 10px auto;
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
         .form-group {
-            margin-bottom: 12px;
+            margin-bottom: 8px;
         }
         label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 2px;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 12px;
         }
-        input, select, textarea {
+        input, select {
             width: 100%;
-            padding: 8px;
+            padding: 7px;
             box-sizing: border-box;
             border: 1px solid #ccc;
             border-radius: 4px;
-            font-size: 14px;
+            font-size: 13px;
         }
         .row {
             display: flex;
-            gap: 10px;
+            gap: 8px;
         }
         .col {
             flex: 1;
         }
-        .btn {
-            background-color: var(--accent-color);
+        .btn-green {
+            background-color: var(--accent-green);
             color: white;
             border: none;
-            padding: 10px 15px;
+            padding: 9px;
             border-radius: 4px;
             cursor: pointer;
-            font-size: 15px;
+            font-size: 13px;
             width: 100%;
             font-weight: bold;
-        }
-        .btn:hover {
-            opacity: 0.9;
-        }
-        .backup-section {
-            margin-top: 15px;
-            padding-top: 10px;
-            border-top: 1px dashed #ccc;
-            display: flex;
-            gap: 10px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-            font-size: 13px;
-        }
-        table, th, td {
-            border: 1px solid #ddd;
-        }
-        th, td {
-            padding: 8px;
             text-align: center;
+            margin-top: 5px;
         }
-        th {
-            background-color: #e9ecef;
+        .btn-green:hover { opacity: 0.9; }
+        
+        .backup-row {
+            display: flex;
+            gap: 6px;
+            margin-top: 10px;
+            padding-top: 8px;
+            border-top: 1px dashed #ccc;
         }
-        .alert-box {
-            background: #fff3cd;
-            border: 1px solid #ffeeba;
-            color: #856404;
-            padding: 10px;
+        .btn-small {
+            flex: 1;
+            padding: 6px;
+            border: none;
             border-radius: 4px;
-            margin-bottom: 12px;
-            font-size: 13px;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
+            color: white;
         }
         footer {
             text-align: center;
-            margin: 15px 0;
-            font-size: 12px;
+            margin: 10px 0;
+            font-size: 11px;
             color: #666;
         }
     </style>
 </head>
 <body>
 
+    <!-- Header जसा स्क्रीनशॉटमध्ये आहे -->
     <header>
-        <div>🌿 आराधना कृषी सेवा केंद्र <span style="background: gold; color: #000; padding: 2px 6px; border-radius: 4px; font-size: 11px;">v2.3</span></div>
-        <div>मोबाईल: 9604832223</div>
+        <div>🌿 आराधना कृषी सेवा केंद्र <span class="version-badge">v2.6</span></div>
+        <div style="font-size: 12px;">मोबाईल: 9604832223</div>
     </header>
 
     <div class="container">
-        
-        <!-- Cheque/Payment Alert Notification -->
-        <div id="alertContainer" style="display:none;" class="alert-box">
-            ⚠️ <b>महत्त्वाची सूचना:</b> उद्या डिझ्रिब्यूटरचा चेक वजा होणार आहे किंवा पेमेंटची तारीख आहे! कृपया खात्यात शिल्लक तपासा.
+        <!-- टॅब्स लेआउट -->
+        <div class="nav-tabs">
+            <button class="nav-tab active">बिलिंग</button>
+            <button class="nav-tab">साठा/इनवर्ड</button>
+            <button class="nav-tab">शेतकरी वही</button>
+            <button class="nav-tab">दैनिक कीर्द</button>
+            <button class="nav-tab">नफा-तोटा</button>
         </div>
 
-        <h3>1. शेतकरी व बिल माहिती (GST & Bill Number)</h3>
-        
-        <div class="form-group">
-            <label>GST पर्याय:</label>
-            <select id="gstSelect" onchange="updateBillNumber()">
-                <option value="होय">होय (GST)</option>
-                <option value="नाही" selected>नाही (Non-GST)</option>
-            </select>
+        <!-- 1. शेतकरी व बिल माहिती सेक्शन -->
+        <div class="section-title">
+            <span>👤 1. शेतकरी व बिल माहिती</span>
         </div>
 
         <div class="row">
             <div class="col form-group">
-                <label>बिल नंबर *</label>
-                <input type="text" id="billNo" readonly style="background: #e9ecef;">
+                <label>GST पर्याय:</label>
+                <select id="gstSelect" onchange="updateBillNumber()">
+                    <option value="होय">होय (GST)</option>
+                    <option value="नाही" selected>नाही (Non-GST)</option>
+                </select>
             </div>
             <div class="col form-group">
-                <label>शेतकऱ्याचे नाव *</label>
-                <input type="text" id="farmerName" placeholder="नाव टाईप करा...">
+                <label>बिल नंबर *</label>
+                <input type="text" id="billNo" readonly style="background: #e9ecef; font-weight: bold;">
             </div>
+        </div>
+
+        <div class="form-group">
+            <label>शेतकऱ्याचे नाव *</label>
+            <input type="text" id="farmerName" placeholder="नाव टाईप करा...">
         </div>
 
         <div class="row">
@@ -157,82 +197,20 @@
             </div>
         </div>
 
-        <hr style="border:0; border-top: 1px solid #eee; margin: 15px 0;">
-
-        <h3>2. खरेदी व डिस्ट्रीब्यूटर पेमेंट (Purchase & Payment Ledger)</h3>
-        
-        <div class="row">
-            <div class="col form-group">
-                <label>डिस्ट्रीब्यूटर नाव</label>
-                <input type="text" id="distributorName" placeholder="कंपनी/व्यापारी नाव">
-            </div>
-            <div class="col form-group">
-                <label>पेमेंट प्रकार</label>
-                <select id="payType">
-                    <option value="Cash">रोकड (Cash)</option>
-                    <option value="Cheque">चेक (Cheque)</option>
-                    <option value="Online">ऑनलाइन</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col form-group">
-                <label>दिलेली रक्कम (₹)</label>
-                <input type="number" id="paidAmount" placeholder="0.00">
-            </div>
-            <div class="col form-group">
-                <label>चेक / ड्यू तारीख (Due Date)</label>
-                <input type="date" id="dueDate">
-            </div>
-        </div>
-        <button class="btn" style="background: #17a2b8; margin-bottom: 10px;" onclick="saveDistributorPayment()">प्लॅटफॉर्मवर पेमेंट नोंद करा</button>
-
-        <hr style="border:0; border-top: 1px solid #eee; margin: 15px 0;">
-
-        <h3>3. मंथली स्टॉक व विक्री स्टेटमेंट (Month-End Report)</h3>
-        <div class="row" style="margin-bottom: 10px;">
-            <div class="col">
-                <label>महिना निवडा:</label>
-                <input type="month" id="reportMonth">
-            </div>
-            <div class="col" style="display: flex; align-items: flex-end;">
-                <button class="btn" style="background: #6c757d;" onclick="printReport()">🖨️ प्रिंट / PDF काढा</button>
-            </div>
-        </div>
-
-        <div id="printableArea">
-            <table>
-                <thead>
-                    <tr>
-                        <th>आयटम नाव</th>
-                        <th>मागील स्टॉक</th>
-                        <th>खरेदी</th>
-                        <th>विक्री</th>
-                        <th>शिल्लक स्टॉक</th>
-                    </tr>
-                </thead>
-                <tbody id="stockTableBody">
-                    <tr>
-                        <td colspan="5">सध्या कोणतीही नोंद नाही.</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="backup-section">
-            <button class="btn" style="background: #0275d8;" onclick="exportDataToFolder()">📁 फोल्डरमध्ये बॅकअप</button>
-            <button class="btn" style="background: #f0ad4e; color: #fff;" onclick="document.getElementById('importFile').click()">📂 डेटा रिस्टोअर</button>
+        <!-- बॅकअप व रिस्टोअर बटन्स (तारीख आणि वेळेसह फाईल नेम) -->
+        <div class="backup-row">
+            <button class="btn-small" style="background: #0275d8;" onclick="exportDataWithDate()">📁 बॅकअप (Backup)</button>
+            <button class="btn-small" style="background: #f0ad4e;" onclick="document.getElementById('importFile').click()">📂 रिस्टोअर (Restore)</button>
             <input type="file" id="importFile" style="display:none" accept=".json" onchange="importData(event)">
         </div>
     </div>
 
     <footer>
-        Powered by eDost Billing v2.3 | Developed with ❤️ by Sujit Patil
+        Powered by eDost Billing v2.6 | Developed with ❤️ by Sujit Patil
     </footer>
 
     <script>
-        // GST नुसार बिल नंबर बदलणे
+        // GST बदलल्यावर बिल नंबर बदलणारे लॉजिक (GST-99 किंवा INV-99)
         function updateBillNumber() {
             let gstVal = document.getElementById('gstSelect').value;
             let prefix = (gstVal === 'होय') ? 'GST-' : 'INV-';
@@ -243,16 +221,11 @@
         window.onload = function() {
             updateBillNumber();
             loadSavedForm();
-            checkChequeNotification();
-            
-            // आजची तारीख महिना निवडीसाठी डीफॉल्ट सेट करणे
-            let today = new Date().toISOString().slice(0, 7);
-            document.getElementById('reportMonth').value = today;
         };
 
-        // फॉर्ममधील डेटा ऑटो सेव्ह ठेवणे
+        // लोकल स्टोरेजमध्ये डेटा सेव्ह ठेवणे
         document.querySelectorAll('input, select').forEach(element => {
-            if(element.id && element.id !== 'reportMonth' && element.id !== 'importFile') {
+            if(element.id && element.id !== 'importFile') {
                 element.addEventListener('input', function() {
                     localStorage.setItem(this.id, this.value);
                 });
@@ -260,91 +233,49 @@
         });
 
         function loadSavedForm() {
-            ['farmerName', 'phone', 'village', 'gstSelect', 'distributorName', 'payType', 'paidAmount', 'dueDate'].forEach(id => {
+            ['farmerName', 'phone', 'village', 'gstSelect'].forEach(id => {
                 let savedVal = localStorage.getItem(id);
                 if(savedVal) {
-                    document.getElementById(id).value = savedVal;
+                    let el = document.getElementById(id);
+                    if(el) el.value = savedVal;
                 }
             });
             updateBillNumber();
         }
 
-        // डिस्ट्रीब्यूटर पेमेंट सेव्ह करणे
-        function saveDistributorPayment() {
-            let dist = document.getElementById('distributorName').value;
-            let amt = document.getElementById('paidAmount').value;
-            let date = document.getElementById('dueDate').value;
-            
-            if(!dist || !amt) {
-                alert('कृपया डिस्ट्रीब्यूटरचे नाव आणि रक्कम भरा.');
-                return;
-            }
-
-            localStorage.setItem('dist_name', dist);
-            localStorage.setItem('dist_amt', amt);
-            localStorage.setItem('dist_date', date);
-            
-            alert('डिस्ट्रीब्यूटर पेमेंट यशस्वीरित्या नोंदवले गेले!');
-            checkChequeNotification();
-        }
-
-        // चेक किंवा ड्यू तारखेच्या १ दिवस अगोदर नोटिफिकेशन तपासणी
-        function checkChequeNotification() {
-            let dueDateStr = localStorage.getItem('dist_date');
-            if(!dueDateStr) return;
-
-            let dueDate = new Date(dueDateStr);
-            let today = new Date();
-            
-            // तारीख फरक काढणे (१ दिवस अगोदर)
-            let diffTime = dueDate - today;
-            let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-            if(diffDays === 1 || diffDays === 0) {
-                document.getElementById('alertContainer').style.display = 'block';
-            } else {
-                document.getElementById('alertContainer').style.display = 'none';
-            }
-        }
-
-        // फोल्डरमध्ये डेटा बॅकअप सेव्ह करणे
-        async function exportDataToFolder() {
+        // अचूक तारीख आणि वेळेसह बॅकअप फाइल डाऊनलोड करणे
+        function exportDataWithDate() {
             let allData = {};
             for (let i = 0; i < localStorage.length; i++) {
                 let key = localStorage.key(i);
                 allData[key] = localStorage.getItem(key);
             }
+
+            let now = new Date();
+            let year = now.getFullYear();
+            let month = String(now.getMonth() + 1).padStart(2, '0');
+            let day = String(now.getDate()).padStart(2, '0');
+            let hours = String(now.getHours()).padStart(2, '0');
+            let minutes = String(now.getMinutes()).padStart(2, '0');
+            
+            let fileName = `Aradhana_Billing_Backup_${year}-${month}-${day}_${hours}-${minutes}.json`;
             let dataStr = JSON.stringify(allData, null, 2);
-            let fileName = "Aradhana_Billing_Backup_" + new Date().toISOString().slice(0,10) + ".json";
 
-            if ('showSaveFilePicker' in window) {
-                try {
-                    let handle = await window.showSaveFilePicker({
-                        suggestedName: fileName,
-                        types: [{ description: 'JSON Backup', accept: { 'application/json': ['.json'] } }],
-                    });
-                    let writable = await handle.createWritable();
-                    await writable.write(dataStr);
-                    await writable.close();
-                    alert('फाइल फोल्डरमध्ये यशस्वीरित्या सेव्ह झाली!');
-                    return;
-                } catch (err) {
-                    if (err.name === 'AbortError') return;
-                }
-            }
-
-            // फॉलबॅक डाऊनलोड
             let blob = new Blob([dataStr], { type: 'application/json' });
             let url = URL.createObjectURL(blob);
-            let a = document.createElement('a');
-            a.href = url;
-            a.download = fileName;
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
+            let downloadAnchor = document.createElement('a');
+            
+            downloadAnchor.href = url;
+            downloadAnchor.download = fileName;
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+            
+            URL.revokeObjectURL(url);
+            alert('बॅकअप फाइल यशस्वीरित्या डाऊनलोड झाली: ' + fileName);
         }
 
-        // डेटा इम्पोर्ट करणे
+        // डेटा रिस्टोअर (Restore) करणे
         function importData(event) {
             let file = event.target.files[0];
             if (!file) return;
@@ -355,23 +286,13 @@
                     for (let key in importedData) {
                         localStorage.setItem(key, importedData[key]);
                     }
-                    alert('डेटा यशस्वीरित्या रिस्टोअर झाला!');
+                    alert('डेटा यशस्वीरित्या रिस्टोअर झाला आहे!');
                     location.reload();
                 } catch (err) {
-                    alert('चुकीची फाइल!');
+                    alert('चुकीची फाइल! कृपया अचूक बॅकअप फाइल निवडा.');
                 }
             };
             reader.readAsText(file);
-        }
-
-        // प्रिन्ट काढण्याची सोय
-        function printReport() {
-            let printContents = document.getElementById('printableArea').innerHTML;
-            let originalContents = document.body.innerHTML;
-            document.body.innerHTML = "<h3>आराधना कृषी सेवा केंद्र - मंथली स्टॉक रिपोर्ट</h3>" + printContents;
-            window.print();
-            document.body.innerHTML = originalContents;
-            location.reload();
         }
     </script>
 </body>
