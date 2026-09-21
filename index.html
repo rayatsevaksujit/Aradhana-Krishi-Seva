@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>आराधना कृषी सेवा केंद्र v2.6</title>
+    <title>आराधना कृषी सेवा केंद्र v2.7</title>
     <style>
         :root {
             --primary-green: #1b4d3e;
             --accent-green: #2e7d32;
             --bg-color: #f4f6f5;
-            --orange-btn: #f4511e;
         }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -18,7 +17,6 @@
             padding: 0;
             color: #333;
         }
-        /* मोबाईल वरच्या बारसारखा हिरवा Header */
         header {
             background-color: var(--primary-green);
             color: white;
@@ -36,7 +34,6 @@
             border-radius: 3px; 
             font-size: 10px;
         }
-        /* मुख्य कंटेनर */
         .container {
             max-width: 600px;
             margin: 8px auto;
@@ -45,30 +42,36 @@
             border-radius: 6px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
-        /* टॅब बार */
+        /* टॅब बार सुधारणा */
         .nav-tabs {
             display: flex;
             background: #e9ecef;
             border-radius: 4px;
             overflow: hidden;
             margin-bottom: 10px;
-            font-size: 12px;
+            font-size: 11px;
         }
         .nav-tab {
             flex: 1;
-            padding: 8px 4px;
+            padding: 8px 2px;
             text-align: center;
             background: none;
             border: none;
             font-weight: 600;
             color: #333;
             cursor: pointer;
+            white-space: nowrap;
         }
         .nav-tab.active {
             background: var(--primary-green);
             color: white;
         }
-        /* फॉर्म डिझाईन */
+        .tab-pane {
+            display: none;
+        }
+        .tab-pane.active {
+            display: block;
+        }
         .section-title {
             font-size: 13px;
             font-weight: bold;
@@ -76,9 +79,6 @@
             margin-bottom: 8px;
             border-bottom: 1px solid #ddd;
             padding-bottom: 3px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
         }
         .form-group {
             margin-bottom: 8px;
@@ -104,37 +104,23 @@
         .col {
             flex: 1;
         }
-        .btn-green {
-            background-color: var(--accent-green);
-            color: white;
-            border: none;
-            padding: 9px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 13px;
-            width: 100%;
-            font-weight: bold;
-            text-align: center;
-            margin-top: 5px;
-        }
-        .btn-green:hover { opacity: 0.9; }
-        
         .backup-row {
             display: flex;
             gap: 6px;
-            margin-top: 10px;
+            margin-top: 12px;
             padding-top: 8px;
             border-top: 1px dashed #ccc;
         }
         .btn-small {
             flex: 1;
-            padding: 6px;
+            padding: 7px;
             border: none;
             border-radius: 4px;
-            font-size: 11px;
+            font-size: 12px;
             font-weight: bold;
             cursor: pointer;
             color: white;
+            text-align: center;
         }
         footer {
             text-align: center;
@@ -146,58 +132,88 @@
 </head>
 <body>
 
-    <!-- Header जसा स्क्रीनशॉटमध्ये आहे -->
     <header>
-        <div>🌿 आराधना कृषी सेवा केंद्र <span class="version-badge">v2.6</span></div>
+        <div>🌿 आराधना कृषी सेवा केंद्र <span class="version-badge">v2.7</span></div>
         <div style="font-size: 12px;">मोबाईल: 9604832223</div>
     </header>
 
     <div class="container">
-        <!-- टॅब्स लेआउट -->
+        <!-- टॅब्स नेव्हिगेशन (क्लिक करण्यायोग्य) -->
         <div class="nav-tabs">
-            <button class="nav-tab active">बिलिंग</button>
-            <button class="nav-tab">साठा/इनवर्ड</button>
-            <button class="nav-tab">शेतकरी वही</button>
-            <button class="nav-tab">दैनिक कीर्द</button>
-            <button class="nav-tab">नफा-तोटा</button>
+            <button class="nav-tab active" onclick="switchTab(event, 'billingTab')">बिलिंग</button>
+            <button class="nav-tab" onclick="switchTab(event, 'stockTab')">साठा/इनवर्ड</button>
+            <button class="nav-tab" onclick="switchTab(event, 'ledgerTab')">शेतकरी वही</button>
+            <button class="nav-tab" onclick="switchTab(event, 'dailyTab')">दैनिक कीर्द</button>
+            <button class="nav-tab" onclick="switchTab(event, 'profitTab')">नफा-तोटा</button>
         </div>
 
-        <!-- 1. शेतकरी व बिल माहिती सेक्शन -->
-        <div class="section-title">
-            <span>👤 1. शेतकरी व बिल माहिती</span>
-        </div>
+        <!-- 1. बिलिंग विंडो -->
+        <div id="billingTab" class="tab-pane active">
+            <div class="section-title">👤 1. शेतकरी व बिल माहिती</div>
 
-        <div class="row">
-            <div class="col form-group">
-                <label>GST पर्याय:</label>
-                <select id="gstSelect" onchange="updateBillNumber()">
-                    <option value="होय">होय (GST)</option>
-                    <option value="नाही" selected>नाही (Non-GST)</option>
-                </select>
+            <div class="row">
+                <div class="col form-group">
+                    <label>GST पर्याय:</label>
+                    <select id="gstSelect" onchange="updateBillNumber()">
+                        <option value="होय">होय (GST)</option>
+                        <option value="नाही" selected>नाही (Non-GST)</option>
+                    </select>
+                </div>
+                <div class="col form-group">
+                    <label>बिल नंबर *</label>
+                    <input type="text" id="billNo" readonly style="background: #e9ecef; font-weight: bold;">
+                </div>
             </div>
-            <div class="col form-group">
-                <label>बिल नंबर *</label>
-                <input type="text" id="billNo" readonly style="background: #e9ecef; font-weight: bold;">
+
+            <div class="form-group">
+                <label>शेतकऱ्याचे नाव *</label>
+                <input type="text" id="farmerName" placeholder="नाव टाईप करा...">
+            </div>
+
+            <div class="row">
+                <div class="col form-group">
+                    <label>WhatsApp / फोन</label>
+                    <input type="text" id="phone" placeholder="98XXXXXXXX">
+                </div>
+                <div class="col form-group">
+                    <label>गाव</label>
+                    <input type="text" id="village" placeholder="गाव">
+                </div>
             </div>
         </div>
 
-        <div class="form-group">
-            <label>शेतकऱ्याचे नाव *</label>
-            <input type="text" id="farmerName" placeholder="नाव टाईप करा...">
-        </div>
-
-        <div class="row">
-            <div class="col form-group">
-                <label>WhatsApp / फोन</label>
-                <input type="text" id="phone" placeholder="98XXXXXXXX">
+        <!-- 2. साठा/इनवर्ड विंडो -->
+        <div id="stockTab" class="tab-pane">
+            <div class="section-title">📦 2. साठा व इनवर्ड व्यवस्थापन</div>
+            <div class="form-group">
+                <label>औषध / खताचे नाव</label>
+                <input type="text" id="stockItemName" placeholder="औषधाचे नाव शोधा...">
             </div>
-            <div class="col form-group">
-                <label>गाव</label>
-                <input type="text" id="village" placeholder="गाव">
+            <div class="form-group">
+                <label>येणारा साठा (Qty)</label>
+                <input type="number" id="stockQty" placeholder="नग संख्या">
             </div>
         </div>
 
-        <!-- बॅकअप व रिस्टोअर बटन्स (तारीख आणि वेळेसह फाईल नेम) -->
+        <!-- 3. शेतकरी वही विंडो -->
+        <div id="ledgerTab" class="tab-pane">
+            <div class="section-title">📖 3. शेतकरी उधारी वही</div>
+            <p style="font-size: 12px; color: #555;">शेतकऱ्यांचे उधारी व जमा खात्याची नोंद येथे दिसेल.</p>
+        </div>
+
+        <!-- 4. दैनिक कीर्द विंडो -->
+        <div id="dailyTab" class="tab-pane">
+            <div class="section-title">📒 4. दैनिक कीर्द व्यवहार</div>
+            <p style="font-size: 12px; color: #555;">आजचे एकूण व्यवहार आणि जमा-खर्च.</p>
+        </div>
+
+        <!-- 5. नफा-तोटा विंडो -->
+        <div id="profitTab" class="tab-pane">
+            <div class="section-title">📊 5. नफा व तोटा अहवाल</div>
+            <p style="font-size: 12px; color: #555;">खरेदी आणि विक्रीवरील नफ्याचा हिशोब.</p>
+        </div>
+
+        <!-- बॅकअप व रिस्टोअर बटन्स -->
         <div class="backup-row">
             <button class="btn-small" style="background: #0275d8;" onclick="exportDataWithDate()">📁 बॅकअप (Backup)</button>
             <button class="btn-small" style="background: #f0ad4e;" onclick="document.getElementById('importFile').click()">📂 रिस्टोअर (Restore)</button>
@@ -206,11 +222,25 @@
     </div>
 
     <footer>
-        Powered by eDost Billing v2.6 | Developed with ❤️ by Sujit Patil
+        Powered by eDost Billing v2.7 | Developed with ❤️ by Sujit Patil
     </footer>
 
     <script>
-        // GST बदलल्यावर बिल नंबर बदलणारे लॉजिक (GST-99 किंवा INV-99)
+        // टॅब स्विच करण्याचे अचूक फंक्शन
+        function switchTab(evt, tabId) {
+            let panes = document.getElementsByClassName("tab-pane");
+            for (let p of panes) {
+                p.classList.remove("active");
+            }
+            let tabs = document.getElementsByClassName("nav-tab");
+            for (let t of tabs) {
+                t.classList.remove("active");
+            }
+            document.getElementById(tabId).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+
+        // GST बदलल्यावर बिल नंबर बदलणारे लॉजिक
         function updateBillNumber() {
             let gstVal = document.getElementById('gstSelect').value;
             let prefix = (gstVal === 'होय') ? 'GST-' : 'INV-';
@@ -223,7 +253,7 @@
             loadSavedForm();
         };
 
-        // लोकल स्टोरेजमध्ये डेटा सेव्ह ठेवणे
+        // लोकल स्टोरेजमध्ये सर्व डेटा ऑटो सेव्ह ठेवणे
         document.querySelectorAll('input, select').forEach(element => {
             if(element.id && element.id !== 'importFile') {
                 element.addEventListener('input', function() {
@@ -233,7 +263,7 @@
         });
 
         function loadSavedForm() {
-            ['farmerName', 'phone', 'village', 'gstSelect'].forEach(id => {
+            ['farmerName', 'phone', 'village', 'gstSelect', 'stockItemName', 'stockQty'].forEach(id => {
                 let savedVal = localStorage.getItem(id);
                 if(savedVal) {
                     let el = document.getElementById(id);
@@ -243,7 +273,7 @@
             updateBillNumber();
         }
 
-        // अचूक तारीख आणि वेळेसह बॅकअप फाइल डाऊनलोड करणे
+        // तारीख आणि वेळेसह बॅकअप फाइल डाऊनलोड करणे
         function exportDataWithDate() {
             let allData = {};
             for (let i = 0; i < localStorage.length; i++) {
@@ -275,7 +305,7 @@
             alert('बॅकअप फाइल यशस्वीरित्या डाऊनलोड झाली: ' + fileName);
         }
 
-        // डेटा रिस्टोअर (Restore) करणे
+        // डेटा रिस्टोअर करणे
         function importData(event) {
             let file = event.target.files[0];
             if (!file) return;
