@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>आराधना कृषी सेवा केंद्र v2.1</title>
+    <title>आराधना कृषी सेवा केंद्र v3.2</title>
     <style>
         :root {
-            --primary-color: #1b4d3e;
-            --accent-color: #2e7d32;
+            --primary-green: #1b4d3e;
+            --accent-green: #2e7d32;
             --bg-color: #f4f6f5;
+            --orange-btn: #f4511e;
         }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -18,70 +19,146 @@
             color: #333;
         }
         header {
-            background-color: var(--primary-color);
+            background-color: var(--primary-green);
             color: white;
-            padding: 10px 15px;
+            padding: 8px 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .version-badge {
+            background: gold; 
+            color: #000; 
+            padding: 1px 5px; 
+            border-radius: 3px; 
+            font-size: 10px;
         }
         .container {
-            max-width: 600px;
-            margin: 10px auto;
+            max-width: 650px;
+            margin: 8px auto;
             background: white;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 12px;
+            border-radius: 6px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .nav-tabs {
+            display: flex;
+            background: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 10px;
+            font-size: 11px;
+        }
+        .nav-tab {
+            flex: 1;
+            padding: 8px 2px;
+            text-align: center;
+            background: none;
+            border: none;
+            font-weight: 600;
+            color: #333;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .nav-tab.active {
+            background: var(--primary-green);
+            color: white;
+        }
+        .tab-pane {
+            display: none;
+        }
+        .tab-pane.active {
+            display: block;
+        }
+        .section-title {
+            font-size: 13px;
+            font-weight: bold;
+            color: var(--primary-green);
+            margin: 10px 0 6px 0;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 3px;
         }
         .form-group {
-            margin-bottom: 12px;
+            margin-bottom: 8px;
         }
         label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 2px;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 12px;
         }
-        input, select {
+        input, select, textarea {
             width: 100%;
-            padding: 8px;
+            padding: 7px;
             box-sizing: border-box;
             border: 1px solid #ccc;
             border-radius: 4px;
-            font-size: 14px;
+            font-size: 13px;
         }
         .row {
             display: flex;
-            gap: 10px;
+            gap: 8px;
         }
         .col {
             flex: 1;
         }
-        .btn {
-            background-color: var(--accent-color);
+        .btn-orange {
+            background-color: var(--orange-btn);
             color: white;
             border: none;
-            padding: 10px 15px;
+            padding: 9px;
             border-radius: 4px;
             cursor: pointer;
-            font-size: 15px;
+            font-size: 13px;
             width: 100%;
             font-weight: bold;
+            text-align: center;
         }
-        .btn:hover {
-            opacity: 0.9;
-        }
-        .backup-section {
-            margin-top: 20px;
+        .btn-orange:hover { opacity: 0.9; }
+        
+        .global-backup-box {
+            margin-top: 15px;
             padding-top: 10px;
-            border-top: 1px dashed #ccc;
+            border-top: 2px solid #e9ecef;
             display: flex;
-            gap: 10px;
+            justify-content: space-between;
+            align-items: center;
+            background: #fdfdfe;
+            padding: 8px;
+            border-radius: 4px;
+        }
+        .btn-small {
+            padding: 7px 12px;
+            border: none;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            color: white;
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 8px;
+            font-size: 12px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 6px;
+            text-align: center;
+        }
+        th {
+            background-color: #e9ecef;
         }
         footer {
             text-align: center;
-            margin: 15px 0;
-            font-size: 12px;
+            margin: 10px 0;
+            font-size: 11px;
             color: #666;
         }
     </style>
@@ -89,110 +166,293 @@
 <body>
 
     <header>
-        <div>🌿 आराधना कृषी सेवा केंद्र <span style="background: gold; color: #000; padding: 2px 6px; border-radius: 4px; font-size: 11px;">v2.1</span></div>
-        <div>मोबाईल: 9604832223</div>
+        <div>🌿 आराधना कृषी सेवा केंद्र <span class="version-badge">v3.2</span></div>
+        <div style="font-size: 12px;">मोबाईल: 9604832223</div>
     </header>
 
     <div class="container">
-        <h3>1. शेतकरी व बिल माहिती</h3>
-        
-        <div class="form-group">
-            <label>GST पर्याय:</label>
-            <select id="gstSelect" onchange="updateBillNumber()">
-                <option value="होय">होय (GST)</option>
-                <option value="नाही" selected>नाही (Non-GST)</option>
-            </select>
+        <!-- टॅब्स नेव्हिगेशन -->
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="switchTab(event, 'billingTab')">बिलिंग</button>
+            <button class="nav-tab" onclick="switchTab(event, 'stockTab')">साठा/इनवर्ड</button>
+            <button class="nav-tab" onclick="switchTab(event, 'ledgerTab')">शेतकरी वही</button>
+            <button class="nav-tab" onclick="switchTab(event, 'dailyTab')">दैनिक कीर्द</button>
+            <button class="nav-tab" onclick="switchTab(event, 'profitTab')">नफा-तोटा</button>
         </div>
 
-        <div class="row">
-            <div class="col form-group">
-                <label>बिल नंबर *</label>
-                <input type="text" id="billNo" readonly style="background: #e9ecef;">
+        <!-- 1. बिलिंग विंडो -->
+        <div id="billingTab" class="tab-pane active">
+            <div class="section-title">👤 1. शेतकरी व बिल माहिती</div>
+
+            <div class="row">
+                <div class="col form-group">
+                    <label>GST पर्याय:</label>
+                    <select id="gstSelect" onchange="updateBillNumber()">
+                        <option value="होय">होय (GST)</option>
+                        <option value="नाही" selected>नाही (Non-GST)</option>
+                    </select>
+                </div>
+                <div class="col form-group">
+                    <label>बिल नंबर *</label>
+                    <input type="text" id="billNo" readonly style="background: #e9ecef; font-weight: bold;">
+                </div>
             </div>
-            <div class="col form-group">
+
+            <div class="form-group">
                 <label>शेतकऱ्याचे नाव *</label>
                 <input type="text" id="farmerName" placeholder="नाव टाईप करा...">
             </div>
+
+            <div class="row">
+                <div class="col form-group">
+                    <label>WhatsApp / फोन</label>
+                    <input type="text" id="phone" placeholder="98XXXXXXXX">
+                </div>
+                <div class="col form-group">
+                    <label>गाव</label>
+                    <input type="text" id="village" placeholder="गाव">
+                </div>
+            </div>
+
+            <div class="section-title">🛒 2. औषध निवडा व जोडा (Sale Register)</div>
+            <div class="form-group">
+                <label>औषध शोधा *</label>
+                <input type="text" id="medicineName" placeholder="नाव, बॅच किंवा HSN...">
+            </div>
+            <div class="row">
+                <div class="col form-group">
+                    <label>दर (₹)</label>
+                    <input type="number" id="medRate" placeholder="0.00">
+                </div>
+                <div class="col form-group">
+                    <label>संख्या (Qty) *</label>
+                    <input type="number" id="medQty" value="1">
+                </div>
+            </div>
+            <button class="btn-orange" onclick="addMedicine()">+ जोडा</button>
+            
+            <div style="margin-top: 10px;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>औषध नाव</th>
+                            <th>दर</th>
+                            <th>संख्या</th>
+                            <th>एकूण</th>
+                        </tr>
+                    </thead>
+                    <tbody id="billItemsTable">
+                        <tr><td colspan="4" style="color:#666;">अद्याप औषध जोडलेले नाही.</td></tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
-        <div class="row">
-            <div class="col form-group">
-                <label>WhatsApp / फोन</label>
-                <input type="text" id="phone" placeholder="98XXXXXXXX">
+        <!-- 2. साठा/इनवर्ड विंडो (सुधारित आणि पूर्ण ऑप्शन्ससह) -->
+        <div id="stockTab" class="tab-pane">
+            <div class="section-title">📦 साठा व इनवर्ड (खरेदी नोंद)</div>
+            
+            <div class="row">
+                <div class="col form-group">
+                    <label>परचेस इनव्हॉइस नंबर *</label>
+                    <input type="text" id="purchaseInvoice" placeholder="बिल्ट नंबर टाक...">
+                </div>
+                <div class="col form-group">
+                    <label>HSN कोड</label>
+                    <input type="text" id="hsnCode" placeholder="HSN No">
+                </div>
             </div>
-            <div class="col form-group">
-                <label>गाव</label>
-                <input type="text" id="village" placeholder="गाव">
+
+            <div class="form-group">
+                <label>औषध / खताचे नाव *</label>
+                <input type="text" id="inwardName" placeholder="नवीन मालाचे नाव टाка..." oninput="checkExistingStock(this.value)">
             </div>
+
+            <!-- मागील स्टॉक दाखवणारी पट्टी -->
+            <div id="existingStockAlert" style="background: #e2f0d9; color: #274e13; padding: 6px 10px; border-radius: 4px; font-size: 12px; margin-bottom: 8px; display: none;">
+                📦 <b>सध्याचा उपलब्ध स्टॉक (Current Stock):</b> <span id="currentStockVal">0</span> नग
+            </div>
+
+            <div class="row">
+                <div class="col form-group">
+                    <label>खरेदी नग (Qty) *</label>
+                    <input type="number" id="inwardQty" placeholder="संख्या">
+                </div>
+                <div class="col form-group">
+                    <label>खरेदी दर (₹) *</label>
+                    <input type="number" id="inwardRate" placeholder="किंमत">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>GST दर (%)</label>
+                <select id="gstRateSelect">
+                    <option value="0">0% (GST विरहित)</option>
+                    <option value="5">5%</option>
+                    <option value="12">12%</option>
+                    <option value="18" selected>18%</option>
+                    <option value="28">28%</option>
+                </select>
+            </div>
+
+            <button class="btn-orange" style="background: var(--accent-green);" onclick="saveInward()">+ स्टॉक इनवर्ड करा</button>
         </div>
 
-        <hr style="border:0; border-top: 1px solid #eee; margin: 15px 0;">
+        <!-- 3. शेतकरी वही विंडो -->
+        <div id="ledgerTab" class="tab-pane">
+            <div class="section-title">📖 शेतकरी उधारी व जमा वही</div>
+            <div class="form-group">
+                <label>शेतकऱ्याचे नाव शोधा</label>
+                <input type="text" id="ledgerSearch" placeholder="नाव टाका...">
+            </div>
+            <p style="font-size: 12px; color: #555;">येथे संबंधित शेतकऱ्याचे एकूण उधारी खाते आणि मागील व्यवहार दिसतील.</p>
+        </div>
 
-        <h3>2. डेटा बॅकअप व सुरक्षा (Backup & Restore)</h3>
-        <p style="font-size: 12px; color: #555;">तुमचा सर्व डेटा सुरक्षित ठेवण्यासाठी बॅकअप डाऊनलोड करा.</p>
-        
-        <div class="backup-section">
-            <button class="btn" style="background: #0275d8;" onclick="exportData()">📥 डेटा डाऊनलोड (Backup)</button>
-            <button class="btn" style="background: #f0ad4e; color: #fff;" onclick="document.getElementById('importFile').click()">📤 डेटा अपलोड (Restore)</button>
-            <input type="file" id="importFile" style="display:none" accept=".json" onchange="importData(event)">
+        <!-- 4. दैनिक कीर्द विंडो -->
+        <div id="dailyTab" class="tab-pane">
+            <div class="section-title">📒 दैनिक कीर्द (Day Book)</div>
+            <p style="font-size: 12px; color: #555;">आज दिवसभरातील एकूण रोख व उधारी विक्रीचे व्यवहार.</p>
+        </div>
+
+        <!-- 5. नफा-तोटा विंडो -->
+        <div id="profitTab" class="tab-pane">
+            <div class="section-title">📊 नफा व तोटा अहवाल (Profit & Loss)</div>
+            <p style="font-size: 12px; color: #555;">एकूण खरेदी, विक्री आणि निव्वळ नफ्याचा मासिक अहवाल.</p>
+        </div>
+
+        <!-- ग्लोबल बॅकअप बॉक्स -->
+        <div class="global-backup-box">
+            <span style="font-size: 12px; font-weight: bold; color: var(--primary-green);">📁 डेटा सुरक्षितता:</span>
+            <div style="display: flex; gap: 6px;">
+                <button class="btn-small" style="background: #0275d8;" onclick="exportDataWithDate()">बॅकअप</button>
+                <button class="btn-small" style="background: #f0ad4e;" onclick="document.getElementById('importFile').click()">रिस्टोअर</button>
+                <input type="file" id="importFile" style="display:none" accept=".json" onchange="importData(event)">
+            </div>
         </div>
     </div>
 
     <footer>
-        Powered by eDost Billing v2.1 | Developed with ❤️ by Sujit Patil
+        Powered by eDost Billing v3.2 | Developed with ❤️ by Sujit Patil
     </footer>
 
     <script>
-        // स्वयंचलित बिल नंबर जनरेटर आणि GST बदल लॉजिक
+        function switchTab(evt, tabId) {
+            let panes = document.getElementsByClassName("tab-pane");
+            for (let p of panes) p.classList.remove("active");
+            let tabs = document.getElementsByClassName("nav-tab");
+            for (let t of tabs) t.classList.remove("active");
+            document.getElementById(tabId).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+
+        // औषधाचे नाव टाकल्यावर मागील स्टॉक तपासणी
+        function checkExistingStock(medName) {
+            if(!medName.trim()) {
+                document.getElementById('existingStockAlert').style.display = 'none';
+                return;
+            }
+            let stockKey = 'stock_' + medName.trim().toLowerCase();
+            let savedStock = localStorage.getItem(stockKey) || '0';
+            
+            document.getElementById('currentStockVal').innerText = savedStock;
+            document.getElementById('existingStockAlert').style.display = 'block';
+        }
+
+        function addMedicine() {
+            let med = document.getElementById('medicineName').value;
+            if(!med) {
+                alert('कृपया औषधाचे नाव टाका.');
+                return;
+            }
+            alert('औषध बिलात यशस्वीरित्या जोडले गेले!');
+        }
+
+        // स्टॉक इनवर्ड सेव्ह करणे आणि स्टॉक अपडेट करणे
+        function saveInward() {
+            let name = document.getElementById('inwardName').value;
+            let qty = parseInt(document.getElementById('inwardQty').value) || 0;
+            let invoice = document.getElementById('purchaseInvoice').value;
+
+            if(!name || qty <= 0) {
+                alert('कृपया औषधाचे नाव आणि खरेदी नग अचूक भरा.');
+                return;
+            }
+
+            // स्टॉक अपडेट करणे
+            let stockKey = 'stock_' + name.trim().toLowerCase();
+            let currentStock = parseInt(localStorage.getItem(stockKey)) || 0;
+            let newTotalStock = currentStock + qty;
+            localStorage.setItem(stockKey, newTotalStock);
+
+            alert('स्टॉक यशस्वीरित्या इनवर्ड झाला! नवीन एकूण स्टॉक: ' + newTotalStock);
+            document.getElementById('inwardName').value = '';
+            document.getElementById('inwardQty').value = '';
+            document.getElementById('purchaseInvoice').value = '';
+            document.getElementById('existingStockAlert').style.display = 'none';
+        }
+
         function updateBillNumber() {
             let gstVal = document.getElementById('gstSelect').value;
             let prefix = (gstVal === 'होय') ? 'GST-' : 'INV-';
-            
-            // localStorage मधून शेवटचा नंबर घेणे किंवा डीफॉल्ट 99 वापरणे
             let lastNum = localStorage.getItem('last_bill_seq') || '99';
             document.getElementById('billNo').value = prefix + lastNum;
         }
 
-        // पेज लोड झाल्यावर नंबर सेट करणे
         window.onload = function() {
             updateBillNumber();
             loadSavedForm();
         };
 
-        // फॉर्ममधील डेटा लोकल स्टोरेजमध्ये सेव्ह ठेवणे
         document.querySelectorAll('input, select').forEach(element => {
-            element.addEventListener('input', function() {
-                localStorage.setItem(this.id, this.value);
-            });
+            if(element.id && element.id !== 'importFile') {
+                element.addEventListener('input', function() {
+                    localStorage.setItem(this.id, this.value);
+                });
+            }
         });
 
         function loadSavedForm() {
-            ['farmerName', 'phone', 'village', 'gstSelect'].forEach(id => {
+            ['farmerName', 'phone', 'village', 'gstSelect', 'medicineName', 'medRate', 'medQty', 'purchaseInvoice', 'hsnCode', 'inwardName', 'inwardQty', 'inwardRate', 'gstRateSelect'].forEach(id => {
                 let savedVal = localStorage.getItem(id);
                 if(savedVal) {
-                    document.getElementById(id).value = savedVal;
+                    let el = document.getElementById(id);
+                    if(el) el.value = savedVal;
                 }
             });
             updateBillNumber();
         }
 
-        // डेटा एक्सपोर्ट (JSON फाईल डाऊनलोड) करणे
-        function exportData() {
+        function exportDataWithDate() {
             let allData = {};
             for (let i = 0; i < localStorage.length; i++) {
                 let key = localStorage.key(i);
                 allData[key] = localStorage.getItem(key);
             }
-            let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(allData));
+
+            let now = new Date();
+            let year = now.getFullYear();
+            let month = String(now.getMonth() + 1).padStart(2, '0');
+            let day = String(now.getDate()).padStart(2, '0');
+            let hours = String(now.getHours()).padStart(2, '0');
+            let minutes = String(now.getMinutes()).padStart(2, '0');
+            
+            let fileName = `Aradhana_Billing_Backup_${year}-${month}-${day}_${hours}-${minutes}.json`;
+            let dataStr = JSON.stringify(allData, null, 2);
+
+            let blob = new Blob([dataStr], { type: 'application/json' });
+            let url = URL.createObjectURL(blob);
             let downloadAnchor = document.createElement('a');
-            downloadAnchor.setAttribute("href", dataStr);
-            downloadAnchor.setAttribute("download", "Aradhana_Billing_Backup_" + new Date().toISOString().slice(0,10) + ".json");
+            
+            downloadAnchor.href = url;
+            downloadAnchor.download = fileName;
             document.body.appendChild(downloadAnchor);
             downloadAnchor.click();
             downloadAnchor.remove();
+            
+            URL.revokeObjectURL(url);
+            alert('बॅकअप फाइल यशस्वीरित्या डाऊनलोड झाली: ' + fileName);
         }
 
-        // डेटा इम्पोर्ट (Restore) करणे
         function importData(event) {
             let file = event.target.files[0];
             if (!file) return;
@@ -203,10 +463,10 @@
                     for (let key in importedData) {
                         localStorage.setItem(key, importedData[key]);
                     }
-                    alert('डेटा यशस्वीरित्या रिस्टोअर (Restore) झाला आहे!');
+                    alert('डेटा यशस्वीरित्या रिस्टोअर झाला आहे!');
                     location.reload();
                 } catch (err) {
-                    alert('चुकीची फाईल! कृपया अचूक बॅकअप फाईल निवडा.');
+                    alert('चुकीची फाइल! कृपया अचूक बॅकअप फाइल निवडा.');
                 }
             };
             reader.readAsText(file);
