@@ -31,7 +31,7 @@
     }
 
     * { box-sizing: border-box; font-family: 'Poppins', sans-serif; margin: 0; padding: 0; }
-    body { background-color: var(--bg); color: var(--text-main); padding-bottom: 60px; font-size: 11px; }
+    body { background-color: var(--bg); color: var(--text-main); padding-top: 85px; padding-bottom: 60px; font-size: 13px; }
 
     /* Custom eDost Modal */
     #edostAlertModal {
@@ -40,16 +40,16 @@
       align-items: center; justify-content: center; padding: 12px;
     }
     .edost-alert-box {
-      background: #ffffff; border-radius: 10px; width: 100%; max-width: 280px; overflow: hidden;
+      background: #ffffff; border-radius: 10px; width: 100%; max-width: 300px; overflow: hidden;
       box-shadow: 0 10px 25px rgba(0,0,0,0.3); animation: popIn 0.15s ease-out;
     }
     .edost-alert-header {
       background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      color: #ffffff; padding: 8px 12px; display: flex; align-items: center; justify-content: space-between;
+      color: #ffffff; padding: 10px 14px; display: flex; align-items: center; justify-content: space-between;
     }
-    .edost-alert-header span { font-weight: 700; font-size: 12px; letter-spacing: 0.3px; }
-    .edost-alert-body { padding: 12px 14px; font-size: 11px; color: #334155; line-height: 1.4; }
-    .edost-alert-footer { padding: 6px 12px 10px 12px; display: flex; justify-content: flex-end; }
+    .edost-alert-header span { font-weight: 700; font-size: 13px; letter-spacing: 0.3px; }
+    .edost-alert-body { padding: 14px 16px; font-size: 12px; color: #334155; line-height: 1.4; }
+    .edost-alert-footer { padding: 8px 14px 12px 14px; display: flex; justify-content: flex-end; }
 
     @keyframes popIn {
       from { transform: scale(0.92); opacity: 0; }
@@ -64,102 +64,103 @@
       color: white; padding: 15px;
     }
     .lock-box {
-      background: rgba(255, 255, 255, 0.98); color: var(--text-main); border-radius: 12px; padding: 18px 16px;
-      width: 100%; max-width: 280px; text-align: center; box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+      background: rgba(255, 255, 255, 0.98); color: var(--text-main); border-radius: 12px; padding: 20px 18px;
+      width: 100%; max-width: 300px; text-align: center; box-shadow: 0 8px 30px rgba(0,0,0,0.4);
     }
     .pin-input {
-      letter-spacing: 14px; font-size: 18px; text-align: center; font-weight: 700;
-      width: 100%; padding: 6px; margin: 10px 0; border: 2px solid var(--primary); border-radius: 6px;
+      letter-spacing: 14px; font-size: 20px; text-align: center; font-weight: 700;
+      width: 100%; padding: 8px; margin: 12px 0; border: 2px solid var(--primary); border-radius: 6px;
     }
 
-    /* App Bar */
+    /* App Bar - Fixed on Top */
     .app-bar {
       background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      color: white; padding: 6px 10px; position: sticky; top: 0; z-index: 100;
-      display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+      color: white; padding: 8px 12px; position: fixed; top: 0; left: 0; width: 100%; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     }
-    .app-bar h1 { font-family: 'Rozha One', serif; font-size: 14px; font-weight: normal; }
+    .app-bar h1 { font-family: 'Rozha One', serif; font-size: 15px; font-weight: normal; }
     .version-badge {
-      background: #fde047; color: #000; font-size: 9px; font-weight: 800;
-      padding: 1px 5px; border-radius: 4px; margin-left: 4px; vertical-align: middle;
+      background: #fde047; color: #000; font-size: 10px; font-weight: 800;
+      padding: 1px 6px; border-radius: 4px; margin-left: 4px; vertical-align: middle;
     }
     
     .btn-edit-shop {
-      background: #ffffff; color: var(--primary); border: none; padding: 3px 6px;
-      font-size: 10px; font-weight: 700; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 3px;
+      background: #ffffff; color: var(--primary); border: none; padding: 5px 8px;
+      font-size: 11px; font-weight: 700; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 4px;
     }
 
-    /* Nav Tabs */
+    /* Nav Tabs - Fixed right below App Bar */
     .nav-tabs {
       display: flex; background: var(--card-bg); border-bottom: 1.5px solid var(--border-color);
-      position: sticky; top: 38px; z-index: 99; overflow-x: auto;
+      position: fixed; top: 45px; left: 0; width: 100%; z-index: 99; overflow-x: auto;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
     .tab-btn {
-      flex: 1; min-width: 58px; padding: 5px 1px; border: none; background: none;
-      font-size: 10px; font-weight: 600; color: var(--text-muted); cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 1px;
+      flex: 1; min-width: 65px; padding: 7px 2px; border: none; background: none;
+      font-size: 11px; font-weight: 600; color: var(--text-muted); cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 2px;
     }
-    .tab-btn.active { color: var(--primary); border-bottom: 2.5px solid var(--primary); background: var(--primary-light); font-weight: 700; }
+    .tab-btn.active { color: var(--primary); border-bottom: 3px solid var(--primary); background: var(--primary-light); font-weight: 700; }
 
-    .container { max-width: 720px; margin: 3px auto; padding: 0 4px; }
+    .container { max-width: 720px; margin: 5px auto; padding: 0 6px; }
     .tab-content { display: none; }
     .tab-content.active { display: block; }
 
-    /* Ultra Compact Cards */
+    /* Cards */
     .card {
-      background: var(--card-bg); border-radius: 6px; padding: 6px 7px; margin-bottom: 4px;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.06); border: 1px solid #e2e8f0;
+      background: var(--card-bg); border-radius: 8px; padding: 10px 12px; margin-bottom: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08); border: 1px solid #e2e8f0;
     }
     .card-title {
-      font-size: 11px; font-weight: 700; color: var(--primary); margin-bottom: 4px;
-      display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #f1f5f9; padding-bottom: 2px;
+      font-size: 12.5px; font-weight: 700; color: var(--primary); margin-bottom: 6px;
+      display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #f1f5f9; padding-bottom: 4px;
     }
 
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
-    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; }
-    .grid-4 { display: grid; grid-template-columns: 1fr 1.2fr 1.1fr 1fr; gap: 4px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+    .grid-4 { display: grid; grid-template-columns: 1fr 1.2fr 1.1fr 1fr; gap: 6px; }
     @media(max-width: 600px) {
       .grid-3 { grid-template-columns: 1fr 1fr; }
       .grid-4 { grid-template-columns: 1fr 1fr; }
     }
 
-    .form-group { margin-bottom: 3px; }
-    label { display: block; font-size: 9.5px; font-weight: 600; margin-bottom: 1px; color: #475569; }
+    .form-group { margin-bottom: 6px; }
+    label { display: block; font-size: 11px; font-weight: 600; margin-bottom: 2px; color: #475569; }
     input, select {
-      width: 100%; padding: 3px 5px; border: 1px solid var(--border-color);
-      border-radius: 4px; font-size: 10.5px; outline: none; background: #fff; height: 26px;
+      width: 100%; padding: 6px 8px; border: 1px solid var(--border-color);
+      border-radius: 4px; font-size: 12px; outline: none; background: #fff; height: 32px;
     }
     input:focus, select:focus { border-color: var(--primary); }
 
     .btn {
-      width: 100%; padding: 5px; border: none; border-radius: 4px;
-      font-size: 11px; font-weight: 700; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 4px; height: 30px;
+      width: 100%; padding: 7px; border: none; border-radius: 4px;
+      font-size: 12px; font-weight: 700; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 6px; height: 35px;
     }
     .btn-primary { background: var(--primary); color: white; }
     .btn-accent { background: var(--accent); color: white; }
-    .btn-whatsapp { background: var(--whatsapp); color: white; margin-top: 4px; }
-    .btn-action { padding: 3px 5px; font-size: 9px; border-radius: 3px; border: none; cursor: pointer; color: white; margin: 1px; }
+    .btn-whatsapp { background: var(--whatsapp); color: white; margin-top: 6px; }
+    .btn-action { padding: 4px 6px; font-size: 10px; border-radius: 3px; border: none; cursor: pointer; color: white; margin: 1px; }
 
     .bill-item-card {
-      background: #f8fafc; border-left: 3px solid var(--primary); padding: 4px 6px;
-      margin-bottom: 3px; border-radius: 3px; display: flex; justify-content: space-between; align-items: center; font-size: 10.5px;
+      background: #f8fafc; border-left: 3px solid var(--primary); padding: 6px 8px;
+      margin-bottom: 4px; border-radius: 4px; display: flex; justify-content: space-between; align-items: center; font-size: 11.5px;
     }
 
     .summary-box {
-      background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 4px;
-      padding: 4px 7px; margin-top: 3px;
+      background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px;
+      padding: 8px 10px; margin-top: 6px;
     }
-    .summary-row { display: flex; justify-content: space-between; margin-bottom: 1px; font-size: 10px; }
-    .summary-row.total { font-size: 12px; font-weight: 700; color: var(--primary); border-top: 1px dashed #86efac; padding-top: 2px; margin-top: 2px; }
+    .summary-row { display: flex; justify-content: space-between; margin-bottom: 2px; font-size: 11px; }
+    .summary-row.total { font-size: 13.5px; font-weight: 700; color: var(--primary); border-top: 1px dashed #86efac; padding-top: 4px; margin-top: 4px; }
 
-    .stat-card { background: #f0fdf4; border: 1px solid #dcfce7; border-radius: 4px; padding: 4px; text-align: center; }
-    .stat-title { font-size: 9px; color: #64748b; font-weight: 600; }
-    .stat-value { font-size: 11.5px; font-weight: 700; color: var(--primary); margin-top: 1px; }
+    .stat-card { background: #f0fdf4; border: 1px solid #dcfce7; border-radius: 6px; padding: 6px; text-align: center; }
+    .stat-title { font-size: 10px; color: #64748b; font-weight: 600; }
+    .stat-value { font-size: 13px; font-weight: 700; color: var(--primary); margin-top: 2px; }
 
     .modal {
       display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(2px); z-index: 1000; align-items: center; justify-content: center; padding: 8px;
+      background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(2px); z-index: 1000; align-items: center; justify-content: center; padding: 10px;
     }
-    .modal-content { background: white; border-radius: 8px; padding: 10px; width: 100%; max-width: 380px; }
+    .modal-content { background: white; border-radius: 8px; padding: 14px; width: 100%; max-width: 400px; }
 
     #printSection, #a4PrintSection { display: none; }
     @media print {
@@ -198,7 +199,7 @@
   <div id="edostAlertModal">
     <div class="edost-alert-box">
       <div class="edost-alert-header">
-        <div style="display:flex; align-items:center; gap:5px;">
+        <div style="display:flex; align-items:center; gap:6px;">
           <i class="fa-solid fa-seedling" style="color:#fde047;"></i>
           <span>eDost Billing v2.0</span>
         </div>
@@ -211,12 +212,12 @@
   <!-- Lock Screen -->
   <div id="lockScreen">
     <div class="lock-box">
-      <i class="fa-solid fa-lock" style="font-size: 22px; color: var(--primary);"></i>
-      <h3 style="margin-top: 4px; font-size: 13px; font-weight: 700;">सुरक्षित प्रवेश</h3>
-      <p style="font-size: 10px; color: var(--text-muted);">eDost Billing v2.0</p>
+      <i class="fa-solid fa-lock" style="font-size: 26px; color: var(--primary);"></i>
+      <h3 style="margin-top: 6px; font-size: 15px; font-weight: 700;">सुरक्षित प्रवेश</h3>
+      <p style="font-size: 11px; color: var(--text-muted);">eDost Billing v2.0</p>
       <input type="password" id="inputPin" class="pin-input" maxlength="4" placeholder="••••" inputmode="numeric">
       <button class="btn btn-primary" onclick="verifyPin()"><i class="fa-solid fa-key"></i> अनलॉक करा</button>
-      <p style="margin-top: 8px; font-size: 9.5px; cursor: pointer; color: var(--accent);" onclick="resetPinPrompt()">पिन विसरलात? (Reset PIN)</p>
+      <p style="margin-top: 10px; font-size: 11px; cursor: pointer; color: var(--accent);" onclick="resetPinPrompt()">पिन विसरलात? (Reset PIN)</p>
     </div>
   </div>
 
@@ -224,9 +225,9 @@
   <div class="app-bar">
     <div>
       <h1 id="topShopName">🌾 आराधना कृषी सेवा केंद्र <span class="version-badge">v2.0</span></h1>
-      <p id="topShopPhone" style="font-size: 9.5px;">मोबाईल: 98XXXXXXXX</p>
+      <p id="topShopPhone" style="font-size: 10.5px;">मोबाईल: 98XXXXXXXX</p>
     </div>
-    <div style="display:flex; gap:3px;">
+    <div style="display:flex; gap:5px;">
       <button class="btn-edit-shop" onclick="openSettingsModal()"><i class="fa-solid fa-gear"></i> सेटिंग्ज</button>
       <button class="btn-edit-shop" style="background:#fee2e2; color:var(--danger);" onclick="lockApp()" title="लॉक करा"><i class="fa-solid fa-lock"></i></button>
     </div>
@@ -248,9 +249,9 @@
       <div class="card">
         <div class="card-title">
           <span><i class="fa-solid fa-user-check"></i> १. शेतकरी व बिल माहिती</span>
-          <div style="display:flex; align-items:center; gap:3px;">
-            <label style="margin:0; font-size:9.5px;">GST:</label>
-            <select id="billGstToggle" style="width:auto; height:20px; padding:0 3px; font-size:9.5px;" onchange="renderCart()">
+          <div style="display:flex; align-items:center; gap:4px;">
+            <label style="margin:0; font-size:11px;">GST:</label>
+            <select id="billGstToggle" style="width:auto; height:24px; padding:0 4px; font-size:10.5px;" onchange="renderCart()">
               <option value="NO" selected>नाही</option>
               <option value="YES">होय</option>
             </select>
@@ -294,13 +295,13 @@
             <input type="number" id="billItemQty" min="1" value="1">
           </div>
           <div class="form-group" style="display:flex; align-items:flex-end;">
-            <button class="btn btn-accent" style="height:26px;" onclick="addItemToBill()"><i class="fa-solid fa-plus"></i> जोडा</button>
+            <button class="btn btn-accent" style="height:32px;" onclick="addItemToBill()"><i class="fa-solid fa-plus"></i> जोडा</button>
           </div>
         </div>
-        <p id="stockAlert" style="font-size: 9.5px; color: #475569; margin: 2px 0; font-weight: 500;"></p>
+        <p id="stockAlert" style="font-size: 11px; color: #475569; margin: 4px 0; font-weight: 500;"></p>
 
-        <div id="cartContainer" style="margin-top: 2px;">
-          <p style="text-align: center; color: #94a3b8; font-size: 10px; padding: 4px;">अद्याप औषध जोडलेले नाही.</p>
+        <div id="cartContainer" style="margin-top: 4px;">
+          <p style="text-align: center; color: #94a3b8; font-size: 11px; padding: 6px;">अद्याप औषध जोडलेले नाही.</p>
         </div>
 
         <div class="summary-box">
@@ -309,7 +310,7 @@
           <div class="summary-row total"><span>एकूण बिल (Grand Total):</span><span id="sumGrandTotal">₹ 0.00</span></div>
         </div>
 
-        <div class="grid-2" style="margin-top: 4px;">
+        <div class="grid-2" style="margin-top: 6px;">
           <div class="form-group">
             <label>पेमेंट प्रकार</label>
             <select id="billPaymentMode">
@@ -324,7 +325,7 @@
           </div>
         </div>
 
-        <button class="btn btn-primary" style="margin-top: 4px;" onclick="saveAndProcessInvoice(false)">
+        <button class="btn btn-primary" style="margin-top: 6px;" onclick="saveAndProcessInvoice(false)">
           <i class="fa-solid fa-print"></i> बिल सेव्ह व प्रिंट
         </button>
         <button class="btn btn-whatsapp" onclick="saveAndProcessInvoice(true)">
@@ -338,9 +339,9 @@
       <div class="card">
         <div class="card-title">
           <span><i class="fa-solid fa-truck-ramp-box"></i> खरेदी इनवर्ड (माल नोंद)</span>
-          <div style="display:flex; align-items:center; gap:4px;">
-            <label style="margin:0; font-size:9.5px; font-weight:700; color:var(--accent);">खरेदी प्रकार:</label>
-            <select id="inwardGstMode" style="width:auto; height:20px; font-size:9.5px; padding:0 3px; font-weight:bold;" onchange="toggleInwardGstMode()">
+          <div style="display:flex; align-items:center; gap:6px;">
+            <label style="margin:0; font-size:11px; font-weight:700; color:var(--accent);">खरेदी प्रकार:</label>
+            <select id="inwardGstMode" style="width:auto; height:24px; font-size:10.5px; padding:0 4px; font-weight:bold;" onchange="toggleInwardGstMode()">
               <option value="GST" selected>GST खरेदी</option>
               <option value="NON_GST">Non-GST (कच्ची खरेदी)</option>
             </select>
@@ -376,27 +377,27 @@
             <div class="form-group"><label>विक्री दर (₹) *</label><input type="number" step="0.01" id="prodSellPrice" required></div>
             <div class="form-group"><label>संख्या (Qty) *</label><input type="number" id="prodQty" required></div>
           </div>
-          <button type="submit" class="btn btn-primary" style="margin-top: 4px;"><i class="fa-solid fa-save"></i> इनवर्ड साठा सेव्ह करा</button>
+          <button type="submit" class="btn btn-primary" style="margin-top: 6px;"><i class="fa-solid fa-save"></i> इनवर्ड साठा सेव्ह करा</button>
         </form>
       </div>
 
       <div class="card">
         <div class="card-title">
           <span><i class="fa-solid fa-warehouse"></i> उपलब्ध साठा</span>
-          <button class="btn" style="width:auto; height:22px; padding:1px 6px; font-size:9.5px; background:#0284c7; color:white;" onclick="printStockStatementPDF()">
+          <button class="btn" style="width:auto; height:26px; padding:2px 8px; font-size:11px; background:#0284c7; color:white;" onclick="printStockStatementPDF()">
             <i class="fa-solid fa-file-pdf"></i> स्टॉक PDF
           </button>
         </div>
         <div style="overflow-x: auto;">
-          <table style="width: 100%; border-collapse: collapse; min-width: 520px; font-size: 10.5px;">
+          <table style="width: 100%; border-collapse: collapse; min-width: 520px; font-size: 11.5px;">
             <thead>
               <tr style="background:#f1f5f9; text-align: left;">
-                <th style="padding: 4px;">औषध व पार्टी</th>
-                <th style="padding: 4px;">HSN / बॅच</th>
-                <th style="padding: 4px;">खरेदी</th>
-                <th style="padding: 4px;">विक्री</th>
-                <th style="padding: 4px;">शिल्लक</th>
-                <th style="padding: 4px; text-align:center;">कृती</th>
+                <th style="padding: 6px;">औषध व पार्टी</th>
+                <th style="padding: 6px;">HSN / बॅच</th>
+                <th style="padding: 6px;">खरेदी</th>
+                <th style="padding: 6px;">विक्री</th>
+                <th style="padding: 6px;">शिल्लक</th>
+                <th style="padding: 6px; text-align:center;">कृती</th>
               </tr>
             </thead>
             <tbody id="stockTableBody"></tbody>
@@ -410,12 +411,12 @@
       <div class="card">
         <div class="card-title"><span><i class="fa-solid fa-book"></i> शेतकरी उधारी वही</span></div>
         <div style="overflow-x: auto;">
-          <table style="width: 100%; border-collapse: collapse; font-size: 10.5px;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 11.5px;">
             <thead>
               <tr style="background:#f1f5f9; text-align: left;">
-                <th style="padding: 4px;">नाव</th>
-                <th style="padding: 4px;">गाव / फोन</th>
-                <th style="padding: 4px;">बाकी रक्कम (₹)</th>
+                <th style="padding: 6px;">नाव</th>
+                <th style="padding: 6px;">गाव / फोन</th>
+                <th style="padding: 6px;">बाकी रक्कम (₹)</th>
               </tr>
             </thead>
             <tbody id="khataTableBody"></tbody>
@@ -429,7 +430,7 @@
       <div class="card">
         <div class="card-title">
           <span><i class="fa-solid fa-book-journal-whills"></i> दैनिक कीर्द (Day-Book)</span>
-          <button class="btn" style="width:auto; height:22px; padding:1px 6px; font-size:9.5px; background:#0284c7; color:white;" onclick="printKirdPDF()">
+          <button class="btn" style="width:auto; height:26px; padding:2px 8px; font-size:11px; background:#0284c7; color:white;" onclick="printKirdPDF()">
             <i class="fa-solid fa-file-pdf"></i> कीर्द PDF
           </button>
         </div>
@@ -439,24 +440,24 @@
             <input type="date" id="kirdDate" onchange="renderDailyKird()">
           </div>
           <div class="form-group" style="display:flex; align-items:flex-end;">
-            <button class="btn btn-primary" style="height:26px;" onclick="renderDailyKird()"><i class="fa-solid fa-rotate"></i> रिफ्रेश</button>
+            <button class="btn btn-primary" style="height:32px;" onclick="renderDailyKird()"><i class="fa-solid fa-rotate"></i> रिफ्रेश</button>
           </div>
         </div>
 
-        <div class="grid-3" style="margin-top: 4px;">
+        <div class="grid-3" style="margin-top: 6px;">
           <div class="stat-card"><div class="stat-title">विक्री (Aavak)</div><div class="stat-value" id="kirdTotalSale">₹ 0.00</div></div>
           <div class="stat-card"><div class="stat-title">रोकड/UPI</div><div class="stat-value" id="kirdCashIn">₹ 0.00</div></div>
           <div class="stat-card"><div class="stat-title">उधारी</div><div class="stat-value" style="color:var(--danger);" id="kirdCredit">₹ 0.00</div></div>
         </div>
 
-        <div style="overflow-x: auto; margin-top: 5px;">
-          <table style="width: 100%; border-collapse: collapse; min-width: 480px; font-size: 10px;">
+        <div style="overflow-x: auto; margin-top: 8px;">
+          <table style="width: 100%; border-collapse: collapse; min-width: 480px; font-size: 11px;">
             <thead>
               <tr style="background:#f1f5f9; text-align: left;">
-                <th style="padding: 4px;">पावती क्र.</th>
-                <th style="padding: 4px;">ग्राहक</th>
-                <th style="padding: 4px;">प्रकार</th>
-                <th style="padding: 4px; text-align: right;">रक्कम (₹)</th>
+                <th style="padding: 6px;">पावती क्र.</th>
+                <th style="padding: 6px;">ग्राहक</th>
+                <th style="padding: 6px;">प्रकार</th>
+                <th style="padding: 6px; text-align: right;">रक्कम (₹)</th>
               </tr>
             </thead>
             <tbody id="kirdTableBody"></tbody>
@@ -470,7 +471,7 @@
       <div class="card">
         <div class="card-title">
           <span><i class="fa-solid fa-filter"></i> तारखेनुसार नफा-तोटा</span>
-          <button class="btn" style="width:auto; height:22px; padding:1px 6px; font-size:9.5px; background:#0284c7; color:white;" onclick="downloadFullBackup()">
+          <button class="btn" style="width:auto; height:26px; padding:2px 8px; font-size:11px; background:#0284c7; color:white;" onclick="downloadFullBackup()">
             <i class="fa-solid fa-file-excel"></i> Excel
           </button>
         </div>
@@ -478,11 +479,11 @@
           <div class="form-group"><label>या तारखेपासून:</label><input type="date" id="filterFromDate"></div>
           <div class="form-group"><label>या तारखेपर्यंत:</label><input type="date" id="filterToDate"></div>
           <div class="form-group" style="display:flex; align-items:flex-end;">
-            <button class="btn btn-primary" style="height:26px;" onclick="filterReports()"><i class="fa-solid fa-magnifying-glass"></i> हिशोब</button>
+            <button class="btn btn-primary" style="height:32px;" onclick="filterReports()"><i class="fa-solid fa-magnifying-glass"></i> हिशोब</button>
           </div>
         </div>
 
-        <div class="grid-4" style="margin-top: 4px;">
+        <div class="grid-4" style="margin-top: 6px;">
           <div class="stat-card"><div class="stat-title">विक्री</div><div class="stat-value" id="fSale">₹ 0.00</div></div>
           <div class="stat-card"><div class="stat-title">रोकड/UPI</div><div class="stat-value" id="fCash">₹ 0.00</div></div>
           <div class="stat-card"><div class="stat-title">खरेदी खर्च</div><div class="stat-value" id="fCost">₹ 0.00</div></div>
@@ -495,15 +496,15 @@
           <span><i class="fa-solid fa-clock-rotate-left"></i> बिलांचा इतिहास (Re-print & Share)</span>
         </div>
         <div style="overflow-x: auto;">
-          <table style="width: 100%; border-collapse: collapse; min-width: 500px; font-size: 10px;">
+          <table style="width: 100%; border-collapse: collapse; min-width: 500px; font-size: 11px;">
             <thead>
               <tr style="background:#f1f5f9; text-align: left;">
-                <th style="padding: 4px;">बिल क्र.</th>
-                <th style="padding: 4px;">तारीख</th>
-                <th style="padding: 4px;">शेतकरी</th>
-                <th style="padding: 4px;">रक्कम</th>
-                <th style="padding: 4px;">नफा</th>
-                <th style="padding: 4px; text-align:center;">कृती</th>
+                <th style="padding: 6px;">बिल क्र.</th>
+                <th style="padding: 6px;">तारीख</th>
+                <th style="padding: 6px;">शेतकरी</th>
+                <th style="padding: 6px;">रक्कम</th>
+                <th style="padding: 6px;">नफा</th>
+                <th style="padding: 6px; text-align:center;">कृती</th>
               </tr>
             </thead>
             <tbody id="repInvoicesBody"></tbody>
@@ -512,7 +513,7 @@
       </div>
     </div>
 
-    <div style="text-align: center; font-size: 9.5px; color: var(--text-muted); margin-top: 6px;">
+    <div style="text-align: center; font-size: 10.5px; color: var(--text-muted); margin-top: 10px;">
       Powered by <strong>eDost Billing v2.0</strong> | Developed with ❤️ by <strong>Sujit Patil</strong>
     </div>
 
@@ -542,7 +543,7 @@
         <div class="form-group"><label>विक्री दर</label><input type="number" step="0.01" id="editStockSellPrice"></div>
         <div class="form-group"><label>शिल्लक</label><input type="number" id="editStockQty"></div>
       </div>
-      <div class="grid-2" style="margin-top: 6px;">
+      <div class="grid-2" style="margin-top: 8px;">
         <button class="btn btn-primary" onclick="saveEditedStock()">दुरुस्ती सेव्ह</button>
         <button class="btn" style="background:#94a3b8; color:white;" onclick="closeStockEditModal()">रद्द</button>
       </div>
@@ -561,7 +562,7 @@
         <label style="color: var(--primary);">नवीन पिन (४-अंकी)</label>
         <input type="password" id="setNewPin" maxlength="4" placeholder="नवीन PIN">
       </div>
-      <div class="grid-2" style="margin-top: 6px;">
+      <div class="grid-2" style="margin-top: 8px;">
         <button class="btn btn-primary" onclick="saveShopSettings()">सेव्ह करा</button>
         <button class="btn" style="background:#94a3b8; color:white;" onclick="closeSettingsModal()">रद्द</button>
       </div>
@@ -577,7 +578,7 @@
       <div class="form-group"><label>फोन</label><input type="number" id="editCustPhone"></div>
       <div class="form-group"><label>गाव</label><input type="text" id="editCustVillage"></div>
       <div class="form-group"><label>जमा रक्कम (Paid ₹)</label><input type="number" id="editPaidAmount"></div>
-      <div class="grid-2" style="margin-top: 6px;">
+      <div class="grid-2" style="margin-top: 8px;">
         <button class="btn btn-primary" onclick="saveEditedInvoice()">दुरुस्ती सेव्ह</button>
         <button class="btn" style="background:#94a3b8; color:white;" onclick="closeEditModal()">रद्द</button>
       </div>
@@ -630,7 +631,7 @@
     window.alert = function(msg) {
       document.getElementById('edostAlertMsg').innerText = msg;
       document.getElementById('edostAlertFooter').innerHTML = `
-        <button onclick="closeEdostModal()" style="background:var(--primary); color:#fff; border:none; padding:4px 12px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;">
+        <button onclick="closeEdostModal()" style="background:var(--primary); color:#fff; border:none; padding:6px 14px; border-radius:4px; font-size:12px; font-weight:bold; cursor:pointer;">
           ठीक आहे (OK)
         </button>
       `;
@@ -676,7 +677,6 @@
       appPin: "1234"
     };
 
-    // Inward GST / Non-GST Switch
     function toggleInwardGstMode() {
       const mode = document.getElementById('inwardGstMode').value;
       const gstSelect = document.getElementById('prodGst');
@@ -687,7 +687,6 @@
       }
     }
 
-    // Auto-Lock Timer
     function resetAutoLockTimer() {
       if (autoLockTimer) clearTimeout(autoLockTimer);
       if (sessionStorage.getItem("appUnlocked") === "true") {
@@ -750,7 +749,6 @@
       if (tabId === 'kirdTab') initKirdTab();
     }
 
-    // Settings
     db.collection("settings").doc("shopDetails").onSnapshot(doc => {
       if (doc.exists) {
         shopInfo = doc.data();
@@ -794,7 +792,6 @@
       closeSettingsModal();
     }
 
-    // Stock Form & Suggestion Updates
     document.getElementById('stockForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const product = {
@@ -844,16 +841,16 @@
 
         stockBody.innerHTML += `
           <tr style="border-bottom: 1px solid #f1f5f9;">
-            <td style="padding: 4px;">
+            <td style="padding: 6px;">
               <strong>${item.name}</strong><br>
               <small style="color:#64748b;">${item.company || '-'} (${item.packing || '-'})</small><br>
-              <span style="font-size:9.5px; color:#0284c7; font-weight:600;">पार्टी: ${item.supplier || '-'} | बिल: ${item.purchase_bill_no || '-'}</span>
+              <span style="font-size:10px; color:#0284c7; font-weight:600;">पार्टी: ${item.supplier || '-'} | बिल: ${item.purchase_bill_no || '-'}</span>
             </td>
-            <td style="padding: 4px;">${item.hsn ? 'HSN: '+item.hsn+'<br>' : ''}${item.batch_no}</td>
-            <td style="padding: 4px;">₹${item.buy_price}</td>
-            <td style="padding: 4px;">₹${item.sell_price}</td>
-            <td style="padding: 4px; font-weight: 700; color:${item.stock <= 5 ? 'var(--danger)' : 'var(--primary)'};">${item.stock}</td>
-            <td style="padding: 4px; text-align:center; white-space:nowrap;">
+            <td style="padding: 6px;">${item.hsn ? 'HSN: '+item.hsn+'<br>' : ''}${item.batch_no}</td>
+            <td style="padding: 6px;">₹${item.buy_price}</td>
+            <td style="padding: 6px;">₹${item.sell_price}</td>
+            <td style="padding: 6px; font-weight: 700; color:${item.stock <= 5 ? 'var(--danger)' : 'var(--primary)'};">${item.stock}</td>
+            <td style="padding: 6px; text-align:center; white-space:nowrap;">
               <button class="btn-action" style="background:var(--info);" onclick="openStockEditModal('${item.id}')" title="दुरुस्ती"><i class="fa-solid fa-pen"></i></button>
               <button class="btn-action" style="background:var(--danger);" onclick="deleteProduct('${item.id}')" title="हटवा"><i class="fa-solid fa-trash"></i></button>
             </td>
@@ -866,7 +863,6 @@
       hsnSet.forEach(h => { hsnList.innerHTML += `<option value="${h}">`; });
     });
 
-    // Populate Customer Auto-Suggestions
     function updateCustomerSuggestions() {
       const nameList = document.getElementById('customerNameDatalist');
       const phoneList = document.getElementById('customerPhoneDatalist');
@@ -962,7 +958,6 @@
       if(confirm("औषध कायमचे हटवायचे आहे का?")) await db.collection("products").doc(id).delete();
     }
 
-    // Auto Invoice Sequence
     async function updateNextInvoiceNo() {
       const snap = await db.collection("invoices").orderBy("created_at", "desc").limit(1).get();
       if (!snap.empty) {
@@ -1034,7 +1029,7 @@
       const isGst = document.getElementById('billGstToggle').value === "YES";
       const cartContainer = document.getElementById('cartContainer');
       if (cartItems.length === 0) {
-        cartContainer.innerHTML = `<p style="text-align:center; color:#94a3b8; font-size:10px; padding:4px;">अद्याप औषध जोडलेले नाही.</p>`;
+        cartContainer.innerHTML = `<p style="text-align:center; color:#94a3b8; font-size:11px; padding:6px;">अद्याप औषध जोडलेले नाही.</p>`;
         document.getElementById('sumTaxable').innerText = "₹ 0.00";
         document.getElementById('sumTax').innerText = "₹ 0.00";
         document.getElementById('sumGrandTotal').innerText = "₹ 0.00";
@@ -1066,7 +1061,7 @@
             </div>
             <div style="text-align: right;">
               <strong>₹${item.total.toFixed(2)}</strong><br>
-              <button class="btn-action" style="background:var(--danger); padding:2px 4px;" onclick="removeCartItem(${index})">हटवा</button>
+              <button class="btn-action" style="background:var(--danger); padding:3px 6px;" onclick="removeCartItem(${index})">हटवा</button>
             </div>
           </div>
         `;
@@ -1214,7 +1209,6 @@
       window.print();
     }
 
-    // Daily Kird
     function initKirdTab() {
       const today = new Date().toISOString().split('T')[0];
       if (!document.getElementById('kirdDate').value) {
@@ -1233,7 +1227,7 @@
       let totSale = 0, cashIn = 0, creditTot = 0;
 
       if (snapshot.empty) {
-        kirdBody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding:8px;">या तारखेला कोणतीही नोंद नाही.</td></tr>`;
+        kirdBody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding:10px;">या तारखेला कोणतीही नोंद नाही.</td></tr>`;
       }
 
       snapshot.forEach(doc => {
@@ -1244,10 +1238,10 @@
 
         kirdBody.innerHTML += `
           <tr style="border-bottom: 1px solid #f1f5f9;">
-            <td style="padding: 4px;"><strong>${inv.invoiceNo}</strong></td>
-            <td style="padding: 4px;">${inv.customer ? inv.customer.name : '-'}</td>
-            <td style="padding: 4px;"><span style="color:${inv.paymentMode === 'CREDIT' ? 'var(--danger)' : 'var(--primary)'}; font-weight:600;">${inv.paymentMode}</span></td>
-            <td style="padding: 4px; text-align: right;">₹${(inv.grandTotal || 0).toFixed(2)}</td>
+            <td style="padding: 6px;"><strong>${inv.invoiceNo}</strong></td>
+            <td style="padding: 6px;">${inv.customer ? inv.customer.name : '-'}</td>
+            <td style="padding: 6px;"><span style="color:${inv.paymentMode === 'CREDIT' ? 'var(--danger)' : 'var(--primary)'}; font-weight:600;">${inv.paymentMode}</span></td>
+            <td style="padding: 6px; text-align: right;">₹${(inv.grandTotal || 0).toFixed(2)}</td>
           </tr>
         `;
       });
@@ -1257,7 +1251,6 @@
       document.getElementById('kirdCredit').innerText = `₹ ${creditTot.toFixed(2)}`;
     }
 
-    // PDF Statements (Stock & Kird)
     function printStockStatementPDF() {
       document.getElementById('printSection').style.display = 'none';
       document.getElementById('a4PrintSection').style.display = 'block';
@@ -1381,7 +1374,6 @@
       window.print();
     }
 
-    // Reports & Date Filter
     function initReportsTab() {
       const today = new Date().toISOString().split('T')[0];
       if (!document.getElementById('filterFromDate').value) {
@@ -1423,7 +1415,7 @@
       });
 
       if (filtered.length === 0) {
-        historyBody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:8px;">या कालावधीत विक्री झालेली नाही.</td></tr>`;
+        historyBody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:10px;">या कालावधीत विक्री झालेली नाही.</td></tr>`;
       }
 
       filtered.forEach(inv => {
@@ -1434,12 +1426,12 @@
 
         historyBody.innerHTML += `
           <tr style="border-bottom: 1px solid #f1f5f9;">
-            <td style="padding: 4px;"><strong>${inv.invoiceNo}</strong></td>
-            <td style="padding: 4px;">${inv.date}</td>
-            <td style="padding: 4px;">${inv.customer ? inv.customer.name : '-'}</td>
-            <td style="padding: 4px;">₹${(inv.grandTotal || 0).toFixed(2)}</td>
-            <td style="padding: 4px; color:var(--primary); font-weight:700;">+₹${(inv.profit || 0).toFixed(2)}</td>
-            <td style="padding: 4px; text-align:center; white-space:nowrap;">
+            <td style="padding: 6px;"><strong>${inv.invoiceNo}</strong></td>
+            <td style="padding: 6px;">${inv.date}</td>
+            <td style="padding: 6px;">${inv.customer ? inv.customer.name : '-'}</td>
+            <td style="padding: 6px;">₹${(inv.grandTotal || 0).toFixed(2)}</td>
+            <td style="padding: 6px; color:var(--primary); font-weight:700;">+₹${(inv.profit || 0).toFixed(2)}</td>
+            <td style="padding: 6px; text-align:center; white-space:nowrap;">
               <button class="btn-action" style="background:var(--primary);" onclick="reprintInvoice('${inv.id}')" title="प्रिंट"><i class="fa-solid fa-print"></i></button>
               <button class="btn-action" style="background:var(--whatsapp);" onclick="reshareWhatsApp('${inv.id}')" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></button>
               <button class="btn-action" style="background:var(--share-btn);" onclick="shareAnywhere('${inv.id}')" title="SMS / शेअर"><i class="fa-solid fa-share-nodes"></i></button>
@@ -1543,7 +1535,6 @@
       } catch (err) { alert("त्रुटी: " + err.message); }
     }
 
-    // CSV Backup
     async function downloadFullBackup() {
       try {
         let csvContent = "data:text/csv;charset=utf-8,";
@@ -1573,12 +1564,11 @@
       } catch (err) { alert("बॅकअप त्रुटी: " + err.message); }
     }
 
-    // Khata Directory
     db.collection("customers").onSnapshot(snapshot => {
       const khataBody = document.getElementById('khataTableBody');
       khataBody.innerHTML = "";
       if (snapshot.empty) {
-        khataBody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding:8px;">उधारी बाकी नाही.</td></tr>`;
+        khataBody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding:10px;">उधारी बाकी नाही.</td></tr>`;
         return;
       }
       snapshot.forEach(doc => {
@@ -1588,9 +1578,9 @@
         }
         khataBody.innerHTML += `
           <tr style="border-bottom: 1px solid #f1f5f9;">
-            <td style="padding: 4px;"><strong>${c.name}</strong></td>
-            <td style="padding: 4px;">${c.village || '-'} (${c.phone || '-'})</td>
-            <td style="padding: 4px; color:var(--danger); font-weight:700;">₹ ${Number(c.balance || 0).toFixed(2)}</td>
+            <td style="padding: 6px;"><strong>${c.name}</strong></td>
+            <td style="padding: 6px;">${c.village || '-'} (${c.phone || '-'})</td>
+            <td style="padding: 6px; color:var(--danger); font-weight:700;">₹ ${Number(c.balance || 0).toFixed(2)}</td>
           </tr>
         `;
       });
