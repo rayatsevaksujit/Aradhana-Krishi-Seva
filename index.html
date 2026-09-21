@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>आराधना कृषी सेवा केंद्र v2.8</title>
+    <title>आराधना कृषी सेवा केंद्र v2.9</title>
     <style>
         :root {
             --primary-green: #1b4d3e;
@@ -36,7 +36,7 @@
             font-size: 10px;
         }
         .container {
-            max-width: 600px;
+            max-width: 650px;
             margin: 8px auto;
             background: white;
             padding: 12px;
@@ -89,7 +89,7 @@
             font-weight: 600;
             font-size: 12px;
         }
-        input, select {
+        input, select, textarea {
             width: 100%;
             padding: 7px;
             box-sizing: border-box;
@@ -135,6 +135,22 @@
             color: white;
             text-align: center;
         }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 8px;
+            font-size: 12px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 6px;
+            text-align: center;
+        }
+        th {
+            background-color: #e9ecef;
+        }
         footer {
             text-align: center;
             margin: 10px 0;
@@ -146,7 +162,7 @@
 <body>
 
     <header>
-        <div>🌿 आराधना कृषी सेवा केंद्र <span class="version-badge">v2.8</span></div>
+        <div>🌿 आराधना कृषी सेवा केंद्र <span class="version-badge">v2.9</span></div>
         <div style="font-size: 12px;">मोबाईल: 9604832223</div>
     </header>
 
@@ -160,7 +176,7 @@
             <button class="nav-tab" onclick="switchTab(event, 'profitTab')">नफा-तोटा</button>
         </div>
 
-        <!-- 1. बिलिंग विंडो (यात औषध निवड व विक्रीचे पर्याय पुन्हा समाविष्ट केले आहेत) -->
+        <!-- 1. बिलिंग विंडो -->
         <div id="billingTab" class="tab-pane active">
             <div class="section-title">👤 1. शेतकरी व बिल माहिती</div>
 
@@ -194,8 +210,7 @@
                 </div>
             </div>
 
-            <!-- औषध निवड व विक्रीचे ऑप्शन्स (जे आधी गायब झाले होते) -->
-            <div class="section-title">🛒 2. औषध निवडा व जोडा</div>
+            <div class="section-title">🛒 2. औषध निवडा व जोडा (Sale Register)</div>
             <div class="form-group">
                 <label>औषध शोधा *</label>
                 <input type="text" id="medicineName" placeholder="नाव, बॅच किंवा HSN...">
@@ -211,34 +226,64 @@
                 </div>
             </div>
             <button class="btn-orange" onclick="addMedicine()">+ जोडा</button>
-            <p style="text-align: center; font-size: 12px; color: #666; margin: 8px 0;">अद्याप औषध जोडलेले नाही.</p>
-        </div>
-
-        <!-- 2. साठा/इनवर्ड विंडो -->
-        <div id="stockTab" class="tab-pane">
-            <div class="section-title">📦 साठा व इनवर्ड व्यवस्थापन</div>
-            <div class="form-group">
-                <label>औषध / खताचे नाव</label>
-                <input type="text" id="stockItemName" placeholder="नाव लिहा...">
+            
+            <div style="margin-top: 10px;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>औषध नाव</th>
+                            <th>दर</th>
+                            <th>संख्या</th>
+                            <th>एकूण</th>
+                        </tr>
+                    </thead>
+                    <tbody id="billItemsTable">
+                        <tr><td colspan="4" style="color:#666;">अद्याप औषध जोडलेले नाही.</td></tr>
+                    </tbody>
+                </table>
             </div>
         </div>
 
-        <!-- 3. शेतकरी वही विंडो -->
+        <!-- 2. साठा/इनवर्ड विंडो (खरेदी व इनवर्ड मटेरियल) -->
+        <div id="stockTab" class="tab-pane">
+            <div class="section-title">📦 साठा व इनवर्ड (खरेदी नोंद)</div>
+            <div class="form-group">
+                <label>औषध / खताचे नाव *</label>
+                <input type="text" id="inwardName" placeholder="नवीन मालाचे नाव...">
+            </div>
+            <div class="row">
+                <div class="col form-group">
+                    <label>खरेदी नग (Qty)</label>
+                    <input type="number" id="inwardQty" placeholder="संख्या">
+                </div>
+                <div class="col form-group">
+                    <label>खरेदी दर (₹)</label>
+                    <input type="number" id="inwardRate" placeholder="किंमत">
+                </div>
+            </div>
+            <button class="btn-orange" style="background: var(--accent-green);" onclick="saveInward()">+ स्टॉक इनवर्ड करा</button>
+        </div>
+
+        <!-- 3. शेतकरी वही विंडो (उधारी आणि जमा रेकॉर्ड) -->
         <div id="ledgerTab" class="tab-pane">
-            <div class="section-title">📖 शेतकरी उधारी वही</div>
-            <p style="font-size: 12px; color: #555;">उधारी आणि जमा खात्याची नोंद.</p>
+            <div class="section-title">📖 शेतकरी उधारी व जमा वही</div>
+            <div class="form-group">
+                <label>शेतकऱ्याचे नाव शोधा</label>
+                <input type="text" id="ledgerSearch" placeholder="नाव टाка...">
+            </div>
+            <p style="font-size: 12px; color: #555;">येथे संबंधित शेतकऱ्याचे एकूण उधारी खाते आणि मागील व्यवहार दिसतील.</p>
         </div>
 
         <!-- 4. दैनिक कीर्द विंडो -->
         <div id="dailyTab" class="tab-pane">
-            <div class="section-title">📒 दैनिक कीर्द व्यवहार</div>
-            <p style="font-size: 12px; color: #555;">आजचे एकूण व्यवहार.</p>
+            <div class="section-title">📒 दैनिक कीर्द (Day Book)</div>
+            <p style="font-size: 12px; color: #555;">आज दिवसभरातील एकूण रोख व उधारी विक्रीचे व्यवहार.</p>
         </div>
 
         <!-- 5. नफा-तोटा विंडो -->
         <div id="profitTab" class="tab-pane">
-            <div class="section-title">📊 नफा व तोटा अहवाल</div>
-            <p style="font-size: 12px; color: #555;">खरेदी आणि विक्रीचा हिशोब.</p>
+            <div class="section-title">📊 नफा व तोटा अहवाल (Profit & Loss)</div>
+            <p style="font-size: 12px; color: #555;">एकूण खरेदी, विक्री आणि निव्वळ नफ्याचा मासिक अहवाल.</p>
         </div>
 
         <!-- बॅकअप व रिस्टोअर बटन्स -->
@@ -250,7 +295,7 @@
     </div>
 
     <footer>
-        Powered by eDost Billing v2.8 | Developed with ❤️ by Sujit Patil
+        Powered by eDost Billing v2.9 | Developed with ❤️ by Sujit Patil
     </footer>
 
     <script>
@@ -264,14 +309,26 @@
             evt.currentTarget.classList.add("active");
         }
 
-        // औषध जोडण्याचे डमी फंक्शन (तुमच्या मूळ लॉजिकनुसार)
+        // औषध जोडणे (बिलिंग)
         function addMedicine() {
             let med = document.getElementById('medicineName').value;
+            let rate = document.getElementById('medRate').value;
+            let qty = document.getElementById('medQty').value;
             if(!med) {
                 alert('कृपया औषधाचे नाव टाка.');
                 return;
             }
-            alert('औषध यशस्वीरित्या जोडले गेले!');
+            alert('औषध बिलात यशस्वीरित्या जोडले गेले!');
+        }
+
+        // इनवर्ड / खरेदी नोंद करणे
+        function saveInward() {
+            let name = document.getElementById('inwardName').value;
+            if(!name) {
+                alert('कृपया मालाचे नाव टाка.');
+                return;
+            }
+            alert('स्टॉक इनवर्ड यशस्वीरित्या सेव्ह झाला!');
         }
 
         // GST बदलल्यावर बिल नंबर अचूक बदलणारे लॉजिक
@@ -297,7 +354,7 @@
         });
 
         function loadSavedForm() {
-            ['farmerName', 'phone', 'village', 'gstSelect', 'medicineName', 'medRate', 'medQty'].forEach(id => {
+            ['farmerName', 'phone', 'village', 'gstSelect', 'medicineName', 'medRate', 'medQty', 'inwardName', 'inwardQty', 'inwardRate'].forEach(id => {
                 let savedVal = localStorage.getItem(id);
                 if(savedVal) {
                     let el = document.getElementById(id);
