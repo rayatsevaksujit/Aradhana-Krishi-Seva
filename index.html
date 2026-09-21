@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>आराधना कृषी सेवा केंद्र v3.2</title>
+    <title>आराधना कृषी सेवा केंद्र v3.3</title>
     <style>
         :root {
             --primary-green: #1b4d3e;
@@ -166,7 +166,7 @@
 <body>
 
     <header>
-        <div>🌿 आराधना कृषी सेवा केंद्र <span class="version-badge">v3.2</span></div>
+        <div>🌿 आराधना कृषी सेवा केंद्र <span class="version-badge">v3.3</span></div>
         <div style="font-size: 12px;">मोबाईल: 9604832223</div>
     </header>
 
@@ -248,10 +248,9 @@
             </div>
         </div>
 
-        <!-- 2. साठा/इनवर्ड विंडो (सुधारित आणि पूर्ण ऑप्शन्ससह) -->
+        <!-- 2. साठा/इनवर्ड विंडो -->
         <div id="stockTab" class="tab-pane">
             <div class="section-title">📦 साठा व इनवर्ड (खरेदी नोंद)</div>
-            
             <div class="row">
                 <div class="col form-group">
                     <label>परचेस इनव्हॉइस नंबर *</label>
@@ -265,10 +264,9 @@
 
             <div class="form-group">
                 <label>औषध / खताचे नाव *</label>
-                <input type="text" id="inwardName" placeholder="नवीन मालाचे नाव टाка..." oninput="checkExistingStock(this.value)">
+                <input type="text" id="inwardName" placeholder="नवीन मालाचे नाव टाका..." oninput="checkExistingStock(this.value)">
             </div>
 
-            <!-- मागील स्टॉक दाखवणारी पट्टी -->
             <div id="existingStockAlert" style="background: #e2f0d9; color: #274e13; padding: 6px 10px; border-radius: 4px; font-size: 12px; margin-bottom: 8px; display: none;">
                 📦 <b>सध्याचा उपलब्ध स्टॉक (Current Stock):</b> <span id="currentStockVal">0</span> नग
             </div>
@@ -314,10 +312,26 @@
             <p style="font-size: 12px; color: #555;">आज दिवसभरातील एकूण रोख व उधारी विक्रीचे व्यवहार.</p>
         </div>
 
-        <!-- 5. नफा-तोटा विंडो -->
+        <!-- 5. नफा-तोटा विंडो (तारीख निवडीच्या पर्यायासह) -->
         <div id="profitTab" class="tab-pane">
             <div class="section-title">📊 नफा व तोटा अहवाल (Profit & Loss)</div>
-            <p style="font-size: 12px; color: #555;">एकूण खरेदी, विक्री आणि निव्वळ नफ्याचा मासिक अहवाल.</p>
+            
+            <div class="row" style="margin-bottom: 8px;">
+                <div class="col form-group">
+                    <label>महिना/वर्ष निवडा:</label>
+                    <input type="month" id="reportMonth">
+                </div>
+                <div class="col form-group" style="display: flex; align-items: flex-end;">
+                    <button class="btn-orange" style="background: #17a2b8; padding: 7px;" onclick="calculateProfit()">अहवाल पहा</button>
+                </div>
+            </div>
+
+            <div id="profitResultBox" style="background: #fff3cd; padding: 10px; border-radius: 4px; font-size: 12px; margin-top: 8px;">
+                <b>निवडलेल्या महिन्याचा हिशोब:</b><br>
+                • एकूण खरेदी: ₹0.00<br>
+                • एकूण विक्री: ₹0.00<br>
+                • अंदाजित नफा: ₹0.00
+            </div>
         </div>
 
         <!-- ग्लोबल बॅकअप बॉक्स -->
@@ -332,7 +346,7 @@
     </div>
 
     <footer>
-        Powered by eDost Billing v3.2 | Developed with ❤️ by Sujit Patil
+        Powered by eDost Billing v3.3 | Developed with ❤️ by Sujit Patil
     </footer>
 
     <script>
@@ -345,7 +359,6 @@
             evt.currentTarget.classList.add("active");
         }
 
-        // औषधाचे नाव टाकल्यावर मागील स्टॉक तपासणी
         function checkExistingStock(medName) {
             if(!medName.trim()) {
                 document.getElementById('existingStockAlert').style.display = 'none';
@@ -367,18 +380,14 @@
             alert('औषध बिलात यशस्वीरित्या जोडले गेले!');
         }
 
-        // स्टॉक इनवर्ड सेव्ह करणे आणि स्टॉक अपडेट करणे
         function saveInward() {
             let name = document.getElementById('inwardName').value;
             let qty = parseInt(document.getElementById('inwardQty').value) || 0;
-            let invoice = document.getElementById('purchaseInvoice').value;
-
             if(!name || qty <= 0) {
                 alert('कृपया औषधाचे नाव आणि खरेदी नग अचूक भरा.');
                 return;
             }
 
-            // स्टॉक अपडेट करणे
             let stockKey = 'stock_' + name.trim().toLowerCase();
             let currentStock = parseInt(localStorage.getItem(stockKey)) || 0;
             let newTotalStock = currentStock + qty;
@@ -391,6 +400,15 @@
             document.getElementById('existingStockAlert').style.display = 'none';
         }
 
+        function calculateProfit() {
+            let selectedMonth = document.getElementById('reportMonth').value;
+            if(!selectedMonth) {
+                alert('कृपया महिना निवडा.');
+                return;
+            }
+            alert('निवडलेल्या महिन्याचा अहवाल तपासाला जात आहे.');
+        }
+
         function updateBillNumber() {
             let gstVal = document.getElementById('gstSelect').value;
             let prefix = (gstVal === 'होय') ? 'GST-' : 'INV-';
@@ -401,6 +419,11 @@
         window.onload = function() {
             updateBillNumber();
             loadSavedForm();
+            
+            // महिना निवडीसाठी आजची तारीख सेट करणे
+            let today = new Date().toISOString().slice(0, 7);
+            let monthEl = document.getElementById('reportMonth');
+            if(monthEl) monthEl.value = today;
         };
 
         document.querySelectorAll('input, select').forEach(element => {
@@ -412,7 +435,7 @@
         });
 
         function loadSavedForm() {
-            ['farmerName', 'phone', 'village', 'gstSelect', 'medicineName', 'medRate', 'medQty', 'purchaseInvoice', 'hsnCode', 'inwardName', 'inwardQty', 'inwardRate', 'gstRateSelect'].forEach(id => {
+            ['farmerName', 'phone', 'village', 'gstSelect', 'medicineName', 'medRate', 'medQty', 'purchaseInvoice', 'hsnCode', 'inwardName', 'inwardQty', 'inwardRate', 'gstRateSelect', 'reportMonth'].forEach(id => {
                 let savedVal = localStorage.getItem(id);
                 if(savedVal) {
                     let el = document.getElementById(id);
