@@ -817,7 +817,29 @@
         created_at: Date.now()
       };
       try {
-        await db.collection("products").add(product);
+        const productRef = db.collection("products").doc();
+        const purchaseRef = db.collection("purchases").doc();
+        const purchase = {
+          product_id: productRef.id,
+          supplier: product.supplier,
+          purchase_bill_no: product.purchase_bill_no,
+          name: product.name,
+          company: product.company,
+          packing: product.packing,
+          hsn: product.hsn,
+          batch_no: product.batch_no,
+          expiry: product.expiry,
+          gst: product.gst,
+          buy_price: product.buy_price,
+          sell_price: product.sell_price,
+          qty: product.stock,
+          date: new Date().toISOString().split('T')[0],
+          created_at: product.created_at
+        };
+        const batch = db.batch();
+        batch.set(productRef, product);
+        batch.set(purchaseRef, purchase);
+        await batch.commit();
         alert("पार्टी खरेदी इनवर्ड साठा सेव्ह झाला!");
         document.getElementById('stockForm').reset();
         document.getElementById('inwardGstMode').value = "GST";
@@ -1573,7 +1595,7 @@
 
     async function downloadCompleteBackup() {
       try {
-        const collectionNames = ["invoices", "products", "customers", "settings"];
+        const collectionNames = ["invoices", "products", "purchases", "customers", "settings"];
         const collections = {};
         const snapshots = await Promise.all(collectionNames.map(name => db.collection(name).get()));
         snapshots.forEach((snapshot, index) => {
@@ -1616,7 +1638,7 @@
 
       try {
         const backup = JSON.parse(await file.text());
-        const collectionNames = ["invoices", "products", "customers", "settings"];
+        const collectionNames = ["invoices", "products", "purchases", "customers", "settings"];
         if (backup.app !== "eDost Billing" || backup.backupVersion !== 1 || !backup.collections) {
           throw new Error("ही eDost Billing ची ओळखता येणारी पूर्ण बॅकअप फाइल नाही.");
         }
