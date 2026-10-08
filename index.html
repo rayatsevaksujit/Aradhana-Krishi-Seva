@@ -472,8 +472,15 @@
         <div class="card-title">
           <span><i class="fa-solid fa-filter"></i> तारखेनुसार नफा-तोटा</span>
           <button class="btn" style="width:auto; height:26px; padding:2px 8px; font-size:11px; background:#0284c7; color:white;" onclick="downloadFullBackup()">
-            <i class="fa-solid fa-file-excel"></i> Excel
+            <i class="fa-solid fa-file-excel"></i> Excel (विक्री)
           </button>
+          <button class="btn" style="width:auto; height:26px; padding:2px 8px; font-size:11px; background:#15803d; color:white;" onclick="downloadCompleteBackup()">
+            <i class="fa-solid fa-download"></i> पूर्ण Backup
+          </button>
+          <button class="btn" style="width:auto; height:26px; padding:2px 8px; font-size:11px; background:#b45309; color:white;" onclick="document.getElementById('restoreBackupFile').click()">
+            <i class="fa-solid fa-upload"></i> Restore
+          </button>
+          <input id="restoreBackupFile" type="file" accept=".json,application/json" style="display:none" onchange="restoreCompleteBackup(event)">
         </div>
         <div class="grid-3">
           <div class="form-group"><label>या तारखेपासून:</label><input type="date" id="filterFromDate"></div>
@@ -810,7 +817,29 @@
         created_at: Date.now()
       };
       try {
-        await db.collection("products").add(product);
+        const productRef = db.collection("products").doc();
+        const purchaseRef = db.collection("purchases").doc();
+        const purchase = {
+          product_id: productRef.id,
+          supplier: product.supplier,
+          purchase_bill_no: product.purchase_bill_no,
+          name: product.name,
+          company: product.company,
+          packing: product.packing,
+          hsn: product.hsn,
+          batch_no: product.batch_no,
+          expiry: product.expiry,
+          gst: product.gst,
+          buy_price: product.buy_price,
+          sell_price: product.sell_price,
+          qty: product.stock,
+          date: new Date().toISOString().split('T')[0],
+          created_at: product.created_at
+        };
+        const batch = db.batch();
+        batch.set(productRef, product);
+        batch.set(purchaseRef, purchase);
+        await batch.commit();
         alert("पार्टी खरेदी इनवर्ड साठा सेव्ह झाला!");
         document.getElementById('stockForm').reset();
         document.getElementById('inwardGstMode').value = "GST";
@@ -1562,6 +1591,99 @@
         link.click();
         document.body.removeChild(link);
       } catch (err) { alert("बॅकअप त्रुटी: " + err.message); }
+    }
+
+    async function downloadCompleteBackup() {
+      try {
+        const collectionNames = ["invoices", "products", "purchases", "customers", "settings"];
+        const collections = {};
+        const snapshots = await Promise.all(collectionNames.map(name => db.collection(name).get()));
+        snapshots.forEach((snapshot, index) => {
+          collections[collectionNames[index]] = snapshot.docs.map(doc => ({
+            id: doc.id,
+            data: doc.data()
+          }));
+        });
+
+        const backup = {
+          app: "eDost Billing",
+          backupVersion: 1,
+          createdAt: new Date().toISOString(),
+          collections
+        };
+        const date = new Date().toISOString().split("T")[0];
+        saveBackupFile(backup, `eDost_Full_Backup_${date}.json`);
+        alert("विक्रीची बिले, खरेदी/साठा, ग्राहक आणि सेटिंग्जचा पूर्ण बॅकअप डाउनलोड झाला.");
+      } catch (err) {
+        alert("पूर्ण बॅकअप त्रुटी: " + err.message);
+      }
+    }
+
+    function saveBackupFile(backup, fileName) {
+      const blob = new Blob([JSON.stringify(backup, null, 2)], { type: "application/json;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
+
+    async function restoreCompleteBackup(event) {
+      const file = event.target.files && event.target.files[0];
+      event.target.value = "";
+      if (!file) return;
+
+      try {
+        const backup = JSON.parse(await file.text());
+        const collectionNames = ["invoices", "products", "purchases", "customers", "settings"];
+        if (backup.app !== "eDost Billing" || backup.backupVersion !== 1 || !backup.collections) {
+          throw new Error("ही eDost Billing ची ओळखता येणारी पूर्ण बॅकअप फाइल नाही.");
+        }
+        for (const name of collectionNames) {
+          if (!Array.isArray(backup.collections[name])) {
+            throw new Error(`बॅकअपमध्ये ${name} माहिती उपलब्ध नाही.`);
+          }
+          for (const record of backup.collections[name]) {
+            if (!record || typeof record.id !== "string" || !record.id || !record.data || typeof record.data !== "object" || Array.isArray(record.data)) {
+              throw new Error(`${name} मधील नोंद योग्य स्वरूपात नाही.`);
+            }
+          }
+        }
+
+        if (!confirm("Restore करण्यापूर्वी सध्याच्या विक्री, खरेदी/साठा, ग्राहक आणि सेटिंग्जचा सुरक्षा बॅकअप डाउनलोड होईल. पुढे जाऊ?")) return;
+        await downloadCompleteBackup();
+        if (!confirm("Restore केल्यास सध्याच्या या चार विभागांतील माहिती निवडलेल्या बॅकअपने पूर्णपणे बदलली जाईल. खात्रीने Restore करायचे आहे का?")) return;
+
+        const operations = [];
+        for (const name of collectionNames) {
+          const current = await db.collection(name).get();
+          current.docs.forEach(doc => operations.push({ type: "delete", ref: doc.ref }));
+          backup.collections[name].forEach(record => {
+            operations.push({
+              type: "set",
+              ref: db.collection(name).doc(record.id),
+              data: record.data
+            });
+          });
+        }
+
+        for (let i = 0; i < operations.length; i += 450) {
+          const batch = db.batch();
+          operations.slice(i, i + 450).forEach(op => {
+            if (op.type === "delete") batch.delete(op.ref);
+            else batch.set(op.ref, op.data);
+          });
+          await batch.commit();
+        }
+
+        await loadInvoicesData();
+        alert("विक्री, खरेदी/साठा, ग्राहक आणि सेटिंग्ज Restore झाले. कृपया पेज पुन्हा उघडा.");
+      } catch (err) {
+        alert("Restore त्रुटी: " + err.message + "\nRestore आधीचा सुरक्षा बॅकअप डाउनलोड झाला असल्यास तो वापरून परत Restore करू शकता.");
+      }
     }
 
     db.collection("customers").onSnapshot(snapshot => {
